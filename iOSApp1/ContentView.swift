@@ -8,8 +8,6 @@
 import SwiftUI
 import Combine
 
-import SwiftUI
-
 struct ContentView: View {
     // App State Properties
     @StateObject private var appStore = OrderStore()
@@ -18,6 +16,11 @@ struct ContentView: View {
     @State private var runTimerActive = false
     @State private var isManifestLocked = false
     @State private var selectedOrderToEdit: TeamOrder?
+    
+    // Calculates cumulative group manifest cost totals
+    var runningGrandTotal: Double {
+        appStore.activeOrders.reduce(0) { $0 + $1.checkoutTotal }
+    }
     
     var body: some View {
         Group {
@@ -87,28 +90,45 @@ struct ContentView: View {
                                                 showingAddOrderForm = true
                                             }
                                         }) {
-                                            VStack(alignment: .leading, spacing: 4) {
-                                                Text(order.name)
-                                                    .font(.headline)
-                                                    .foregroundColor(.primary) // Keeps text dark inside list buttons
-                                                
-                                                Text("☕ \(order.drink.quantity)x \(order.drink.itemName) (\(order.drink.notes.isEmpty ? "No Notes" : order.drink.notes))")
-                                                    .font(.subheadline)
-                                                    .foregroundColor(.secondary)
-                                                
-                                                if order.food.itemName != "None" {
-                                                    Text("🍩 \(order.food.quantity)x \(order.food.itemName) (\(order.food.notes.isEmpty ? "No Notes" : order.food.notes))")
+                                            HStack {
+                                                VStack(alignment: .leading, spacing: 4) {
+                                                    Text(order.name).font(.headline)
+                                                    Text("☕ \(order.drink.quantity)x \(order.drink.itemName)")
                                                         .font(.subheadline)
                                                         .foregroundColor(.secondary)
+                                                    if order.food.itemName != "None" {
+                                                        Text("🍩 \(order.food.quantity)x \(order.food.itemName)")
+                                                            .font(.subheadline)
+                                                            .foregroundColor(.secondary)
+                                                    }
                                                 }
+                                                Spacer()
+                                                // Dynamic item cost output display
+                                                Text("$\(String(format: "%.2f", order.checkoutTotal))")
+                                                    .font(.subheadline)
+                                                    .fontWeight(.semibold)
                                             }
-                                            .padding(.vertical, 4)
                                         }
                                     }
                                     // Enables swipe-to-delete
                                     .onDelete(perform: deleteOrderFromActiveRun)
                                 }
                             }
+                            
+                            // Live shopping summary metrics display block section
+                            if !appStore.activeOrders.isEmpty {
+                                Section(header: Text("💰 Manifest Cost Summary")) {
+                                    HStack {
+                                        Text("Estimated Run Total:")
+                                            .fontWeight(.bold)
+                                        Spacer()
+                                        Text("$\(String(format: "%.2f", runningGrandTotal))")
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.green)
+                                    }
+                                }
+                            }
+                                                                
                             // SUB-PHASE: Exposed runner assignment dropdown (reveals only when orders are locked in)
                             if isManifestLocked {
                                 Section(header: Text("📋 Select the Designated Runner")) {

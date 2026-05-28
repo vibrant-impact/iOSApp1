@@ -8,23 +8,45 @@
 import Foundation
 import Combine
 
-// Tracks individual items within someone's order
+// JSON Product Model
+// Maps to productData.json properties data keys
+struct JSONProduct: Identifiable, Codable, Hashable {
+    let id: String
+    let name: String
+    let description: String
+    let price: Double
+    let category: String
+    let image: String
+}
+
+// Order Item Model
+// Tracks individual items selected from the product catalog or created manually
 struct OrderItem: Hashable {
     var itemName: String
     var quantity: Int = 1
     var notes: String = ""
+    var unitPrice: Double = 0.0
 }
 
-// Represents a single team member's full order for the day
+// Team Order Model
+// Represents a single team member's compiled order for the day
 struct TeamOrder: Identifiable, Hashable {
     let id = UUID()
     var name: String
-    var drink: OrderItem = OrderItem(itemName: "Double Double")
-    var food: OrderItem = OrderItem(itemName: "None")
+    var drink: OrderItem = OrderItem(itemName: "Brewed Coffee", unitPrice: 1.83)
+    var food: OrderItem = OrderItem(itemName: "None", unitPrice: 0.0)
     var isSavedAsFavorite: Bool = false
+        
+    // Calculated total price value for a clean checkout configuration experience
+    var checkoutTotal: Double {
+        let drinkCost = drink.unitPrice * Double(drink.quantity)
+        let foodCost = food.unitPrice * Double(food.quantity)
+        return drinkCost + foodCost
+    }
 }
 
-// Summary of the entire collective group run
+// Run Summary Model
+// Tracks the history details of completed group coffee run sequences
 struct CompletedRunSummary: Identifiable {
     let id = UUID()
     var dateCompleted: Date
@@ -33,22 +55,3 @@ struct CompletedRunSummary: Identifiable {
     var timeTakenSeconds: Int
     var earnedCredit: Bool
 }
-
-// Represents a single completed coffee run entry for the history log
-struct PastRunEntry: Identifiable {
-    let id = UUID()
-    var dateCompleted: Date
-    var totalDrinksOrdered: Int
-    var runnerName: String
-}
-
-// Represents an individual team member and their drink preferences
-struct TeamMember: Identifiable, Hashable {
-    let id = UUID()
-    var name: String
-    var favoriteDrink: String
-    var defaultCreamCount: Int
-    var defaultSugarCount: Int
-}
-
-

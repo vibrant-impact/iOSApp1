@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "CFA48B2F-B8D3-4968-B646-1E41FCB98571"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B68C1C53-AF27-4627-959E-4D191B352670"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iOSApp1/ViewModels/OrderStore.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "OrderStore"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "B68C1C53-AF27-4627-959E-4D191B352670 - b5dff1c6c58b63ec"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapper backing initializer of iOSApp1.OrderStore.savedFavorites : Swift.Array&lt;iOSApp1.TeamOrder&gt;"
+                  moduleName = "iOSApp1.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/steph/Desktop/iOSApp1/iOSApp1/ViewModels/OrderStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17">
+               </Location>
+               <Location
+                  uuid = "B68C1C53-AF27-4627-959E-4D191B352670 - 7ceaf1d8ab0938b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapped field init accessor of iOSApp1.OrderStore.savedFavorites : Swift.Array&lt;iOSApp1.TeamOrder&gt;"
+                  moduleName = "iOSApp1.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/steph/Desktop/iOSApp1/iOSApp1/ViewModels/OrderStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17">
+               </Location>
+               <Location
+                  uuid = "B68C1C53-AF27-4627-959E-4D191B352670 - 398e2168cb54ffc7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSApp1.OrderStore.savedFavorites.getter : Swift.Array&lt;iOSApp1.TeamOrder&gt;"
+                  moduleName = "iOSApp1.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/steph/Desktop/iOSApp1/iOSApp1/ViewModels/OrderStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17">
+               </Location>
+               <Location
+                  uuid = "B68C1C53-AF27-4627-959E-4D191B352670 - 7b184e824fdadfd3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSApp1.OrderStore.savedFavorites.setter : Swift.Array&lt;iOSApp1.TeamOrder&gt;"
+                  moduleName = "iOSApp1.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/steph/Desktop/iOSApp1/iOSApp1/ViewModels/OrderStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17">
+               </Location>
+               <Location
+                  uuid = "B68C1C53-AF27-4627-959E-4D191B352670 - 671b746511ff67c2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSApp1.OrderStore.savedFavorites.modify : Swift.Array&lt;iOSApp1.TeamOrder&gt;"
+                  moduleName = "iOSApp1.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/steph/Desktop/iOSApp1/iOSApp1/ViewModels/OrderStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17">
+               </Location>
+               <Location
+                  uuid = "B68C1C53-AF27-4627-959E-4D191B352670 - b571d573e7f5f691"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSApp1.OrderStore.$savedFavorites.getter : Combine.Published&lt;Swift.Array&lt;iOSApp1.TeamOrder&gt;&gt;.Publisher"
+                  moduleName = "iOSApp1.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/steph/Desktop/iOSApp1/iOSApp1/ViewModels/OrderStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17">
+               </Location>
+               <Location
+                  uuid = "B68C1C53-AF27-4627-959E-4D191B352670 - 5862d5b51cfcf89d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSApp1.OrderStore.$savedFavorites.setter : Combine.Published&lt;Swift.Array&lt;iOSApp1.TeamOrder&gt;&gt;.Publisher"
+                  moduleName = "iOSApp1.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/steph/Desktop/iOSApp1/iOSApp1/ViewModels/OrderStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17">
+               </Location>
+               <Location
+                  uuid = "B68C1C53-AF27-4627-959E-4D191B352670 - a1da797afbb5200c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSApp1.OrderStore.$savedFavorites.modify : Combine.Published&lt;Swift.Array&lt;iOSApp1.TeamOrder&gt;&gt;.Publisher"
+                  moduleName = "iOSApp1.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/steph/Desktop/iOSApp1/iOSApp1/ViewModels/OrderStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

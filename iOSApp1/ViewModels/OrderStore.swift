@@ -9,41 +9,69 @@ import Foundation
 import Combine
 
 class OrderStore: ObservableObject {
-    let drinkOptions = ["Double Double", "Regular Coffee", "Black Coffee", "Iced Capp", "Vanilla Dip Latte", "Tea"]
-    let foodOptions = ["None", "Boston Cream Donut", "Apple Fritter", "Everything Bagel", "Farmers Wrap", "Hashbrown"]
-    
+    // Master Product Inventories
+    @Published var allProducts: [JSONProduct] = []
     @Published var activeOrders: [TeamOrder] = []
     @Published var runHistory: [CompletedRunSummary] = []
     @Published var currentRunner: String = ""
+    @Published var savedFavorites: [TeamOrder] = []
     
-    // Pre-populating some favorites for testing
-    @Published var savedFavorites: [TeamOrder] = [
-        TeamOrder(
-            name: "Alex",
-            drink: OrderItem(itemName: "Double Double", quantity: 1, notes: "Extra hot"),
-            food: OrderItem(itemName: "Farmers Wrap", quantity: 1, notes: "Spicy chipotle"),
-            isSavedAsFavorite: true
-        ),
-        TeamOrder(
-            name: "Sam",
-            drink: OrderItem(itemName: "Iced Capp", quantity: 1, notes: "With chocolate milk"),
-            food: OrderItem(itemName: "None", quantity: 1, notes: ""),
-            isSavedAsFavorite: true
-        )
-    ]
+    // Filtered Categories Cache
+    @Published var drinkOptions: [String] = []
+    @Published var foodOptions: [String] = []
     
-    // Computes a list of names purely from the current active run order
+    // Calculated array extracting active names for dynamic runner picking
     var activeOrderNames: [String] {
         activeOrders.map { $0.name }
     }
     
+    // Initializer Block
+    init() {
+        loadJsonInventory()
+    }
+    
+    // JSON Parser Logic
+    // Decodes the local productData.json file straight from the primary bundle directory ledger
+    private func loadJsonInventory() {
+        guard let url = Bundle.main.url(forResource: "productData", withExtension: "json") else {
+            print("⚠️ OrderStore Error: Unable to locate productData.json in bundle framework")
+            return
+        }
+        
+        do {
+            let data = try Data(contentsOf: url)
+            let decodedProducts = try JSONDecoder().decode([JSONProduct].self, from: data)
+            
+            // Assign parsed data array to main publisher pipeline
+            self.allProducts = decodedProducts
+            
+            // Extract distinct names based on JSON category classifications
+            extractMenuCategories(from: decodedProducts)
+            
+        } catch {
+            print("⚠️ OrderStore Error: Failed parsing JSON inventory data: \(error)")
+        }
+    }
+    
+    // Splits raw categories into clean dropdown pick arrays for drinks and snacks
+    private func extractMenuCategories(from products: [JSONProduct]) {
+        // Automatically isolate hot/cold drink categories
+        let drinks = products.filter { $0.category.lowercased().contains("drink") || $0.category.lowercased().contains("coffee") || $0.category.lowercased().contains("tea") }
+        self.drinkOptions = Array(Set(drinks.map { $0.name })).sorted()
+        
+        // Isolate remaining structural items like baked goods, sandwiches, wraps, and tarts
+        let snacks = products.filter { !drinks.contains($0) }
+        self.foodOptions = Array(Set(snacks.map { $0.name })).sorted()
+    }
+    
+    // Functional Manifest Utilities
     func saveOrderToActiveRun(_ order: TeamOrder) {
         activeOrders.append(order)
         if order.isSavedAsFavorite {
             if let index = savedFavorites.firstIndex(where: { $0.name.lowercased() == order.name.lowercased() }) {
-                savedFavorites[index] = order // Update existing profile
+                savedFavorites[index] = order
             } else {
-                savedFavorites.append(order) // Save brand new profile
+                savedFavorites.append(order)
             }
         }
     }
@@ -53,4 +81,3 @@ class OrderStore: ObservableObject {
         currentRunner = ""
     }
 }
-
