@@ -1622,4 +1622,130 @@
     "image": "454g-french-vanilla-cappuccino-can"
   },
   
+  {
+    "id": "203",
+    "name": "Sausage Breakfast Sandwich",
+    "description": "",
+    "price": 4.49,
+    "category": "Breakfast, Breakfast Sandwiches",
+    "image": "sausage-breakfast-sandwich"
+  },
+  
+  {
+    "id": "204",
+    "name": "Sausage Breakfast Sandwich",
+    "description": "",
+    "price": 4.49,
+    "category": "Breakfast, Breakfast Sandwiches",
+    "image": "sausage-breakfast-sandwich"
+  },
+  
+  {
+    "id": "205",
+    "name": "Egg & Cheese Breakfast Sandwich",
+    "description": "",
+    "price": 3.99,
+    "category": "Breakfast, Breakfast Sandwiches",
+    "image": "egg-cheese-breakfast-sandwich"
+  },
+  
+  {
+    "id": "206",
+    "name": "Double Stacked Breakfast Sandwich",
+    "description": "",
+    "price": 5.49,
+    "category": "Breakfast, Breakfast Sandwiches",
+    "image": "double-stacked-breakfast-sandwich"
+  },
+  
+  {
+    "id": "207",
+    "name": "Simply Sausage Breakfast Sandwich",
+    "description": "",
+    "price": 3.19,
+    "category": "Breakfast, Breakfast Sandwiches",
+    "image": "simply-sausage-breakfast-sandwich"
+  },
+  
+  {
+    "id": "208",
+    "name": "Farmer's Breakfast Sandwich",
+    "description": "",
+    "price": 5.59,
+    "category": "Breakfast, Breakfast Sandwiches",
+    "image": "farmers-breakfast-sandwich"
+  },
+  
+  {
+    "id": "209",
+    "name": "Bagel BELT",
+    "description": "",
+    "price": 5.59,
+    "category": "Breakfast, Breakfast Sandwiches",
+    "image": "bagel-BELT"
+  },
+  
+  {
+    "id": "210",
+    "name": "Farmer's Breakfast Wrap",
+    "description": "",
+    "price": 5.59,
+    "category": "Breakfast",
+    "image": "farmers-breakfast-wrap"
+  },
+  
+  {
+    "id": "211",
+    "name": "Hashbrown",
+    "description": "",
+    "price": 2.19,
+    "category": "Breakfast",
+    "image": "hashbrown"
+  },
+  
+  {
+    "id": "212",
+    "name": "Omelette Bites",
+    "description": "",
+    "price": 3.99,
+    "category": "Breakfast",
+    "image": "omelette-bites"
+  },
+  
+  {
+    "id": "213",
+    "name": "Soup",
+    "description": "",
+    "price": 4.49,
+    "category": "Lunch and Dinner, Soup & Chili",
+    "image": "soup"
+  },
+  
+  {
+    "id": "214",
+    "name": "Chili",
+    "description": "",
+    "price": 5.99,
+    "category": "Lunch and Dinner, Soup & Chili",
+    "image": "chili"
+  },
+  
+  {
+    "id": "215",
+    "name": "Herb & Garlic Savoury Pastry",
+    "description": "",
+    "price": 2.99,
+    "category": "Lunch and Dinner",
+    "image": "Herb & Garlic Savoury Pastry"
+  },
+  
+  {
+    "id": "216",
+    "name": "Donation to Tim Hortons Foundation Camps",
+    "description": "",
+    "price": 1.00,
+    "category": "Breakfast",
+    "image": "donation-to-tim-hortons-foundation-camps"
+  },
+  
 ]

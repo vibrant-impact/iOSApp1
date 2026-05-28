@@ -8,11 +8,49 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    // Binding allows this subview to signal ContentView to change phases
+    @Binding var runSequenceStarted: Bool
+    @Binding var isManifestLocked: Bool
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(spacing: 24) {
+            Spacer()
+            
+            // Your custom guy-in-car icon asset placeholder
+            Image(systemName: "car.circle.fill")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 140, height: 140)
+                .foregroundColor(.timsRed)
+            
+            Text("Tims Coffee Runner")
+                .font(.system(size: 32, weight: .black, design: .rounded))
+            
+            Text("Ditch the scrap paper. Track preferences, coordinate runs, and earn rewards.")
+                .font(.body)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+            
+            Spacer()
+            
+            Button(action: {
+                // Mutates state variables on the parent ContentView
+                isManifestLocked = false
+                runSequenceStarted = true
+            }) {
+                Text("Start New Run Order")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.timsRed)
+                    .cornerRadius(14)
+                    .padding(.horizontal, 24)
+            }
+            .padding(.bottom, 40)
+        }
     }
 }
 
-#Preview {
-    WelcomeView()
-}
+

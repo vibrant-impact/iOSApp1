@@ -11,171 +11,308 @@ import Combine
 struct AddOrderView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var appStore: OrderStore
-        
-    // Target pointer for edit context evaluations
     var editingOrder: TeamOrder?
-
-    // Input State Parameters
-    @State private var personName = ""
-    @State private var selectedDrink = "Brewed Coffee"
-    @State private var drinkQty = 1
-    @State private var drinkNotes = ""
-    @State private var drinkPrice = 1.83
     
-    @State private var selectedFood = "None"
-    @State private var foodQty = 1
-    @State private var foodNotes = ""
-    @State private var foodPrice = 0.0
-        
-    // Search terms inputs
-    @State private var drinkSearchQuery = ""
-    @State private var foodSearchQuery = ""
+    // MARK: - Input State Management Properties
+    @State private var personName = ""
+    @State private var globalSearchQuery = ""
+    @State private var itemNotes = ""
+    @State private var itemQuantity = 1
     @State private var saveAsFavorite = false
     
-    // Dynamic Filtering Closures
-    var searchedDrinksList: [JSONProduct] {
-        let items = appStore.allProducts.filter { $0.category.lowercased().contains("drink") || $0.category.lowercased().contains("coffee") || $0.category.lowercased().contains("tea") }
-        if drinkSearchQuery.isEmpty { return items }
-        return items.filter { $0.name.lowercased().contains(drinkSearchQuery.lowercased()) }
+    // Staging references tracking our chosen active item selection state parameters
+    @State private var temporarySelectedItem: JSONProduct?
+    
+    // MARK: - Menu Tab State Anchors
+    @State private var selectedMainMenuTab = "Hot Drinks"
+    @State private var selectedSubMenuTab = "All"
+    
+    // MARK: - Structural Menu Configuration Mappings
+    // Links your Main Menu text strings straight to beautiful, instructive SF Symbol icons
+    let mainMenuCategories = [
+        ("Hot Drinks", "cup.and.saucer.fill"),
+        ("Cold Drinks", "snowflake"),
+        ("Baked Goods", "birthday.cake.fill"),
+        ("Lunch and Dinner", "fork.knife"),
+        ("Merchandise", "bag.fill"),
+        ("Tims at Home", "house.fill")
+    ]
+    
+    /// Dynamically computes submenus strictly based on which Main Menu category tab is active
+    var structuralSubMenusList: [String] {
+        switch selectedMainMenuTab {
+        case "Hot Drinks":
+            return ["All", "Brewed Coffee", "Espresso Drinks", "Tea", "Hot Chocoloate"]
+        case "Cold Drinks":
+            return ["All", "Iced Coffee", "Iced Capp", "Cold Brew", "Iced Lattes", "Fruit Quenchers", "Frozen Lemonade", "Fountain Pop", "Bottled Drinks"]
+        case "Lunch and Dinner":
+            return ["All", "Flatbread Pizzas", "Wraps", "Sandwiches", "Bowls", "Potato Wedges"]
+        case "Baked Goods":
+            return ["All", "Donuts", "Timbits", "Bagels", "Muffins", "Cookies"]
+        default:
+            return ["All"]
+        }
     }
-        
-    var searchedFoodList: [JSONProduct] {
-        let items = appStore.allProducts.filter { !$0.category.lowercased().contains("drink") && !$0.category.lowercased().contains("coffee") && !$0.category.lowercased().contains("tea") }
-        if foodSearchQuery.isEmpty { return items }
-        return items.filter { $0.name.lowercased().contains(foodSearchQuery.lowercased()) }
+    
+    // MARK: - UNIVERSAL ADVANCED SEARCH FILTER
+    /// Filters product items dynamically using name, main category tabs, submenus, AND universal category searches simultaneously
+    var filteredProductsManifestList: [JSONProduct] {
+        appStore.allProducts.filter { product in
+            
+            // 1. Core search text matching logic (checks item title AND category fields concurrently)
+            let matchesSearchText = globalSearchQuery.isEmpty ? true : (
+                product.name.lowercased().contains(globalSearchQuery.lowercased()) ||
+                product.category.lowercased().contains(globalSearchQuery.lowercased())
+            )
+            
+            // 2. Main menu tab matching logic
+            let matchesMainMenu = product.category.lowercased().contains(selectedMainMenuTab.lowercased())
+            
+            // 3. Submenu tab matching logic
+            let matchesSubMenu = selectedSubMenuTab == "All" ? true : product.category.lowercased().contains(selectedSubMenuTab.lowercased())
+            
+            // Combine all constraints together
+            return matchesSearchText && matchesMainMenu && matchesSubMenu
+        }
     }
-
-    // Custom Init Routine
+    
+    // Grid column configuration setup to ensure neat, dual-card alignments
+    let cardGridLayoutColumns = [
+        GridItem(.flexible(), spacing: 12),
+        GridItem(.flexible(), spacing: 12)
+    ]
+    
+    // MARK: - Custom Init Routine
     init(appStore: OrderStore, orderToEdit: TeamOrder? = nil) {
         self.appStore = appStore
         self.editingOrder = orderToEdit
-                
+        
         if let order = orderToEdit {
             _personName = State(initialValue: order.name)
-            _selectedDrink = State(initialValue: order.drink.itemName)
-            _drinkQty = State(initialValue: order.drink.quantity)
-            _drinkNotes = State(initialValue: order.drink.notes)
-            _drinkPrice = State(initialValue: order.drink.unitPrice)
-            _selectedFood = State(initialValue: order.food.itemName)
-            _foodQty = State(initialValue: order.food.quantity)
-            _foodNotes = State(initialValue: order.food.notes)
-            _foodPrice = State(initialValue: order.food.unitPrice)
+            _itemNotes = State(initialValue: order.drink.notes)
+            _itemQuantity = State(initialValue: order.drink.quantity)
+            
+            if let matchedProduct = appStore.allProducts.first(where: { $0.name == order.drink.itemName }) {
+                _temporarySelectedItem = State(initialValue: matchedProduct)
+            }
             _saveAsFavorite = State(initialValue: order.isSavedAsFavorite)
         }
     }
     
     var body: some View {
         NavigationStack {
-            Form {
-                // Quick-Load Favorites Section
-                if editingOrder == nil && !appStore.savedFavorites.isEmpty {
-                    Section(header: Text("🌟 Quick Load Favorite")) {
-                        Menu("Tap to choose a profile...") {
-                            ForEach(appStore.savedFavorites) { favorite in
-                                Button(favorite.name) {
-                                    personName = favorite.name
-                                    selectedDrink = favorite.drink.itemName
-                                    drinkQty = favorite.drink.quantity
-                                    drinkNotes = favorite.drink.notes
-                                    drinkPrice = favorite.drink.unitPrice
-                                    selectedFood = favorite.food.itemName
-                                    foodQty = favorite.food.quantity
-                                    foodNotes = favorite.food.notes
-                                    foodPrice = favorite.food.unitPrice
-                                    saveAsFavorite = true
+            VStack(spacing: 0) {
+                // Identity Input Profile Header Panel
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("WHO IS PLACING THIS ORDER?")
+                        .font(.caption2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.secondary)
+                    
+                    TextField("Enter Name (e.g., Alex, Sam)", text: $personName)
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(12)
+                        .disabled(editingOrder != nil)
+                }
+                .padding()
+                .background(Color(.systemBackground))
+                
+                // Unified Search Input Bar Panel
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.secondary)
+                    TextField("Type to search any item or category (e.g., 'Hot')...", text: $globalSearchQuery)
+                        .autocorrectionDisabled()
+                }
+                .padding(12)
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding(.horizontal)
+                .padding(.bottom, 14)
+                
+                // VISUAL MAIN MENU TAB PILLS (Grid Layout replacing horizontal scroll)
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("MAIN CATEGORIES")
+                        .font(.caption2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal)
+                    
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], spacing: 8) {
+                        ForEach(mainMenuCategories, id: \.0) { categoryName, symbolIcon in
+                            Button(action: {
+                                selectedMainMenuTab = categoryName
+                                selectedSubMenuTab = "All" // Auto-reset fallback submenu tab
+                            }) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: symbolIcon)
+                                        .font(.footnote)
+                                    Text(categoryName)
+                                        .font(.system(size: 11, weight: .bold))
+                                        .lineLimit(1)
                                 }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 10)
+                                .background(selectedMainMenuTab == categoryName ? Color.timsRed : Color(.systemGray6))
+                                .foregroundColor(selectedMainMenuTab == categoryName ? .white : .primary)
+                                .cornerRadius(10)
                             }
                         }
                     }
+                    .padding(.horizontal)
                 }
+                .padding(.bottom, 12)
                 
-                Section(header: Text("Profile Identity")) {
-                    TextField("Enter Name", text: $personName)
-                        .disabled(editingOrder != nil)
-                }
-                
-                // SEARCHABLE DRINK PICKER SECTION
-                Section(header: Text("☕ Search and Select Drink")) {
-                    HStack {
-                        Image(systemName: "magnifyingglass")
+                // DYNAMIC SUB-MENU ACCORDION BAR
+                if structuralSubMenusList.count > 1 {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("SUB-MENU SELECTIONS")
+                            .font(.caption2)
+                            .fontWeight(.bold)
                             .foregroundColor(.secondary)
-                        TextField("Type to search drinks...", text: $drinkSearchQuery)
-                }
-                    
-                    Picker("Drink Selection", selection: $selectedDrink) {
-                        ForEach(searchedDrinksList, id: \.name) { product in
-                        Text("\(product.name) ($\(String(format: "%.2f", product.price)))")
-                            .tag(product.name)
+                            .padding(.horizontal)
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 8) {
+                                ForEach(structuralSubMenusList, id: \.self) { subName in
+                                    Button(action: { selectedSubMenuTab = subName }) {
+                                        Text(subName)
+                                            .font(.system(size: 12, weight: .semibold))
+                                            .padding(.horizontal, 14)
+                                            .padding(.vertical, 6)
+                                            .background(selectedSubMenuTab == subName ? Color.black : Color(.systemGray6))
+                                            .foregroundColor(selectedSubMenuTab == subName ? .white : .primary)
+                                            .cornerRadius(14)
+                                    }
+                                }
+                            }
+                            .padding(.horizontal)
                         }
                     }
-                    .pickerStyle(.navigationLink)
-                    // Sync item price instantly when menu row selection changes
-                    .onChange(of: selectedDrink) { oldVal, newVal in
-                        if let matched = appStore.allProducts.first(where: { $0.name == newVal }) {
-                            drinkPrice = matched.price
-                        }
-                    }
-                                            
-                    Stepper("Quantity: \(drinkQty)", value: $drinkQty, in: 1...10)
-                    TextField("Notes (e.g., extra ice, almond milk)", text: $drinkNotes)
-                }
-                                    
-                // SEARCHABLE FOOD PICKER SECTION
-                Section(header: Text("🍩 Search and Select Food")) {
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.secondary)
-                        TextField("Type to search food...", text: $foodSearchQuery)
-                    }
-                    
-                    Picker("Food Selection", selection: $selectedFood) {
-                        Text("None").tag("None")
-                        ForEach(searchedFoodList, id: \.name) { product in
-                            Text("\(product.name) ($\(String(format: "%.2f", product.price)))")
-                                .tag(product.name)
-                        }
-                    }
-                    .pickerStyle(.navigationLink)
-                    .onChange(of: selectedFood) { oldVal, newVal in
-                        if newVal == "None" {
-                            foodPrice = 0.0
-                        } else if let matched = appStore.allProducts.first(where: { $0.name == newVal }) {
-                            foodPrice = matched.price
-                        }
-                    }
-                                                
-                    if selectedFood != "None" {
-                        Stepper("Quantity: \(foodQty)", value: $foodQty, in: 1...10)
-                        TextField("Notes (e.g., heated up, extra napkins)", text: $foodNotes)
-                    }
+                    .padding(.bottom, 12)
                 }
                 
-                Section(header: Text("Preferences")) {
-                    Toggle("Save/Update as Favorite Profile", isOn: $saveAsFavorite)
+                Divider()
+                
+                // PRODUCT GRID VIEW CANVAS
+                ScrollView {
+                    if filteredProductsManifestList.isEmpty {
+                        VStack(spacing: 12) {
+                            Spacer()
+                            Image(systemName: "tray.search")
+                                .font(.largeTitle)
+                                .foregroundColor(.secondary)
+                            Text("No matching Tims menu items found.")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                            Spacer()
+                        }
+                        .padding(.top, 40)
+                    } else {
+                        LazyVGrid(columns: cardGridLayoutColumns, spacing: 12) {
+                            ForEach(filteredProductsManifestList) { product in
+                                ProductCardView(product: product) {
+                                    // Updates the active bottom control tray targets
+                                    temporarySelectedItem = product
+                                    itemQuantity = 1
+                                }
+                            }
+                        }
+                        .padding()
+                    }
+                }
+                .background(Color(.systemGroupedBackground))
+                
+                // SELECTION CHECKOUT OVERLAY PANEL FOOTER LAYER
+                if let selection = temporarySelectedItem {
+                    VStack(spacing: 12) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Selected Selection:")
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                                Text(selection.name)
+                                    .font(.subheadline)
+                                    .bold()
+                                    .lineLimit(1)
+                            }
+                            Spacer()
+                            
+                            Stepper("Qty: \(itemQuantity)", value: $itemQuantity, in: 1...10)
+                                .labelsHidden()
+                            Text("\(itemQuantity)x")
+                                .font(.subheadline)
+                                .bold()
+                        }
+                        
+                        TextField("Add customization notes (e.g., triple triple, extra hot)...", text: $itemNotes)
+                            .padding(10)
+                            .background(Color(.systemBackground))
+                            .cornerRadius(8)
+                            .font(.footnote)
+                        
+                        HStack {
+                            Toggle("Save as Favorite Profile", isOn: $saveAsFavorite)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                // 1. Double check that we have a valid product selection before executing
+                                guard let selection = temporarySelectedItem else { return }
+                                
+                                // 2. Compile the chosen item metadata into a robust OrderItem model struct
+                                let chosenItem = OrderItem(
+                                    itemName: selection.name,
+                                    quantity: itemQuantity,
+                                    notes: itemNotes,
+                                    unitPrice: selection.price
+                                )
+                                
+                                // 3. Assemble the complete TeamOrder payload wrapper
+                                let packageOrder = TeamOrder(
+                                    name: personName.isEmpty ? "Guest" : personName,
+                                    drink: chosenItem, // Stores the selected product safely into the primary order line
+                                    food: OrderItem(itemName: "None", quantity: 1, notes: "", unitPrice: 0.0),
+                                    isSavedAsFavorite: saveAsFavorite
+                                )
+                                
+                                // 4. Determine if we are updating an existing person or appending a brand new profile row
+                                if let original = editingOrder,
+                                   let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
+                                    appStore.activeOrders[index] = packageOrder
+                                } else {
+                                    // Appends cleanly as a separate entry row inside the global team array loop!
+                                    appStore.saveOrderToActiveRun(packageOrder)
+                                }
+                                
+                                // 5. Dismiss the modal to return cleanly to the updated main manifest summary screen
+                                dismiss()
+                            }) {
+                                Text("Confirm Selection")
+                                    .font(.subheadline)
+                                    .bold()
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 10)
+                                    .background(Color.timsRed)
+                                    .cornerRadius(10)
+                            }
+                        }
+                    }
+                    .padding()
+                    .background(Color(.systemBackground))
+                    .transition(.move(edge: .bottom))
+                    .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: -4)
                 }
             }
-            .navigationTitle(editingOrder == nil ? "Add Order" : "Edit Order")
+            .navigationTitle(editingOrder == nil ? "Build Order" : "Modify Order")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Submit") {
-                        let createdOrder = TeamOrder(
-                            name: personName.isEmpty ? "Guest" : personName,
-                            drink: OrderItem(itemName: selectedDrink, quantity: drinkQty, notes: drinkNotes, unitPrice: drinkPrice),
-                            food: OrderItem(itemName: selectedFood, quantity: foodQty, notes: foodNotes, unitPrice: foodPrice),
-                                                        isSavedAsFavorite: saveAsFavorite
-                        )
-                                                    
-                        if let original = editingOrder,
-                            let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
-                            appStore.activeOrders[index] = createdOrder
-                        } else {
-                            appStore.saveOrderToActiveRun(createdOrder)
-                        }
-                        dismiss()
-                    }
-                }
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
+                    Button("Close") { dismiss() }
                 }
             }
         }

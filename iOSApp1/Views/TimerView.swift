@@ -55,10 +55,10 @@ struct TimerView: View {
                     let overage = secondsElapsed - targetTimeLimit
                     Text("+\(overage / 60):\(String(format: "%02d", overage % 60))")
                         .font(.system(size: 72, weight: .black, design: .rounded))
-                        .foregroundColor(.red)
+                        .foregroundColor(.timsRed)
                     Text("Run Time Exceeded Limit")
                         .font(.subheadline)
-                        .foregroundColor(.red)
+                        .foregroundColor(.timsRed)
                 }
             }
             .padding()
@@ -84,7 +84,7 @@ struct TimerView: View {
                 .foregroundColor(.white)
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(Color.red)
+                .background(Color.timsRed)
                 .cornerRadius(15)
             }
             .padding(.horizontal)
