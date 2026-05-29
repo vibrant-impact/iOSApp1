@@ -23,39 +23,31 @@ struct ManifestBuilderView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background Layer using your custom asset texture
                 Image("brownSwirlBackground")
                     .resizable()
                     .ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    
-                    // ==========================================
-                    // NEW PREMIUM HEADER: Split Controls & Titles
-                    // ==========================================
                     VStack(alignment: .leading, spacing: 12) {
-                        // Top Utility Row (Dismiss Button Only)
                         HStack {
                             Button(action: { runSequenceStarted = false }) {
-                                HStack(spacing: 4) {
-                                    Image(systemName: "chevron.left")
-                                    Text("Cancel Run")
-                                }
-                                .font(.system(size: 14, weight: .bold, design: .rounded))
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 8)
-                                .background(Color.white.opacity(0.15))
-                                .cornerRadius(10)
-                            }
-                            
-                            Spacer() // Pushes button all the way left
+                                 HStack(spacing: 4) {
+                                     Image(systemName: "chevron.left")
+                                     Text("Cancel Run")
+                                 }
+                                 .font(.system(size: 14, weight: .bold, design: .rounded))
+                                 .foregroundColor(.white)
+                                 .padding(.horizontal, 12)
+                                 .padding(.vertical, 8)
+                                 .background(Color.white.opacity(0.15))
+                                 .cornerRadius(10)
+                             }
+                             Spacer()
                         }
                         
-                        // Bold Large Feature Title Stacking Layer
                         Text("Add Orders")
-                            .font(.system(size: 36, weight: .black, design: .rounded)) // Massive feature scale
-                            .foregroundColor(.timsGold) // Brand new popping asset color!
+                            .font(.system(size: 36, weight: .black, design: .rounded))
+                            .foregroundColor(.timsGold)
                             .shadow(color: Color.black.opacity(0.3), radius: 4, x: 0, y: 2)
                             .padding(.top, 4)
                     }
@@ -63,9 +55,6 @@ struct ManifestBuilderView: View {
                     .padding(.top, 14)
                     .padding(.bottom, 10)
                     
-                    // ==========================================
-                    // MAIN MANIFEST ROW LIST (Stays exactly the same)
-                    // ==========================================
                     List {
                         Section(header: Text(isManifestLocked ? "Current Group Orders" : "Current Group Orders (Tap to Edit)")
                             .font(.system(size: 11, weight: .black, design: .rounded))
@@ -81,7 +70,7 @@ struct ManifestBuilderView: View {
                                         Text("No orders added yet.\nTap 'Add Order' below to begin.")
                                             .font(.system(.subheadline, design: .rounded))
                                             .fontWeight(.bold)
-                                            .foregroundColor(.brown)
+                                            .foregroundColor(.primary)
                                             .multilineTextAlignment(.center)
                                     }
                                     Spacer()
@@ -157,7 +146,7 @@ struct ManifestBuilderView: View {
                     .listStyle(.insetGrouped)
                     
                     // ==========================================
-                    // ACTION CONTROL TRAY (Stays exactly the same)
+                    // ACTION CONTROL TRAY WITH REGISTERED AUDIO CALLS
                     // ==========================================
                     VStack(spacing: 12) {
                         if !isManifestLocked {
@@ -168,23 +157,27 @@ struct ManifestBuilderView: View {
                                 }) {
                                     Label("Add Order", systemImage: "plus.circle.fill")
                                         .font(.system(size: 16, weight: .black, design: .rounded))
-                                        .foregroundColor(.timsDarkBrown)
+                                        .foregroundColor(.timsRed)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
-                                        .background(Color.timsGold)
+                                        .background(Color.timsTan)
                                         .cornerRadius(14)
                                         .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
                                 }
                                 
-                                Button(action: { isManifestLocked = true }) {
+                                Button(action: {
+                                    // AUDIO HOOK F: Play classic cash register checkout chime
+                                    SoundManager.shared.playSound(named: "ching", withExtension: "mp3")
+                                    isManifestLocked = true
+                                }) {
                                     Text("Ready to Run!")
                                         .font(.system(size: 16, weight: .black, design: .rounded))
-                                        .foregroundColor(.timsDarkBrown)
+                                        .foregroundColor(.white)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
-                                        .background(appStore.activeOrders.isEmpty ? Color.timsTan : Color.timsRed)
+                                        .background(appStore.activeOrders.isEmpty ? Color.white.opacity(0.2) : Color.green)
                                         .cornerRadius(14)
-                                        .shadow(color: appStore.activeOrders.isEmpty ? Color.clear : Color.timsRed.opacity(0.4), radius: 8, x: 0, y: 4)
+                                        .shadow(color: appStore.activeOrders.isEmpty ? Color.clear : Color.green.opacity(0.4), radius: 8, x: 0, y: 4)
                                 }
                                 .disabled(appStore.activeOrders.isEmpty)
                             }
@@ -196,19 +189,23 @@ struct ManifestBuilderView: View {
                                         .foregroundColor(.white)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
-                                        .background(Color.timsTan)
+                                        .background(Color.white.opacity(0.25))
                                         .cornerRadius(14)
                                 }
                                 
-                                Button(action: { runTimerActive = true }) {
+                                Button(action: {
+                                    // AUDIO HOOK G: Play mechanical engine start click sound right as the run clock sets off!
+                                    SoundManager.shared.playSound(named: "car-start", withExtension: "mp3")
+                                    runTimerActive = true
+                                }) {
                                     Text("🚀 Start Clock")
                                         .font(.system(size: 16, weight: .black, design: .rounded))
                                         .foregroundColor(.white)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
-                                        .background(appStore.currentRunner.isEmpty ? Color.timsTan : Color.timsRed)
+                                        .background(appStore.currentRunner.isEmpty ? Color.white.opacity(0.2) : Color.green)
                                         .cornerRadius(14)
-                                        .shadow(color: appStore.currentRunner.isEmpty ? Color.clear : Color.timsRed.opacity(0.4), radius: 8, x: 0, y: 4)
+                                        .shadow(color: appStore.currentRunner.isEmpty ? Color.clear : Color.green.opacity(0.4), radius: 8, x: 0, y: 4)
                                 }
                                 .disabled(appStore.currentRunner.isEmpty)
                             }
@@ -226,13 +223,9 @@ struct ManifestBuilderView: View {
             }
         }
     }
-                        
-    // MARK: - Swiping Action Logic
-    /// Deletes a specific user order row item from the active group run manifest
+    
     private func deleteOrderFromActiveRun(at offsets: IndexSet) {
         appStore.activeOrders.remove(atOffsets: offsets)
-                            
-        // Safety check: If the person driving was just deleted, reset the selection picker context
         if !appStore.activeOrderNames.contains(appStore.currentRunner) {
             appStore.currentRunner = ""
         }

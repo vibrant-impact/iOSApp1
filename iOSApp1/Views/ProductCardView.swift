@@ -12,17 +12,20 @@ struct ProductCardView: View {
     var onSelected: () -> Void
     
     var body: some View {
-        Button(action: { onSelected() }) {
+        Button(action: {
+            // FIXED: Triggers tactile cup sound effect when this specific menu card gets pressed
+            SoundManager.shared.playSound(named: "cup-on-table", withExtension: "mp3")
+            
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                onSelected()
+            }
+        }) {
             VStack(alignment: .leading, spacing: 8) {
-                
-                // Image layer container matching asset file name strings
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color.timsDarkBrown.opacity(0.04))
                         .frame(height: 110)
                     
-                    // FIXED: Check if the PNG asset exists in the app bundle catalog.
-                    // If it is one of the missing 60 items, it smoothly renders our custom cup placeholder!
                     Image(product.image)
                         .resizable()
                         .scaledToFit()
@@ -39,7 +42,6 @@ struct ProductCardView: View {
                         }
                 }
                 
-                // Product Title text label matching your deep espresso brown theme palette
                 Text(product.name)
                     .font(.system(size: 13, weight: .bold, design: .rounded))
                     .foregroundColor(.timsDarkBrown)

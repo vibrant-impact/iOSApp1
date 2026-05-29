@@ -1,14 +1,5 @@
 [
   {
-    "id": "5",
-    "name": "Soccer Timbits Bucket with 30 Timbits",
-    "description": "",
-    "price": 12.99,
-    "category": "Merchandise, New and Seasonal",
-    "image": "soccer-timbits-bucket"
-  },
-  
-  {
     "id": "18",
     "name": "Raspberry Mojito Frozen Quencher",
     "description": "",
@@ -24,24 +15,6 @@
     "price": 2.99,
     "category": "Cold Drinks, New and Seasonal",
     "image": "raspberry-mojito-lemonade-quencher"
-  },
-  
-  {
-    "id": "24",
-    "name": "Cadbury Mini Eggs Dream Donut",
-    "description": "",
-    "price": 2.49,
-    "category": "Cold Drinks, New and Seasonal",
-    "image": "cadbury-mini-eggs-dream-donut"
-  },
-  
-  {
-    "id": "25",
-    "name": "Cadbury Mini Eggs Cookie",
-    "description": "",
-    "price": 2.49,
-    "category": "Baked Goods, New and Seasonal",
-    "image": "cadbury-mini-eggs-cookie"
   },
   
   {
@@ -105,33 +78,6 @@
     "price": 1.83,
     "category": "Hot Drinks, Brewed Coffee",
     "image": "dark-roast-brewed-coffee"
-  },
-  
-  {
-    "id": "38",
-    "name": "Brown Sugar Cream Coffee",
-    "description": "",
-    "price": 2.99,
-    "category": "Hot Drinks, Espresso Drinks",
-    "image": "brown-sugar-cream-coffee"
-  },
-  
-  {
-    "id": "39",
-    "name": "Chocolate Pistachio Latte",
-    "description": "",
-    "price": 4.49,
-    "category": "Hot Drinks, Espresso Drinks",
-    "image": "chocolate-pistachio-latte"
-  },
-  
-  {
-    "id": "40",
-    "name": "Chocolate Pistachio Cappuccino",
-    "description": "",
-    "price": 4.19,
-    "category": "Hot Drinks, Espresso Drinks",
-    "image": "chocolate-pistachio-cappuccino"
   },
   
   {
@@ -252,15 +198,6 @@
   },
   
   {
-    "id": "54",
-    "name": "Candy Cane White Hot Chocoloate",
-    "description": "",
-    "price": 3.39,
-    "category": "Hot Drinks, Hot Chocoloate",
-    "image": "candy-cane-white-hot-chocoloate"
-  },
-  
-  {
     "id": "55",
     "name": "Hot Chocoloate",
     "description": "",
@@ -339,15 +276,6 @@
     "price": 3.99,
     "category": "Cold Drinks, Cold Brew, New and Seasonal",
     "image": "caramel-churro-cold-brew"
-  },
-  
-  {
-    "id": "64",
-    "name": "Chocoloate Pistachio Cold Brew",
-    "description": "",
-    "price": 3.99,
-    "category": "Cold Drinks, Cold Brew",
-    "image": "chocoloate-pistachio-cold-brew"
   },
   
   {

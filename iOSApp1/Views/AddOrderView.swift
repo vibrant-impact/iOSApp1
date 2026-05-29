@@ -9,12 +9,10 @@ import SwiftUI
 import Combine
 
 struct AddOrderView: View {
-    // MARK: - View Environments
     @Environment(\.dismiss) var dismiss
     @ObservedObject var appStore: OrderStore
     var editingOrder: TeamOrder?
     
-    // MARK: - Input State Management Properties
     @State private var personName = ""
     @State private var globalSearchQuery = ""
     @State private var itemNotes = ""
@@ -22,7 +20,6 @@ struct AddOrderView: View {
     @State private var saveAsFavorite = false
     @State private var temporarySelectedItem: JSONProduct?
     
-    // MARK: - Menu Tab State Anchors
     @State private var selectedMainMenuTab = "Hot Drinks"
     @State private var selectedSubMenuTab = "All"
     
@@ -87,10 +84,6 @@ struct AddOrderView: View {
         NavigationStack {
             ZStack {
                 VStack(spacing: 0) {
-                    
-                    // ==========================================
-                    // 1. THE TOP AREA: Warm Soft Tan Header Panel
-                    // ==========================================
                     VStack(spacing: 14) {
                         VStack(alignment: .leading, spacing: 6) {
                             Text("WHO IS PLACING THIS ORDER?")
@@ -128,10 +121,13 @@ struct AddOrderView: View {
                             LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], spacing: 8) {
                                 ForEach(mainMenuCategories, id: \.0) { categoryName, symbolIcon in
                                     Button(action: {
+                                        // AUDIO HOOK A: Play light pop when clicking a primary tab category
+                                        SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
+                                        
                                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                             selectedMainMenuTab = categoryName
                                             selectedSubMenuTab = "All"
-                                            temporarySelectedItem = nil // Collapses drawer on tab change
+                                            temporarySelectedItem = nil
                                         }
                                     }) {
                                         HStack(spacing: 6) {
@@ -159,9 +155,12 @@ struct AddOrderView: View {
                                 HStack(spacing: 8) {
                                     ForEach(structuralSubMenusList, id: \.self) { subName in
                                         Button(action: {
+                                            // AUDIO HOOK B: Play light pop when filtering submenus
+                                            SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
+                                            
                                             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                                 selectedSubMenuTab = subName
-                                                temporarySelectedItem = nil // Collapses drawer on subtab change
+                                                temporarySelectedItem = nil
                                             }
                                         }) {
                                             Text(subName)
@@ -183,9 +182,6 @@ struct AddOrderView: View {
                     .background(Color.timsTan)
                     .zIndex(1)
                     
-                    // ==========================================
-                    // 2. THE MAIN CANVAS AREA: Dynamic Scroll Catalog Grid
-                    // ==========================================
                     ZStack {
                         Image("brownSwirlBackground")
                             .resizable()
@@ -222,26 +218,18 @@ struct AddOrderView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 
-                // ==========================================
-                // FIXED INTERACTIVE OVERLAY SHIELD
-                // ==========================================
                 if temporarySelectedItem != nil {
-                    Color.black.opacity(0.01) // Invisible but completely solid touch interceptor barrier layer
+                    Color.black.opacity(0.01)
                         .ignoresSafeArea()
                         .zIndex(2)
                         .onTapGesture {
-                            // Safely collapses open drawers when background spacing is pressed
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                 temporarySelectedItem = nil
                             }
                         }
                 }
                 
-                // ==========================================
-                // 3. THE FLOATING FOOTER PANEL: Bottom-Anchored Selection Drawer
-                // ==========================================
                 if let selection = temporarySelectedItem {
-                    // FIXED: A VStack combined with a top Spacer forces the drawer to stay locked at the bottom edge!
                     VStack {
                         Spacer()
                         
@@ -278,7 +266,13 @@ struct AddOrderView: View {
                                 Spacer()
                                 
                                 HStack(spacing: 16) {
-                                    Button(action: { if itemQuantity > 1 { itemQuantity -= 1 } }) {
+                                    Button(action: {
+                                        if itemQuantity > 1 {
+                                            itemQuantity -= 1
+                                            // AUDIO HOOK C: Click play effect on quantity decrement
+                                            SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                        }
+                                    }) {
                                         Image(systemName: "minus.circle.fill")
                                             .font(.title2)
                                             .foregroundColor(itemQuantity > 1 ? .timsRed : .gray.opacity(0.3))
@@ -287,7 +281,13 @@ struct AddOrderView: View {
                                         .font(.system(size: 18, weight: .black, design: .rounded))
                                         .foregroundColor(.timsDarkBrown)
                                         .frame(minWidth: 24)
-                                    Button(action: { if itemQuantity < 10 { itemQuantity += 1 } }) {
+                                    Button(action: {
+                                        if itemQuantity < 10 {
+                                            itemQuantity += 1
+                                            // AUDIO HOOK D: Click play effect on quantity increment
+                                            SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                        }
+                                    }) {
                                         Image(systemName: "plus.circle.fill")
                                             .font(.title2)
                                             .foregroundColor(.timsRed)
@@ -321,6 +321,9 @@ struct AddOrderView: View {
                                         isSavedAsFavorite: saveAsFavorite
                                     )
                                     
+                                    // AUDIO HOOK E: Play the luscious coffee pouring sound when confirmed!
+                                    SoundManager.shared.playSound(named: "pouring", withExtension: "mp3")
+                                    
                                     if let original = editingOrder,
                                        let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
                                         appStore.activeOrders[index] = packageOrder
@@ -352,23 +355,22 @@ struct AddOrderView: View {
                         .background(Color.timsTan)
                         .shadow(color: Color.black.opacity(0.15), radius: 12, x: 0, y: -4)
                     }
-                    .edgesIgnoringSafeArea(.bottom) // Lets the tan plate slide completely flush into the bottom chin
+                    .edgesIgnoringSafeArea(.bottom)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                     .zIndex(3)
-                    .navigationTitle(editingOrder == nil ? "Build Order" : "Modify Order")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Close") { dismiss() }
-                                .font(.system(.body, design: .rounded))
-                                .fontWeight(.bold)
-                                .foregroundColor(.timsRed)
-                            
-                        }
-                    }
-                    .preferredColorScheme(.light)
                 }
             }
+            .navigationTitle(editingOrder == nil ? "Build Order" : "Modify Order")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close") { dismiss() }
+                        .font(.system(.body, design: .rounded))
+                        .fontWeight(.bold)
+                        .foregroundColor(.timsRed)
+                }
+            }
+            .preferredColorScheme(.light)
         }
     }
 }
