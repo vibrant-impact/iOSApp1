@@ -19,29 +19,32 @@ struct JSONProduct: Identifiable, Codable, Hashable {
     let image: String
 }
 
-// Order Item Model
-// Tracks individual items selected from the product catalog or created manually
-struct OrderItem: Hashable {
+// MARK: - Individual Ordered Item Structure
+struct OrderItem: Identifiable, Codable {
+    var id = UUID()
     var itemName: String
-    var quantity: Int = 1
-    var notes: String = ""
-    var unitPrice: Double = 0.0
+    var quantity: Int
+    var notes: String
+    var unitPrice: Double
+    
+    var itemTotal: Double {
+        return Double(quantity) * unitPrice
+    }
 }
 
 // Team Order Model
 // Represents a single team member's compiled order for the day
-struct TeamOrder: Identifiable, Hashable {
-    let id = UUID()
+struct TeamOrder: Identifiable, Codable {
+    var id = UUID()
     var name: String
-    var drink: OrderItem = OrderItem(itemName: "Brewed Coffee", unitPrice: 1.83)
-    var food: OrderItem = OrderItem(itemName: "None", unitPrice: 0.0)
-    var isSavedAsFavorite: Bool = false
-        
-    // Calculated total price value for a clean checkout configuration experience
+    
+    // FIXED: Changed from single properties to a dynamic list basket!
+    var items: [OrderItem]
+    var isSavedAsFavorite: Bool
+    
+    // Dynamically calculates the overall checkout scale for this specific individual
     var checkoutTotal: Double {
-        let drinkCost = drink.unitPrice * Double(drink.quantity)
-        let foodCost = food.unitPrice * Double(food.quantity)
-        return drinkCost + foodCost
+        return items.reduce(0) { $0 + $1.itemTotal }
     }
 }
 

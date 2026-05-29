@@ -9,17 +9,21 @@ import SwiftUI
 import Combine
 
 struct AddOrderView: View {
+    // MARK: - View Environments
     @Environment(\.dismiss) var dismiss
     @ObservedObject var appStore: OrderStore
     var editingOrder: TeamOrder?
     
+    // MARK: - Input State Management Properties
     @State private var personName = ""
     @State private var globalSearchQuery = ""
     @State private var itemNotes = ""
     @State private var itemQuantity = 1
     @State private var saveAsFavorite = false
     @State private var temporarySelectedItem: JSONProduct?
+    @State private var pendingItems: [OrderItem] = []
     
+    // MARK: - Menu Tab State Anchors
     @State private var selectedMainMenuTab = "Hot Drinks"
     @State private var selectedSubMenuTab = "All"
     
@@ -70,12 +74,7 @@ struct AddOrderView: View {
         
         if let order = orderToEdit {
             _personName = State(initialValue: order.name)
-            _itemNotes = State(initialValue: order.drink.notes)
-            _itemQuantity = State(initialValue: order.drink.quantity)
-            
-            if let matchedProduct = appStore.allProducts.first(where: { $0.name == order.drink.itemName }) {
-                _temporarySelectedItem = State(initialValue: matchedProduct)
-            }
+            _pendingItems = State(initialValue: order.items)
             _saveAsFavorite = State(initialValue: order.isSavedAsFavorite)
         }
     }
@@ -84,6 +83,10 @@ struct AddOrderView: View {
         NavigationStack {
             ZStack {
                 VStack(spacing: 0) {
+                    
+                    // ==========================================
+                    // 1. THE TOP AREA: Header Panel
+                    // ==========================================
                     VStack(spacing: 14) {
                         VStack(alignment: .leading, spacing: 6) {
                             Text("WHO IS PLACING THIS ORDER?")
@@ -121,9 +124,7 @@ struct AddOrderView: View {
                             LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], spacing: 8) {
                                 ForEach(mainMenuCategories, id: \.0) { categoryName, symbolIcon in
                                     Button(action: {
-                                        // AUDIO HOOK A: Play light pop when clicking a primary tab category
                                         SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
-                                        
                                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                             selectedMainMenuTab = categoryName
                                             selectedSubMenuTab = "All"
@@ -155,9 +156,7 @@ struct AddOrderView: View {
                                 HStack(spacing: 8) {
                                     ForEach(structuralSubMenusList, id: \.self) { subName in
                                         Button(action: {
-                                            // AUDIO HOOK B: Play light pop when filtering submenus
                                             SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
-                                            
                                             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                                 selectedSubMenuTab = subName
                                                 temporarySelectedItem = nil
@@ -182,37 +181,30 @@ struct AddOrderView: View {
                     .background(Color.timsTan)
                     .zIndex(1)
                     
+                    // ==========================================
+                    // 2. THE MAIN CANVAS AREA: Dynamic Scroll Catalog Grid
+                    // ==========================================
                     ZStack {
                         Image("brownSwirlBackground")
                             .resizable()
                             .ignoresSafeArea()
                         
                         ScrollView {
-                            if filteredProductsManifestList.isEmpty {
-                                VStack(spacing: 16) {
-                                    Image(systemName: "tray.search")
-                                        .font(.system(size: 44, weight: .light))
-                                        .foregroundColor(.white.opacity(0.6))
-                                    Text("No matching Tims menu items found.")
-                                        .font(.system(.headline, design: .rounded))
-                                        .foregroundColor(.white.opacity(0.6))
-                                }
-                                .padding(.top, 80)
-                            } else {
-                                LazyVGrid(columns: cardGridLayoutColumns, spacing: 14) {
-                                    ForEach(filteredProductsManifestList) { product in
-                                        ProductCardView(product: product) {
-                                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                                temporarySelectedItem = product
-                                                itemQuantity = 1
-                                            }
+                            LazyVGrid(columns: cardGridLayoutColumns, spacing: 14) {
+                                ForEach(filteredProductsManifestList) { product in
+                                    ProductCardView(product: product) {
+                                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                            temporarySelectedItem = product
+                                            itemQuantity = 1
                                         }
-                                        .contentShape(Rectangle())
                                     }
+                                    .contentShape(Rectangle())
                                 }
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 20)
                             }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 20)
+                            // Adds dynamic scroll cushion so content never gets permanently hidden behind floating bars
+                            .padding(.bottom, pendingItems.isEmpty ? 20 : 130)
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -229,6 +221,9 @@ struct AddOrderView: View {
                         }
                 }
                 
+                // ==========================================
+                // 3. THE FLOATING FOOTER PANEL: Selection Checkout Drawer
+                // ==========================================
                 if let selection = temporarySelectedItem {
                     VStack {
                         Spacer()
@@ -236,7 +231,7 @@ struct AddOrderView: View {
                         VStack(spacing: 14) {
                             HStack(alignment: .top) {
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text("SELECTED MENU ITEM")
+                                    Text("ADD TO INDIVIDUAL BASKET")
                                         .font(.system(size: 10, weight: .black, design: .rounded))
                                         .foregroundColor(.secondary)
                                     Text(selection.name)
@@ -244,9 +239,7 @@ struct AddOrderView: View {
                                         .foregroundColor(.timsDarkBrown)
                                         .lineLimit(1)
                                 }
-                                
                                 Spacer()
-                                
                                 Button(action: {
                                     withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                         temporarySelectedItem = nil
@@ -269,7 +262,6 @@ struct AddOrderView: View {
                                     Button(action: {
                                         if itemQuantity > 1 {
                                             itemQuantity -= 1
-                                            // AUDIO HOOK C: Click play effect on quantity decrement
                                             SoundManager.shared.playSound(named: "click", withExtension: "mp3")
                                         }
                                     }) {
@@ -284,7 +276,6 @@ struct AddOrderView: View {
                                     Button(action: {
                                         if itemQuantity < 10 {
                                             itemQuantity += 1
-                                            // AUDIO HOOK D: Click play effect on quantity increment
                                             SoundManager.shared.playSound(named: "click", withExtension: "mp3")
                                         }
                                     }) {
@@ -313,33 +304,17 @@ struct AddOrderView: View {
                                 Spacer(minLength: 20)
                                 
                                 Button(action: {
-                                    let chosenItem = OrderItem(itemName: selection.name, quantity: itemQuantity, notes: itemNotes, unitPrice: selection.price)
-                                    let packageOrder = TeamOrder(
-                                        name: personName.isEmpty ? "Guest" : personName,
-                                        drink: chosenItem,
-                                        food: OrderItem(itemName: "None", quantity: 1, notes: "", unitPrice: 0.0),
-                                        isSavedAsFavorite: saveAsFavorite
-                                    )
-                                    
-                                    // AUDIO HOOK E: Play the luscious coffee pouring sound when confirmed!
+                                    let nestedItem = OrderItem(itemName: selection.name, quantity: itemQuantity, notes: itemNotes, unitPrice: selection.price)
                                     SoundManager.shared.playSound(named: "pouring", withExtension: "mp3")
                                     
-                                    if let original = editingOrder,
-                                       let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
-                                        appStore.activeOrders[index] = packageOrder
-                                        dismiss()
-                                    } else {
-                                        appStore.saveOrderToActiveRun(packageOrder)
-                                        
-                                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                                            temporarySelectedItem = nil
-                                            itemNotes = ""
-                                            itemQuantity = 1
-                                            saveAsFavorite = false
-                                        }
+                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                        pendingItems.append(nestedItem)
+                                        temporarySelectedItem = nil
+                                        itemNotes = ""
+                                        itemQuantity = 1
                                     }
                                 }) {
-                                    Text("Add to Manifest")
+                                    Text("Add to Basket")
                                         .font(.system(size: 15, weight: .black, design: .rounded))
                                         .foregroundColor(.white)
                                         .padding(.horizontal, 24)
@@ -355,11 +330,64 @@ struct AddOrderView: View {
                         .background(Color.timsTan)
                         .shadow(color: Color.black.opacity(0.15), radius: 12, x: 0, y: -4)
                     }
-                    .edgesIgnoringSafeArea(.bottom)
+                    .zIndex(4)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            }
+            // ==========================================
+            // FIXED OVERLAY: Absolute Bottom Safe Area Pinning
+            // ==========================================
+            .overlay(alignment: .bottom) {
+                if !pendingItems.isEmpty && temporarySelectedItem == nil {
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Text("\(personName.isEmpty ? "Guest" : personName)'s Basket (\(pendingItems.reduce(0) { $0 + $1.quantity }) items)")
+                                .font(.system(size: 13, weight: .black, design: .rounded))
+                                .foregroundColor(.timsDarkBrown)
+                            Spacer()
+                            Text("$\(String(format: "%.2f", pendingItems.reduce(0) { $0 + $1.itemTotal }))")
+                                .font(.system(size: 14, weight: .black, design: .rounded))
+                                .foregroundColor(.green)
+                        }
+                        
+                        Button(action: {
+                            SoundManager.shared.playSound(named: "success", withExtension: "mp3")
+                            
+                            let finalGroupOrder = TeamOrder(
+                                name: personName.isEmpty ? "Guest" : personName,
+                                items: pendingItems,
+                                isSavedAsFavorite: saveAsFavorite
+                            )
+                            
+                            if let original = editingOrder,
+                               let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
+                                appStore.activeOrders[index] = finalGroupOrder
+                            } else {
+                                appStore.saveOrderToActiveRun(finalGroupOrder)
+                            }
+                            dismiss()
+                        }) {
+                            Label("Complete Individual Order", systemImage: "checkmark.circle.fill")
+                                .font(.system(size: 15, weight: .black, design: .rounded))
+                                .foregroundColor(.timsDarkBrown)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 14)
+                                .background(Color.timsGold)
+                                .cornerRadius(12)
+                                .shadow(color: Color.timsGold.opacity(0.4), radius: 6, x: 0, y: 3)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    .padding([.horizontal, .top], 16)
+                    .padding(.bottom, 34) // Flows cleanly into the virtual home indicator space
+                    .background(Color.timsTan)
+                    .cornerRadius(20, corners: [.topLeft, .topRight])
+                    .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: -4)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                     .zIndex(3)
                 }
             }
+            .edgesIgnoringSafeArea(.bottom) // Allows the overlay's tan background plate to bleed beautifully past the glass line
             .navigationTitle(editingOrder == nil ? "Build Order" : "Modify Order")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -371,6 +399,7 @@ struct AddOrderView: View {
                 }
             }
             .preferredColorScheme(.light)
+            .presentationBackground(Color.timsTan)
         }
     }
 }

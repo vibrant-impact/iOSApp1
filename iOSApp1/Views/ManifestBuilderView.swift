@@ -86,14 +86,17 @@ struct ManifestBuilderView: View {
                                         }
                                     }) {
                                         HStack {
-                                            VStack(alignment: .leading, spacing: 4) {
+                                            VStack(alignment: .leading, spacing: 6) {
                                                 Text(order.name)
                                                     .font(.system(.headline, design: .rounded))
                                                     .foregroundColor(.primary)
                                                 
-                                                Text("☕ \(order.drink.quantity)x \(order.drink.itemName)")
-                                                    .font(.system(.subheadline, design: .rounded))
-                                                    .foregroundColor(.secondary)
+                                                ForEach(order.items) { item in
+                                                    // FIXED: Combines quantity, name, and conditional notes into a single line using string interpolation
+                                                    Text("☕️ \(item.quantity)x \(item.itemName)\(item.notes.isEmpty ? "" : " (\(item.notes))")")
+                                                        .font(.system(.subheadline, design: .rounded))
+                                                        .foregroundColor(.secondary)
+                                                }
                                             }
                                             Spacer()
                                             Text("$\(String(format: "%.2f", order.checkoutTotal))")
@@ -212,10 +215,12 @@ struct ManifestBuilderView: View {
                         }
                     }
                     .padding(.horizontal, 20)
-                    .padding(.bottom, 24)
+                    .padding(.top, 16)
+                    .padding(.bottom, 36)
                     .background(.ultraThinMaterial)
                 }
             }
+            .edgesIgnoringSafeArea(.bottom)
             .toolbar(.hidden, for: .navigationBar)
             .preferredColorScheme(.dark)
             .sheet(isPresented: $showingAddOrderForm) {

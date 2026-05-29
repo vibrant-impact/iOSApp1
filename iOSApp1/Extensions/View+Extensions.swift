@@ -26,3 +26,26 @@ extension View {
         }
     }
 }
+
+// MARK: - Specialized Corner Layout Modifiers
+extension View {
+    /// Applies a specific rounding radius to targeted, selective corners of a layout container frame
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape(RoundedCornerLayout(radius: radius, corners: corners))
+    }
+}
+
+/// A custom structural Shape blueprint that targets explicit layout corners for corner radius cuts
+struct RoundedCornerLayout: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
+    }
+}
