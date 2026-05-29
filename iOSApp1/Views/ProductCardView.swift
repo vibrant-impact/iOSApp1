@@ -8,38 +8,34 @@
 import SwiftUI
 
 struct ProductCardView: View {
-    // The specific decoded product from your JSON file
     let product: JSONProduct
-    
-    // Closer notification callback to tell the parent view this card was tapped
     var onSelected: () -> Void
     
     var body: some View {
         Button(action: { onSelected() }) {
             VStack(alignment: .leading, spacing: 8) {
-                // Image layer container matching your asset file name strings[cite: 1]
-                // For now, it uses a placeholder look until you import your image assets next week.
+                
+                // Image layer container matching asset file name strings
                 ZStack {
+                    // FIXED: Changed inner box from harsh gray to match your custom background texture smoothly
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(.systemGray6))
+                        .fill(Color.timsDarkBrown.opacity(0.04))
                         .frame(height: 110)
                     
-                    // Attempts to render your image string asset name[cite: 1]
                     Image(product.image)
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 90)
-                        // Fallback image framework asset if the local file name isn't found yet
+                        .frame(height: 95)
                         .placeholder(when: true) {
                             Image(systemName: "cup.and.saucer.fill")
                                 .font(.title)
-                                .foregroundColor(.gray)
+                                .foregroundColor(.gray.opacity(0.4))
                         }
                 }
                 
-                // Product Metadata Titles Text Labels
+                // Product Title text label matching your deep espresso brown theme palette
                 Text(product.name)
-                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .font(.system(size: 13, weight: .bold, design: .rounded))
                     .foregroundColor(.timsDarkBrown)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
@@ -47,7 +43,7 @@ struct ProductCardView: View {
                 
                 HStack {
                     Text("$\(String(format: "%.2f", product.price))")
-                        .font(.system(size: 14, weight: .bold))
+                        .font(.system(size: 14, weight: .black, design: .rounded))
                         .foregroundColor(.green)
                     
                     Spacer()
@@ -58,25 +54,10 @@ struct ProductCardView: View {
                 }
             }
             .padding(10)
-            .background(Color(.white))
+            .background(Color.timsTan) // FIXED: Swapped harsh white card background out for your creamy Tims Tan theme!
             .cornerRadius(16)
-            .shadow(color: Color.black.opacity(0.05), radius: 6, x: 0, y: 3)
+            .shadow(color: Color.timsDarkBrown.opacity(0.12), radius: 6, x: 0, y: 3) // Softened shadow contrast
         }
-        .buttonStyle(.plain) // Prevents the cell click button style from overriding text attributes
-    }
-}
-
-// Conditional View Extension
-extension View {
-    @ViewBuilder
-    func placeholder<Content: View>(when shouldShow: Bool, alignment: Alignment = .center, @ViewBuilder placeholder: () -> Content) -> some View {
-        if shouldShow {
-            ZStack(alignment: alignment) {
-                placeholder()
-                self.opacity(0) // Hide primary asset rendering safely if placeholder runs
-            }
-        } else {
-            self
-        }
+        .buttonStyle(.plain)
     }
 }
