@@ -19,16 +19,12 @@ struct AddOrderView: View {
     @State private var itemNotes = ""
     @State private var itemQuantity = 1
     @State private var saveAsFavorite = false
-    
-    // Staging references tracking our chosen active item selection state parameters
     @State private var temporarySelectedItem: JSONProduct?
     
     // MARK: - Menu Tab State Anchors
     @State private var selectedMainMenuTab = "Hot Drinks"
     @State private var selectedSubMenuTab = "All"
     
-    // MARK: - Structural Menu Configuration Mappings
-    // Links your Main Menu text strings straight to beautiful, instructive SF Symbol icons
     let mainMenuCategories = [
         ("Hot Drinks", "cup.and.saucer.fill"),
         ("Cold Drinks", "snowflake"),
@@ -38,7 +34,6 @@ struct AddOrderView: View {
         ("Tims at Home", "house.fill")
     ]
     
-    /// Dynamically computes submenus strictly based on which Main Menu category tab is active
     var structuralSubMenusList: [String] {
         switch selectedMainMenuTab {
         case "Hot Drinks":
@@ -54,35 +49,23 @@ struct AddOrderView: View {
         }
     }
     
-    // MARK: - UNIVERSAL ADVANCED SEARCH FILTER
-    /// Filters product items dynamically using name, main category tabs, submenus, AND universal category searches simultaneously
     var filteredProductsManifestList: [JSONProduct] {
         appStore.allProducts.filter { product in
-            
-            // 1. Core search text matching logic (checks item title AND category fields concurrently)
             let matchesSearchText = globalSearchQuery.isEmpty ? true : (
                 product.name.lowercased().contains(globalSearchQuery.lowercased()) ||
                 product.category.lowercased().contains(globalSearchQuery.lowercased())
             )
-            
-            // 2. Main menu tab matching logic
             let matchesMainMenu = product.category.lowercased().contains(selectedMainMenuTab.lowercased())
-            
-            // 3. Submenu tab matching logic
             let matchesSubMenu = selectedSubMenuTab == "All" ? true : product.category.lowercased().contains(selectedSubMenuTab.lowercased())
-            
-            // Combine all constraints together
             return matchesSearchText && matchesMainMenu && matchesSubMenu
         }
     }
     
-    // Grid column configuration setup to ensure neat, dual-card alignments
     let cardGridLayoutColumns = [
-        GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 12)
+        GridItem(.flexible(), spacing: 14),
+        GridItem(.flexible(), spacing: 14)
     ]
     
-    // MARK: - Custom Init Routine
     init(appStore: OrderStore, orderToEdit: TeamOrder? = nil) {
         self.appStore = appStore
         self.editingOrder = orderToEdit
@@ -102,219 +85,240 @@ struct AddOrderView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                // Identity Input Profile Header Panel
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("WHO IS PLACING THIS ORDER?")
-                        .font(.caption2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.secondary)
-                    
-                    TextField("Enter Name (e.g., Alex, Sam)", text: $personName)
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(12)
-                        .disabled(editingOrder != nil)
-                }
-                .padding()
-                .background(Color(.systemBackground))
                 
-                // Unified Search Input Bar Panel
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.secondary)
-                    TextField("Type to search any item or category (e.g., 'Hot')...", text: $globalSearchQuery)
-                        .autocorrectionDisabled()
-                }
-                .padding(12)
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
-                .padding(.horizontal)
-                .padding(.bottom, 14)
-                
-                // VISUAL MAIN MENU TAB PILLS (Grid Layout replacing horizontal scroll)
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("MAIN CATEGORIES")
-                        .font(.caption2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.secondary)
-                        .padding(.horizontal)
+                // ==========================================
+                // 1. THE TOP AREA: Pure Solid White & Clean Contrast
+                // ==========================================
+                VStack(spacing: 14) {
+                    // Custom Header Navigation Title Replacement to bypass sheet style overrides
+                    HStack {
+                        Button(action: { dismiss() }) {
+                            Text("Close")
+                                .font(.system(size: 16, weight: .bold, design: .rounded))
+                                .foregroundColor(.timsRed)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .background(Color.timsRed.opacity(0.1))
+                                .cornerRadius(12)
+                        }
+                        
+                        Spacer()
+                        
+                        Text(editingOrder == nil ? "Build Order" : "Modify Order")
+                            .font(.system(size: 18, weight: .black, design: .rounded))
+                            .foregroundColor(.primary)
+                        
+                        Spacer()
+                        // Invisible alignment spacer block
+                        Text("Close").font(.system(size: 16)).opacity(0).padding(.horizontal, 16)
+                    }
+                    .padding(.top, 12)
                     
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], spacing: 8) {
-                        ForEach(mainMenuCategories, id: \.0) { categoryName, symbolIcon in
-                            Button(action: {
-                                selectedMainMenuTab = categoryName
-                                selectedSubMenuTab = "All" // Auto-reset fallback submenu tab
-                            }) {
-                                HStack(spacing: 6) {
-                                    Image(systemName: symbolIcon)
-                                        .font(.footnote)
-                                    Text(categoryName)
-                                        .font(.system(size: 11, weight: .bold))
-                                        .lineLimit(1)
+                    // Identity input textfield
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("WHO IS PLACING THIS ORDER?")
+                            .font(.system(size: 11, weight: .black, design: .rounded))
+                            .foregroundColor(.secondary)
+                        
+                        TextField("Enter Name (e.g., Alex, Stephanie)", text: $personName)
+                            .font(.system(.body, design: .rounded))
+                            .foregroundColor(.primary)
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .cornerRadius(12)
+                            .disabled(editingOrder != nil)
+                    }
+                    
+                    // Search Entry Bar
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(.timsRed)
+                        TextField("Search names or categories (e.g., 'Churro')...", text: $globalSearchQuery)
+                            .font(.system(.body, design: .rounded))
+                            .foregroundColor(.primary)
+                            .autocorrectionDisabled()
+                    }
+                    .padding(14)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(12)
+                    
+                    // Main Categories Navigation Switcher
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("MAIN CATEGORIES")
+                            .font(.system(size: 11, weight: .black, design: .rounded))
+                            .foregroundColor(.secondary)
+                        
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], spacing: 8) {
+                            ForEach(mainMenuCategories, id: \.0) { categoryName, symbolIcon in
+                                Button(action: {
+                                    selectedMainMenuTab = categoryName
+                                    selectedSubMenuTab = "All"
+                                }) {
+                                    HStack(spacing: 6) {
+                                        Image(systemName: symbolIcon)
+                                            .font(.system(size: 12, weight: .bold))
+                                        Text(categoryName)
+                                            .font(.system(size: 12, weight: .bold, design: .rounded))
+                                            .lineLimit(1)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 12)
+                                    .background(selectedMainMenuTab == categoryName ? Color.timsRed : Color(.systemGray5))
+                                    .foregroundColor(selectedMainMenuTab == categoryName ? .white : .primary)
+                                    .cornerRadius(12)
+                                    .shadow(color: selectedMainMenuTab == categoryName ? Color.timsRed.opacity(0.3) : Color.clear, radius: 6, x: 0, y: 3)
                                 }
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 10)
-                                .background(selectedMainMenuTab == categoryName ? Color.timsRed : Color(.systemGray6))
-                                .foregroundColor(selectedMainMenuTab == categoryName ? .white : .primary)
-                                .cornerRadius(10)
                             }
                         }
                     }
-                    .padding(.horizontal)
-                }
-                .padding(.bottom, 12)
-                
-                // DYNAMIC SUB-MENU ACCORDION BAR
-                if structuralSubMenusList.count > 1 {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("SUB-MENU SELECTIONS")
-                            .font(.caption2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.secondary)
-                            .padding(.horizontal)
-                        
+                    
+                    // Horizontal Subcategories Sub-tabs
+                    if structuralSubMenusList.count > 1 {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
                                 ForEach(structuralSubMenusList, id: \.self) { subName in
                                     Button(action: { selectedSubMenuTab = subName }) {
                                         Text(subName)
-                                            .font(.system(size: 12, weight: .semibold))
-                                            .padding(.horizontal, 14)
-                                            .padding(.vertical, 6)
-                                            .background(selectedSubMenuTab == subName ? Color.black : Color(.systemGray6))
-                                            .foregroundColor(selectedSubMenuTab == subName ? .white : .primary)
-                                            .cornerRadius(14)
+                                            .font(.system(size: 12, weight: .bold, design: .rounded))
+                                            .padding(.horizontal, 16)
+                                            .padding(.vertical, 8)
+                                            .background(selectedSubMenuTab == subName ? Color.primary : Color(.systemGray6))
+                                            .foregroundColor(selectedSubMenuTab == subName ? Color(.systemBackground) : .secondary)
+                                            .cornerRadius(30)
                                     }
                                 }
                             }
-                            .padding(.horizontal)
                         }
                     }
-                    .padding(.bottom, 12)
                 }
+                .padding([.horizontal, .bottom])
+                .background(Color.white) // Strictly forces this section to remain white regardless of system traits
                 
-                Divider()
-                
-                // PRODUCT GRID VIEW CANVAS
-                ScrollView {
-                    if filteredProductsManifestList.isEmpty {
-                        VStack(spacing: 12) {
-                            Spacer()
-                            Image(systemName: "tray.search")
-                                .font(.largeTitle)
-                                .foregroundColor(.secondary)
-                            Text("No matching Tims menu items found.")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                            Spacer()
-                        }
-                        .padding(.top, 40)
-                    } else {
-                        LazyVGrid(columns: cardGridLayoutColumns, spacing: 12) {
-                            ForEach(filteredProductsManifestList) { product in
-                                ProductCardView(product: product) {
-                                    // Updates the active bottom control tray targets
-                                    temporarySelectedItem = product
-                                    itemQuantity = 1
+                // ==========================================
+                // 2. THE GRID AREA: Deep Swirl Image Canvas Background
+                // ==========================================
+                ZStack {
+                    Image("brownSwirlBackground")
+                        .resizable()
+                        .ignoresSafeArea()
+                    
+                    ScrollView {
+                        if filteredProductsManifestList.isEmpty {
+                            VStack(spacing: 16) {
+                                Image(systemName: "tray.search")
+                                    .font(.system(size: 44, weight: .light))
+                                    .foregroundColor(.white.opacity(0.6))
+                                Text("No matching Tims menu items found.")
+                                    .font(.system(.headline, design: .rounded))
+                                    .foregroundColor(.white.opacity(0.6))
+                            }
+                            .padding(.top, 80)
+                        } else {
+                            LazyVGrid(columns: cardGridLayoutColumns, spacing: 14) {
+                                ForEach(filteredProductsManifestList) { product in
+                                    ProductCardView(product: product) {
+                                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                            temporarySelectedItem = product
+                                            itemQuantity = 1
+                                        }
+                                    }
                                 }
                             }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 20)
                         }
-                        .padding()
                     }
                 }
-                .background(Color(.systemGroupedBackground))
                 
-                // SELECTION CHECKOUT OVERLAY PANEL FOOTER LAYER
+                // ==========================================
+                // 3. THE FOOTER PANEL: Floating Bottom Dock
+                // ==========================================
                 if let selection = temporarySelectedItem {
-                    VStack(spacing: 12) {
+                    VStack(spacing: 14) {
                         HStack {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("Selected Selection:")
-                                    .font(.caption2)
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("SELECTED MENU ITEM")
+                                    .font(.system(size: 10, weight: .black, design: .rounded))
                                     .foregroundColor(.secondary)
                                 Text(selection.name)
-                                    .font(.subheadline)
-                                    .bold()
+                                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                                    .foregroundColor(.primary)
                                     .lineLimit(1)
                             }
                             Spacer()
                             
-                            Stepper("Qty: \(itemQuantity)", value: $itemQuantity, in: 1...10)
-                                .labelsHidden()
-                            Text("\(itemQuantity)x")
-                                .font(.subheadline)
-                                .bold()
+                            HStack(spacing: 16) {
+                                Button(action: { if itemQuantity > 1 { itemQuantity -= 1 } }) {
+                                    Image(systemName: "minus.circle.fill")
+                                        .font(.title2)
+                                        .foregroundColor(itemQuantity > 1 ? .timsRed : .gray.opacity(0.3))
+                                }
+                                Text("\(itemQuantity)")
+                                    .font(.system(size: 18, weight: .black, design: .rounded))
+                                    .foregroundColor(.primary)
+                                    .frame(minWidth: 24)
+                                Button(action: { if itemQuantity < 10 { itemQuantity += 1 } }) {
+                                    Image(systemName: "plus.circle.fill")
+                                        .font(.title2)
+                                        .foregroundColor(.timsRed)
+                                }
+                            }
                         }
                         
-                        TextField("Add customization notes (e.g., triple triple, extra hot)...", text: $itemNotes)
-                            .padding(10)
-                            .background(Color(.systemBackground))
-                            .cornerRadius(8)
-                            .font(.footnote)
+                        TextField("Add customization notes (e.g., extra hot)...", text: $itemNotes)
+                            .font(.system(.subheadline, design: .rounded))
+                            .foregroundColor(.primary)
+                            .padding(12)
+                            .background(Color(.systemGray6))
+                            .cornerRadius(10)
                         
                         HStack {
-                            Toggle("Save as Favorite Profile", isOn: $saveAsFavorite)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+                            Toggle(isOn: $saveAsFavorite) {
+                                Label("Save Profile", systemImage: "star.fill")
+                                    .font(.system(size: 13, weight: .bold, design: .rounded))
+                                    .foregroundColor(.orange)
+                            }
+                            .toggleStyle(SwitchToggleStyle(tint: .orange))
                             
-                            Spacer()
+                            Spacer(minLength: 20)
                             
                             Button(action: {
-                                // 1. Double check that we have a valid product selection before executing
-                                guard let selection = temporarySelectedItem else { return }
-                                
-                                // 2. Compile the chosen item metadata into a robust OrderItem model struct
-                                let chosenItem = OrderItem(
-                                    itemName: selection.name,
-                                    quantity: itemQuantity,
-                                    notes: itemNotes,
-                                    unitPrice: selection.price
-                                )
-                                
-                                // 3. Assemble the complete TeamOrder payload wrapper
+                                let chosenItem = OrderItem(itemName: selection.name, quantity: itemQuantity, notes: itemNotes, unitPrice: selection.price)
                                 let packageOrder = TeamOrder(
                                     name: personName.isEmpty ? "Guest" : personName,
-                                    drink: chosenItem, // Stores the selected product safely into the primary order line
+                                    drink: chosenItem,
                                     food: OrderItem(itemName: "None", quantity: 1, notes: "", unitPrice: 0.0),
                                     isSavedAsFavorite: saveAsFavorite
                                 )
                                 
-                                // 4. Determine if we are updating an existing person or appending a brand new profile row
                                 if let original = editingOrder,
                                    let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
                                     appStore.activeOrders[index] = packageOrder
                                 } else {
-                                    // Appends cleanly as a separate entry row inside the global team array loop!
                                     appStore.saveOrderToActiveRun(packageOrder)
                                 }
-                                
-                                // 5. Dismiss the modal to return cleanly to the updated main manifest summary screen
                                 dismiss()
                             }) {
-                                Text("Confirm Selection")
-                                    .font(.subheadline)
-                                    .bold()
+                                Text("Add to Manifest")
+                                    .font(.system(size: 15, weight: .black, design: .rounded))
                                     .foregroundColor(.white)
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 24)
+                                    .padding(.vertical, 14)
                                     .background(Color.timsRed)
-                                    .cornerRadius(10)
+                                    .cornerRadius(14)
+                                    .shadow(color: Color.timsRed.opacity(0.4), radius: 8, x: 0, y: 4)
                             }
                         }
                     }
                     .padding()
-                    .background(Color(.systemBackground))
-                    .transition(.move(edge: .bottom))
-                    .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: -4)
+                    .background(Color.white)
+                    .shadow(color: Color.black.opacity(0.15), radius: 12, x: 0, y: -4)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
-            .navigationTitle(editingOrder == nil ? "Build Order" : "Modify Order")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") { dismiss() }
-                }
-            }
+            .toolbar(.hidden, for: .navigationBar) // Employs our customized clean top banner instead
+            .preferredColorScheme(.light) // Fixes internal asset components to remain bright
         }
     }
 }
