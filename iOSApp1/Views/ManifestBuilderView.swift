@@ -182,9 +182,9 @@ struct ManifestBuilderView: View {
                                         .foregroundColor(.timsDarkBrown)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
-                                        .background(appStore.activeOrders.isEmpty ? Color.timsTan : Color.red)
+                                        .background(appStore.activeOrders.isEmpty ? Color.timsTan : Color.timsRed)
                                         .cornerRadius(14)
-                                        .shadow(color: appStore.activeOrders.isEmpty ? Color.clear : Color.red.opacity(0.4), radius: 8, x: 0, y: 4)
+                                        .shadow(color: appStore.activeOrders.isEmpty ? Color.clear : Color.timsRed.opacity(0.4), radius: 8, x: 0, y: 4)
                                 }
                                 .disabled(appStore.activeOrders.isEmpty)
                             }
@@ -206,9 +206,9 @@ struct ManifestBuilderView: View {
                                         .foregroundColor(.white)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
-                                        .background(appStore.currentRunner.isEmpty ? Color.timsTan : Color.red)
+                                        .background(appStore.currentRunner.isEmpty ? Color.timsTan : Color.timsRed)
                                         .cornerRadius(14)
-                                        .shadow(color: appStore.currentRunner.isEmpty ? Color.clear : Color.red.opacity(0.4), radius: 8, x: 0, y: 4)
+                                        .shadow(color: appStore.currentRunner.isEmpty ? Color.clear : Color.timsRed.opacity(0.4), radius: 8, x: 0, y: 4)
                                 }
                                 .disabled(appStore.currentRunner.isEmpty)
                             }

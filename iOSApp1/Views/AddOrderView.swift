@@ -85,234 +85,290 @@ struct AddOrderView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                
-                // ==========================================
-                // 1. THE TOP AREA: Warm, Soft Tan Header Panel
-                // ==========================================
-                VStack(spacing: 14) {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("WHO IS PLACING THIS ORDER?")
-                            .font(.system(size: 11, weight: .black, design: .rounded))
-                            .foregroundColor(.timsRed) // Changed to Tims Red for a beautiful accent pop
-                        
-                        TextField("Enter Name (e.g., Alex, Stephanie)", text: $personName)
-                            .font(.system(.body, design: .rounded))
-                            .foregroundColor(.timsDarkBrown)
-                            .padding()
-                            .background(Color.timsFieldTan) // Swapped with a slightly deeper accent tan
-                            .cornerRadius(12)
-                            .disabled(editingOrder != nil)
-                    }
-                    .padding(.top, 10)
+            ZStack {
+                VStack(spacing: 0) {
                     
-                    // Unified text entry search input bar
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(.timsRed)
-                        TextField("Search names or categories (e.g., 'Churro')...", text: $globalSearchQuery)
-                            .font(.system(.body, design: .rounded))
-                            .foregroundColor(.timsDarkBrown)
-                            .autocorrectionDisabled()
-                    }
-                    .padding(14)
-                    .background(Color.timsFieldTan) // Swapped to match fields
-                    .cornerRadius(12)
-                    
-                    // Main category tab selectors grid
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("MAIN CATEGORIES")
-                            .font(.system(size: 11, weight: .black, design: .rounded))
-                            .foregroundColor(.timsDarkBrown.opacity(0.7))
-                        
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], spacing: 8) {
-                            ForEach(mainMenuCategories, id: \.0) { categoryName, symbolIcon in
-                                Button(action: {
-                                    selectedMainMenuTab = categoryName
-                                    selectedSubMenuTab = "All"
-                                }) {
-                                    HStack(spacing: 6) {
-                                        Image(systemName: symbolIcon)
-                                            .font(.system(size: 12, weight: .bold))
-                                        Text(categoryName)
-                                            .font(.system(size: 12, weight: .bold, design: .rounded))
-                                            .lineLimit(1)
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 12)
-                                    .background(selectedMainMenuTab == categoryName ? Color.timsRed : Color.timsFieldTan)
-                                    .foregroundColor(selectedMainMenuTab == categoryName ? .white : .timsDarkBrown)
-                                    .cornerRadius(12)
-                                    .contentShape(Rectangle())
-                                    .shadow(color: selectedMainMenuTab == categoryName ? Color.timsRed.opacity(0.3) : Color.clear, radius: 6, x: 0, y: 3)
-                                }
-                                .buttonStyle(.plain)
-                            }
+                    // ==========================================
+                    // 1. THE TOP AREA: Warm Soft Tan Header Panel
+                    // ==========================================
+                    VStack(spacing: 14) {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("WHO IS PLACING THIS ORDER?")
+                                .font(.system(size: 11, weight: .black, design: .rounded))
+                                .foregroundColor(.timsRed)
+                            
+                            TextField("Enter Name (e.g., Alex, Stephanie)", text: $personName)
+                                .font(.system(.body, design: .rounded))
+                                .foregroundColor(.timsDarkBrown)
+                                .padding()
+                                .background(Color.timsFieldTan)
+                                .cornerRadius(12)
+                                .disabled(editingOrder != nil)
                         }
-                    }
-                    
-                    // Horizontal scroll secondary submenu tabs
-                    if structuralSubMenusList.count > 1 {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 8) {
-                                ForEach(structuralSubMenusList, id: \.self) { subName in
-                                    Button(action: { selectedSubMenuTab = subName }) {
-                                        Text(subName)
-                                            .font(.system(size: 12, weight: .bold, design: .rounded))
-                                            .padding(.horizontal, 16)
-                                            .padding(.vertical, 8)
-                                            .background(selectedSubMenuTab == subName ? Color.primary : Color.timsFieldTan)
-                                            .foregroundColor(selectedSubMenuTab == subName ? Color.timsTan : .secondary)
-                                            .cornerRadius(30)
-                                            .contentShape(Rectangle())
+                        .padding(.top, 10)
+                        
+                        HStack {
+                            Image(systemName: "magnifyingglass")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(.timsRed)
+                            TextField("Search names or categories (e.g., 'Churro')...", text: $globalSearchQuery)
+                                .font(.system(.body, design: .rounded))
+                                .foregroundColor(.timsDarkBrown)
+                                .autocorrectionDisabled()
+                        }
+                        .padding(14)
+                        .background(Color.timsFieldTan)
+                        .cornerRadius(12)
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("MAIN CATEGORIES")
+                                .font(.system(size: 11, weight: .black, design: .rounded))
+                                .foregroundColor(.timsDarkBrown.opacity(0.7))
+                            
+                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], spacing: 8) {
+                                ForEach(mainMenuCategories, id: \.0) { categoryName, symbolIcon in
+                                    Button(action: {
+                                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                            selectedMainMenuTab = categoryName
+                                            selectedSubMenuTab = "All"
+                                            temporarySelectedItem = nil // Collapses drawer on tab change
+                                        }
+                                    }) {
+                                        HStack(spacing: 6) {
+                                            Image(systemName: symbolIcon)
+                                                .font(.system(size: 12, weight: .bold))
+                                            Text(categoryName)
+                                                .font(.system(size: 12, weight: .bold, design: .rounded))
+                                                .lineLimit(1)
+                                        }
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.vertical, 12)
+                                        .background(selectedMainMenuTab == categoryName ? Color.timsRed : Color.timsFieldTan)
+                                        .foregroundColor(selectedMainMenuTab == categoryName ? .white : .timsDarkBrown)
+                                        .cornerRadius(12)
+                                        .contentShape(Rectangle())
+                                        .shadow(color: selectedMainMenuTab == categoryName ? Color.timsRed.opacity(0.3) : Color.clear, radius: 6, x: 0, y: 3)
                                     }
                                     .buttonStyle(.plain)
                                 }
                             }
                         }
-                    }
-                }
-                .padding([.horizontal, .bottom])
-                .background(Color.timsTan) // FIXED: Replaced harsh white panel background with soft tan
-                .zIndex(1)
-                
-                // ==========================================
-                // 2. THE MAIN CANVAS AREA: Swirl Layer Behind Grid Cards
-                // ==========================================
-                ZStack {
-                    Image("brownSwirlBackground")
-                        .resizable()
-                        .ignoresSafeArea()
-                    
-                    ScrollView {
-                        if filteredProductsManifestList.isEmpty {
-                            VStack(spacing: 16) {
-                                Image(systemName: "tray.search")
-                                    .font(.system(size: 44, weight: .light))
-                                    .foregroundColor(.white.opacity(0.6))
-                                Text("No matching Tims menu items found.")
-                                    .font(.system(.headline, design: .rounded))
-                                    .foregroundColor(.white.opacity(0.6))
-                            }
-                            .padding(.top, 80)
-                        } else {
-                            LazyVGrid(columns: cardGridLayoutColumns, spacing: 14) {
-                                ForEach(filteredProductsManifestList) { product in
-                                    ProductCardView(product: product) {
-                                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                            temporarySelectedItem = product
-                                            itemQuantity = 1
+                        
+                        if structuralSubMenusList.count > 1 {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 8) {
+                                    ForEach(structuralSubMenusList, id: \.self) { subName in
+                                        Button(action: {
+                                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                                selectedSubMenuTab = subName
+                                                temporarySelectedItem = nil // Collapses drawer on subtab change
+                                            }
+                                        }) {
+                                            Text(subName)
+                                                .font(.system(size: 12, weight: .bold, design: .rounded))
+                                                .padding(.horizontal, 16)
+                                                .padding(.vertical, 8)
+                                                .background(selectedSubMenuTab == subName ? Color.timsDarkBrown : Color.timsFieldTan)
+                                                .foregroundColor(selectedSubMenuTab == subName ? Color.timsTan : .secondary)
+                                                .cornerRadius(30)
+                                                .contentShape(Rectangle())
                                         }
+                                        .buttonStyle(.plain)
                                     }
-                                    .contentShape(Rectangle())
                                 }
                             }
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 20)
                         }
                     }
+                    .padding([.horizontal, .bottom])
+                    .background(Color.timsTan)
+                    .zIndex(1)
+                    
+                    // ==========================================
+                    // 2. THE MAIN CANVAS AREA: Dynamic Scroll Catalog Grid
+                    // ==========================================
+                    ZStack {
+                        Image("brownSwirlBackground")
+                            .resizable()
+                            .ignoresSafeArea()
+                        
+                        ScrollView {
+                            if filteredProductsManifestList.isEmpty {
+                                VStack(spacing: 16) {
+                                    Image(systemName: "tray.search")
+                                        .font(.system(size: 44, weight: .light))
+                                        .foregroundColor(.white.opacity(0.6))
+                                    Text("No matching Tims menu items found.")
+                                        .font(.system(.headline, design: .rounded))
+                                        .foregroundColor(.white.opacity(0.6))
+                                }
+                                .padding(.top, 80)
+                            } else {
+                                LazyVGrid(columns: cardGridLayoutColumns, spacing: 14) {
+                                    ForEach(filteredProductsManifestList) { product in
+                                        ProductCardView(product: product) {
+                                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                                temporarySelectedItem = product
+                                                itemQuantity = 1
+                                            }
+                                        }
+                                        .contentShape(Rectangle())
+                                    }
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 20)
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 
                 // ==========================================
-                // 3. THE FLOATING FOOTER PANEL: Selection Checkout Drawer
+                // FIXED INTERACTIVE OVERLAY SHIELD
+                // ==========================================
+                if temporarySelectedItem != nil {
+                    Color.black.opacity(0.01) // Invisible but completely solid touch interceptor barrier layer
+                        .ignoresSafeArea()
+                        .zIndex(2)
+                        .onTapGesture {
+                            // Safely collapses open drawers when background spacing is pressed
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                temporarySelectedItem = nil
+                            }
+                        }
+                }
+                
+                // ==========================================
+                // 3. THE FLOATING FOOTER PANEL: Bottom-Anchored Selection Drawer
                 // ==========================================
                 if let selection = temporarySelectedItem {
-                    VStack(spacing: 14) {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("SELECTED MENU ITEM")
-                                    .font(.system(size: 10, weight: .black, design: .rounded))
-                                    .foregroundColor(.secondary)
-                                Text(selection.name)
-                                    .font(.system(size: 16, weight: .bold, design: .rounded))
-                                    .foregroundColor(.timsDarkBrown)
-                                    .lineLimit(1)
+                    // FIXED: A VStack combined with a top Spacer forces the drawer to stay locked at the bottom edge!
+                    VStack {
+                        Spacer()
+                        
+                        VStack(spacing: 14) {
+                            HStack(alignment: .top) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("SELECTED MENU ITEM")
+                                        .font(.system(size: 10, weight: .black, design: .rounded))
+                                        .foregroundColor(.secondary)
+                                    Text(selection.name)
+                                        .font(.system(size: 16, weight: .bold, design: .rounded))
+                                        .foregroundColor(.timsDarkBrown)
+                                        .lineLimit(1)
+                                }
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                        temporarySelectedItem = nil
+                                    }
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .font(.title3)
+                                        .foregroundColor(.gray.opacity(0.5))
+                                }
+                                .buttonStyle(.plain)
                             }
-                            Spacer()
                             
-                            HStack(spacing: 16) {
-                                Button(action: { if itemQuantity > 1 { itemQuantity -= 1 } }) {
-                                    Image(systemName: "minus.circle.fill")
-                                        .font(.title2)
-                                        .foregroundColor(itemQuantity > 1 ? .timsRed : .gray.opacity(0.3))
+                            HStack {
+                                Text("$\(String(format: "%.2f", selection.price)) each")
+                                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                
+                                HStack(spacing: 16) {
+                                    Button(action: { if itemQuantity > 1 { itemQuantity -= 1 } }) {
+                                        Image(systemName: "minus.circle.fill")
+                                            .font(.title2)
+                                            .foregroundColor(itemQuantity > 1 ? .timsRed : .gray.opacity(0.3))
+                                    }
+                                    Text("\(itemQuantity)")
+                                        .font(.system(size: 18, weight: .black, design: .rounded))
+                                        .foregroundColor(.timsDarkBrown)
+                                        .frame(minWidth: 24)
+                                    Button(action: { if itemQuantity < 10 { itemQuantity += 1 } }) {
+                                        Image(systemName: "plus.circle.fill")
+                                            .font(.title2)
+                                            .foregroundColor(.timsRed)
+                                    }
                                 }
-                                Text("\(itemQuantity)")
-                                    .font(.system(size: 18, weight: .black, design: .rounded))
-                                    .foregroundColor(.timsDarkBrown)
-                                    .frame(minWidth: 24)
-                                Button(action: { if itemQuantity < 10 { itemQuantity += 1 } }) {
-                                    Image(systemName: "plus.circle.fill")
-                                        .font(.title2)
-                                        .foregroundColor(.timsRed)
+                            }
+                            
+                            TextField("Add customization notes (e.g., extra hot)...", text: $itemNotes)
+                                .font(.system(.subheadline, design: .rounded))
+                                .foregroundColor(.timsDarkBrown)
+                                .padding(12)
+                                .background(Color.timsFieldTan)
+                                .cornerRadius(10)
+                            
+                            HStack {
+                                Toggle(isOn: $saveAsFavorite) {
+                                    Label("Save Profile", systemImage: "star.fill")
+                                        .font(.system(size: 13, weight: .bold, design: .rounded))
+                                        .foregroundColor(.orange)
                                 }
+                                .toggleStyle(SwitchToggleStyle(tint: .orange))
+                                
+                                Spacer(minLength: 20)
+                                
+                                Button(action: {
+                                    let chosenItem = OrderItem(itemName: selection.name, quantity: itemQuantity, notes: itemNotes, unitPrice: selection.price)
+                                    let packageOrder = TeamOrder(
+                                        name: personName.isEmpty ? "Guest" : personName,
+                                        drink: chosenItem,
+                                        food: OrderItem(itemName: "None", quantity: 1, notes: "", unitPrice: 0.0),
+                                        isSavedAsFavorite: saveAsFavorite
+                                    )
+                                    
+                                    if let original = editingOrder,
+                                       let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
+                                        appStore.activeOrders[index] = packageOrder
+                                        dismiss()
+                                    } else {
+                                        appStore.saveOrderToActiveRun(packageOrder)
+                                        
+                                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                            temporarySelectedItem = nil
+                                            itemNotes = ""
+                                            itemQuantity = 1
+                                            saveAsFavorite = false
+                                        }
+                                    }
+                                }) {
+                                    Text("Add to Manifest")
+                                        .font(.system(size: 15, weight: .black, design: .rounded))
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 24)
+                                        .padding(.vertical, 14)
+                                        .background(Color.timsRed)
+                                        .cornerRadius(14)
+                                        .shadow(color: Color.timsRed.opacity(0.4), radius: 8, x: 0, y: 4)
+                                }
+                                .buttonStyle(.plain)
                             }
                         }
-                        
-                        TextField("Add customization notes (e.g., extra hot)...", text: $itemNotes)
-                            .font(.system(.subheadline, design: .rounded))
-                            .foregroundColor(.timsDarkBrown)
-                            .padding(12)
-                            .background(Color.timsFieldTan) // Warm accent fill
-                            .cornerRadius(10)
-                        
-                        HStack {
-                            Toggle(isOn: $saveAsFavorite) {
-                                Label("Save Profile", systemImage: "star.fill")
-                                    .font(.system(size: 13, weight: .bold, design: .rounded))
-                                    .foregroundColor(.orange)
-                            }
-                            .toggleStyle(SwitchToggleStyle(tint: .orange))
+                        .padding()
+                        .background(Color.timsTan)
+                        .shadow(color: Color.black.opacity(0.15), radius: 12, x: 0, y: -4)
+                    }
+                    .edgesIgnoringSafeArea(.bottom) // Lets the tan plate slide completely flush into the bottom chin
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .zIndex(3)
+                    .navigationTitle(editingOrder == nil ? "Build Order" : "Modify Order")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Close") { dismiss() }
+                                .font(.system(.body, design: .rounded))
+                                .fontWeight(.bold)
+                                .foregroundColor(.timsRed)
                             
-                            Spacer(minLength: 20)
-                            
-                            Button(action: {
-                                let chosenItem = OrderItem(itemName: selection.name, quantity: itemQuantity, notes: itemNotes, unitPrice: selection.price)
-                                let packageOrder = TeamOrder(
-                                    name: personName.isEmpty ? "Guest" : personName,
-                                    drink: chosenItem,
-                                    food: OrderItem(itemName: "None", quantity: 1, notes: "", unitPrice: 0.0),
-                                    isSavedAsFavorite: saveAsFavorite
-                                )
-                                
-                                if let original = editingOrder,
-                                   let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
-                                    appStore.activeOrders[index] = packageOrder
-                                } else {
-                                    appStore.saveOrderToActiveRun(packageOrder)
-                                }
-                                dismiss()
-                            }) {
-                                Text("Add to Manifest")
-                                    .font(.system(size: 15, weight: .black, design: .rounded))
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 24)
-                                    .padding(.vertical, 14)
-                                    .background(Color.timsRed)
-                                    .cornerRadius(14)
-                                    .shadow(color: Color.timsRed.opacity(0.4), radius: 8, x: 0, y: 4)
-                            }
-                            .buttonStyle(.plain)
                         }
                     }
-                    .padding()
-                    .background(Color.timsTan) // FIXED: Replaced harsh white bottom sheet backdrop with warm soft tan
-                    .shadow(color: Color.black.opacity(0.15), radius: 12, x: 0, y: -4)
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                    .zIndex(2)
+                    .preferredColorScheme(.light)
                 }
             }
-            .navigationTitle(editingOrder == nil ? "Build Order" : "Modify Order")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") { dismiss() }
-                        .font(.system(.body, design: .rounded))
-                        .fontWeight(.bold)
-                        .foregroundColor(.timsRed)
-                }
-            }
-            .preferredColorScheme(.light)
         }
     }
 }

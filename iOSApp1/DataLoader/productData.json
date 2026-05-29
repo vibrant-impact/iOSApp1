@@ -13,7 +13,7 @@
     "name": "Raspberry Mojito Frozen Quencher",
     "description": "",
     "price": 3.99,
-    "category": "New and Seasonal",
+    "category": "Cold Drinks, New and Seasonal",
     "image": "raspberry-mojito-frozen-quencher"
   },
   
@@ -22,7 +22,7 @@
     "name": "Raspberry Mojito Lemonade Quencher",
     "description": "",
     "price": 2.99,
-    "category": "New and Seasonal",
+    "category": "Cold Drinks, New and Seasonal",
     "image": "raspberry-mojito-lemonade-quencher"
   },
   
@@ -31,7 +31,7 @@
     "name": "Cadbury Mini Eggs Dream Donut",
     "description": "",
     "price": 2.49,
-    "category": "New and Seasonal",
+    "category": "Cold Drinks, New and Seasonal",
     "image": "cadbury-mini-eggs-dream-donut"
   },
   
@@ -40,7 +40,7 @@
     "name": "Cadbury Mini Eggs Cookie",
     "description": "",
     "price": 2.49,
-    "category": "New and Seasonal",
+    "category": "Baked Goods, New and Seasonal",
     "image": "cadbury-mini-eggs-cookie"
   },
   
@@ -49,7 +49,7 @@
     "name": "Peach Iced Tea Quencher",
     "description": "",
     "price": 2.99,
-    "category": "New and Seasonal",
+    "category": "Cold Drinks, New and Seasonal",
     "image": "peach-iced-tea-quencher"
   },
   
@@ -58,7 +58,7 @@
     "name": "Strawberry Watermelon Iced Tea Quencher",
     "description": "",
     "price": 2.99,
-    "category": "New and Seasonal",
+    "category": "Cold Drinks, New and Seasonal",
     "image": "strawberry-watermelon-iced-tea-quencher"
   },
   
@@ -67,7 +67,7 @@
     "name": "Blackberry Yuzu Iced Tea Quencher",
     "description": "",
     "price": 2.99,
-    "category": "New and Seasonal",
+    "category": "Cold Drinks, New and Seasonal",
     "image": "blackberry-yuzu-iced-tea-quencher"
   },
   
@@ -76,7 +76,7 @@
     "name": "Orange Tangerine Iced Tea Quencher",
     "description": "",
     "price": 2.99,
-    "category": "New and Seasonal",
+    "category": "Cold Drinks, New and Seasonal",
     "image": "orange-tangerine-iced-tea-quencher"
   },
   
@@ -85,7 +85,7 @@
     "name": "Custard Tart",
     "description": "",
     "price": 2.59,
-    "category": "New and Seasonal",
+    "category": "Baked Goods, New and Seasonal",
     "image": "custard-tart"
   },
   
@@ -1624,11 +1624,11 @@
   
   {
     "id": "204",
-    "name": "Sausage Breakfast Sandwich",
+    "name": "Bacon Breakfast Sandwich",
     "description": "",
     "price": 4.49,
     "category": "Breakfast, Breakfast Sandwiches",
-    "image": "sausage-breakfast-sandwich"
+    "image": "bacon-breakfast-sandwich"
   },
   
   {
@@ -1681,7 +1681,7 @@
     "name": "Farmer's Breakfast Wrap",
     "description": "",
     "price": 5.59,
-    "category": "Breakfast",
+    "category": "Breakfast, Breakfast Wraps",
     "image": "farmers-breakfast-wrap"
   },
   
@@ -1807,7 +1807,7 @@
     "name": "Donation to Tim Hortons Foundation Camps",
     "description": "",
     "price": 1.00,
-    "category": "Breakfast",
+    "category": "Donation",
     "image": "donation-to-tim-hortons-foundation-camps"
   },
   
