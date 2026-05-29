@@ -16,11 +16,11 @@ struct WelcomeView: View {
         VStack(spacing: 24) {
             Spacer()
             
-            // Custom App Graphic Asset:
-            Image("welcomeHeroLogo")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 300, height: 300)
+            // Infinite loop animation container:
+            LoopingVideoPlayerView(welcomeAnimation: "welcomeAnimation")
+                .frame(width: 400, height: 400)
+                .cornerRadius(20)
+                
             
             Text("Tims Coffee Runner")
                 .font(.system(size: 32, weight: .black, design: .rounded))

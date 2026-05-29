@@ -98,7 +98,7 @@ struct AddOrderView: View {
                         
                         TextField("Enter Name (e.g., Alex, Stephanie)", text: $personName)
                             .font(.system(.body, design: .rounded))
-                            .foregroundColor(.primary)
+                            .foregroundColor(.timsDarkBrown)
                             .padding()
                             .background(Color.timsFieldTan) // Swapped with a slightly deeper accent tan
                             .cornerRadius(12)
@@ -113,7 +113,7 @@ struct AddOrderView: View {
                             .foregroundColor(.timsRed)
                         TextField("Search names or categories (e.g., 'Churro')...", text: $globalSearchQuery)
                             .font(.system(.body, design: .rounded))
-                            .foregroundColor(.primary)
+                            .foregroundColor(.timsDarkBrown)
                             .autocorrectionDisabled()
                     }
                     .padding(14)
@@ -124,7 +124,7 @@ struct AddOrderView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("MAIN CATEGORIES")
                             .font(.system(size: 11, weight: .black, design: .rounded))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.timsDarkBrown.opacity(0.7))
                         
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], spacing: 8) {
                             ForEach(mainMenuCategories, id: \.0) { categoryName, symbolIcon in
@@ -142,7 +142,7 @@ struct AddOrderView: View {
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, 12)
                                     .background(selectedMainMenuTab == categoryName ? Color.timsRed : Color.timsFieldTan)
-                                    .foregroundColor(selectedMainMenuTab == categoryName ? .white : .primary)
+                                    .foregroundColor(selectedMainMenuTab == categoryName ? .white : .timsDarkBrown)
                                     .cornerRadius(12)
                                     .contentShape(Rectangle())
                                     .shadow(color: selectedMainMenuTab == categoryName ? Color.timsRed.opacity(0.3) : Color.clear, radius: 6, x: 0, y: 3)
@@ -226,7 +226,7 @@ struct AddOrderView: View {
                                     .foregroundColor(.secondary)
                                 Text(selection.name)
                                     .font(.system(size: 16, weight: .bold, design: .rounded))
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(.timsDarkBrown)
                                     .lineLimit(1)
                             }
                             Spacer()
@@ -239,7 +239,7 @@ struct AddOrderView: View {
                                 }
                                 Text("\(itemQuantity)")
                                     .font(.system(size: 18, weight: .black, design: .rounded))
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(.timsDarkBrown)
                                     .frame(minWidth: 24)
                                 Button(action: { if itemQuantity < 10 { itemQuantity += 1 } }) {
                                     Image(systemName: "plus.circle.fill")
@@ -251,7 +251,7 @@ struct AddOrderView: View {
                         
                         TextField("Add customization notes (e.g., extra hot)...", text: $itemNotes)
                             .font(.system(.subheadline, design: .rounded))
-                            .foregroundColor(.primary)
+                            .foregroundColor(.timsDarkBrown)
                             .padding(12)
                             .background(Color.timsFieldTan) // Warm accent fill
                             .cornerRadius(10)

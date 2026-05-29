@@ -40,7 +40,7 @@ struct ProductCardView: View {
                 // Product Metadata Titles Text Labels
                 Text(product.name)
                     .font(.system(size: 14, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary)
+                    .foregroundColor(.timsDarkBrown)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
                     .frame(height: 36, alignment: .topLeading)

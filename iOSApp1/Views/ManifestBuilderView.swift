@@ -168,7 +168,7 @@ struct ManifestBuilderView: View {
                                 }) {
                                     Label("Add Order", systemImage: "plus.circle.fill")
                                         .font(.system(size: 16, weight: .black, design: .rounded))
-                                        .foregroundColor(.brown)
+                                        .foregroundColor(.timsDarkBrown)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
                                         .background(Color.timsGold)
@@ -179,12 +179,12 @@ struct ManifestBuilderView: View {
                                 Button(action: { isManifestLocked = true }) {
                                     Text("Ready to Run!")
                                         .font(.system(size: 16, weight: .black, design: .rounded))
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.timsDarkBrown)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
-                                        .background(appStore.activeOrders.isEmpty ? Color.white.opacity(0.2) : Color.green)
+                                        .background(appStore.activeOrders.isEmpty ? Color.timsTan : Color.red)
                                         .cornerRadius(14)
-                                        .shadow(color: appStore.activeOrders.isEmpty ? Color.clear : Color.green.opacity(0.4), radius: 8, x: 0, y: 4)
+                                        .shadow(color: appStore.activeOrders.isEmpty ? Color.clear : Color.red.opacity(0.4), radius: 8, x: 0, y: 4)
                                 }
                                 .disabled(appStore.activeOrders.isEmpty)
                             }
@@ -196,7 +196,7 @@ struct ManifestBuilderView: View {
                                         .foregroundColor(.white)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
-                                        .background(Color.white.opacity(0.25))
+                                        .background(Color.timsTan)
                                         .cornerRadius(14)
                                 }
                                 
@@ -206,9 +206,9 @@ struct ManifestBuilderView: View {
                                         .foregroundColor(.white)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
-                                        .background(appStore.currentRunner.isEmpty ? Color.white.opacity(0.2) : Color.green)
+                                        .background(appStore.currentRunner.isEmpty ? Color.timsTan : Color.red)
                                         .cornerRadius(14)
-                                        .shadow(color: appStore.currentRunner.isEmpty ? Color.clear : Color.green.opacity(0.4), radius: 8, x: 0, y: 4)
+                                        .shadow(color: appStore.currentRunner.isEmpty ? Color.clear : Color.red.opacity(0.4), radius: 8, x: 0, y: 4)
                                 }
                                 .disabled(appStore.currentRunner.isEmpty)
                             }

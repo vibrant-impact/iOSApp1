@@ -19,5 +19,8 @@ extension Color {
     static let timsFieldTan = Color(red: 0.89, green: 0.84, blue: 0.77)
     
     /// A bright, premium metallic gold for celebratory accents, titles, and loyalty highlights
-        static let timsGold = Color(red: 0.93, green: 0.73, blue: 0.29)
+    static let timsGold = Color(red: 0.93, green: 0.73, blue: 0.29)
+    
+    /// A rich, deep dark espresso brown substitute for stark black text and labels
+    static let timsDarkBrown = Color(red: 0.18, green: 0.12, blue: 0.08)
 }
