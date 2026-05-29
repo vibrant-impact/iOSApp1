@@ -28,36 +28,48 @@ struct ManifestBuilderView: View {
                     .resizable()
                     .ignoresSafeArea()
                 
-                VStack {
-                    // Custom Header Top Navigation Bar Component for distinct styling
-                    HStack {
-                        Button(action: { runSequenceStarted = false }) {
-                            Text("Cancel Run")
+                VStack(spacing: 0) {
+                    
+                    // ==========================================
+                    // NEW PREMIUM HEADER: Split Controls & Titles
+                    // ==========================================
+                    VStack(alignment: .leading, spacing: 12) {
+                        // Top Utility Row (Dismiss Button Only)
+                        HStack {
+                            Button(action: { runSequenceStarted = false }) {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "chevron.left")
+                                    Text("Cancel Run")
+                                }
                                 .font(.system(size: 14, weight: .bold, design: .rounded))
                                 .foregroundColor(.white)
-                                .padding(.horizontal, 14)
+                                .padding(.horizontal, 12)
                                 .padding(.vertical, 8)
-                                .background(Color.white.opacity(0.2))
+                                .background(Color.white.opacity(0.15))
                                 .cornerRadius(10)
+                            }
+                            
+                            Spacer() // Pushes button all the way left
                         }
                         
-                        Spacer()
-                        
+                        // Bold Large Feature Title Stacking Layer
                         Text("Add Orders")
-                            .font(.system(size: 22, weight: .black, design: .rounded))
-                            .foregroundColor(.white)
-                        
-                        Spacer()
-                        // Invisible structural balancer block to center the title perfectly
-                        Text("Cancel Run").font(.system(size: 14)).opacity(0).padding(.horizontal, 14)
+                            .font(.system(size: 36, weight: .black, design: .rounded)) // Massive feature scale
+                            .foregroundColor(.timsGold) // Brand new popping asset color!
+                            .shadow(color: Color.black.opacity(0.3), radius: 4, x: 0, y: 2)
+                            .padding(.top, 4)
                     }
-                    .padding(.horizontal)
-                    .padding(.top, 10)
+                    .padding(.horizontal, 24)
+                    .padding(.top, 14)
+                    .padding(.bottom, 10)
                     
+                    // ==========================================
+                    // MAIN MANIFEST ROW LIST (Stays exactly the same)
+                    // ==========================================
                     List {
                         Section(header: Text(isManifestLocked ? "Current Group Orders" : "Current Group Orders (Tap to Edit)")
                             .font(.system(size: 11, weight: .black, design: .rounded))
-                            .foregroundColor(.white.opacity(0.9)) // Prominent high contrast styling
+                            .foregroundColor(.white.opacity(0.9))
                         ) {
                             if appStore.activeOrders.isEmpty {
                                 HStack {
@@ -69,13 +81,13 @@ struct ManifestBuilderView: View {
                                         Text("No orders added yet.\nTap 'Add Order' below to begin.")
                                             .font(.system(.subheadline, design: .rounded))
                                             .fontWeight(.bold)
-                                            .foregroundColor(.primary) // Dark crisp text inside the light card row
+                                            .foregroundColor(.brown)
                                             .multilineTextAlignment(.center)
                                     }
                                     Spacer()
                                 }
                                 .padding(.vertical, 12)
-                                .listRowBackground(Color.white.opacity(0.92))
+                                .listRowBackground(Color.timsTan.opacity(0.92))
                             } else {
                                 ForEach(appStore.activeOrders) { order in
                                     Button(action: {
@@ -85,7 +97,6 @@ struct ManifestBuilderView: View {
                                         }
                                     }) {
                                         HStack {
-                                            // FIXED: Changed 'appleAlignment' to the correct standard 'alignment' parameter
                                             VStack(alignment: .leading, spacing: 4) {
                                                 Text(order.name)
                                                     .font(.system(.headline, design: .rounded))
@@ -104,7 +115,7 @@ struct ManifestBuilderView: View {
                                     }
                                 }
                                 .onDelete(perform: deleteOrderFromActiveRun)
-                                .listRowBackground(Color.white.opacity(0.92))
+                                .listRowBackground(Color.timsTan.opacity(0.92))
                             }
                         }
                         
@@ -123,7 +134,7 @@ struct ManifestBuilderView: View {
                                         .foregroundColor(.green)
                                 }
                             }
-                            .listRowBackground(Color.white.opacity(0.92))
+                            .listRowBackground(Color.timsTan.opacity(0.92))
                         }
                         
                         if isManifestLocked {
@@ -139,14 +150,14 @@ struct ManifestBuilderView: View {
                                 .font(.system(.body, design: .rounded))
                                 .pickerStyle(.menu)
                             }
-                            .listRowBackground(Color.white.opacity(0.92))
+                            .listRowBackground(Color.timsTan.opacity(0.92))
                         }
                     }
                     .scrollContentBackground(.hidden)
                     .listStyle(.insetGrouped)
                     
                     // ==========================================
-                    // ACTION CONTROL TRAY: HIGH POPPING BUTTON DESIGNS
+                    // ACTION CONTROL TRAY (Stays exactly the same)
                     // ==========================================
                     VStack(spacing: 12) {
                         if !isManifestLocked {
@@ -157,10 +168,10 @@ struct ManifestBuilderView: View {
                                 }) {
                                     Label("Add Order", systemImage: "plus.circle.fill")
                                         .font(.system(size: 16, weight: .black, design: .rounded))
-                                        .foregroundColor(.timsRed)
+                                        .foregroundColor(.brown)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
-                                        .background(Color.white)
+                                        .background(Color.timsGold)
                                         .cornerRadius(14)
                                         .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
                                 }
@@ -208,18 +219,20 @@ struct ManifestBuilderView: View {
                     .background(.ultraThinMaterial)
                 }
             }
-            .toolbar(.hidden, for: .navigationBar) // Intentionally hides system bar to use custom header component above
+            .toolbar(.hidden, for: .navigationBar)
             .preferredColorScheme(.dark)
-            // FIXED: Restored the essential modal sheet binding so the Add Order presentation context triggers correctly
             .sheet(isPresented: $showingAddOrderForm) {
                 AddOrderView(appStore: appStore, orderToEdit: selectedOrderToEdit)
             }
-            .preferredColorScheme(.dark)
         }
     }
-    
+                        
+    // MARK: - Swiping Action Logic
+    /// Deletes a specific user order row item from the active group run manifest
     private func deleteOrderFromActiveRun(at offsets: IndexSet) {
         appStore.activeOrders.remove(atOffsets: offsets)
+                            
+        // Safety check: If the person driving was just deleted, reset the selection picker context
         if !appStore.activeOrderNames.contains(appStore.currentRunner) {
             appStore.currentRunner = ""
         }

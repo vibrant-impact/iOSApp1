@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 
 struct AddOrderView: View {
+    // MARK: - View Environments
     @Environment(\.dismiss) var dismiss
     @ObservedObject var appStore: OrderStore
     var editingOrder: TeamOrder?
@@ -87,49 +88,25 @@ struct AddOrderView: View {
             VStack(spacing: 0) {
                 
                 // ==========================================
-                // 1. THE TOP AREA: Pure Solid White & Clean Contrast
+                // 1. THE TOP AREA: Warm, Soft Tan Header Panel
                 // ==========================================
                 VStack(spacing: 14) {
-                    // Custom Header Navigation Title Replacement to bypass sheet style overrides
-                    HStack {
-                        Button(action: { dismiss() }) {
-                            Text("Close")
-                                .font(.system(size: 16, weight: .bold, design: .rounded))
-                                .foregroundColor(.timsRed)
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 8)
-                                .background(Color.timsRed.opacity(0.1))
-                                .cornerRadius(12)
-                        }
-                        
-                        Spacer()
-                        
-                        Text(editingOrder == nil ? "Build Order" : "Modify Order")
-                            .font(.system(size: 18, weight: .black, design: .rounded))
-                            .foregroundColor(.primary)
-                        
-                        Spacer()
-                        // Invisible alignment spacer block
-                        Text("Close").font(.system(size: 16)).opacity(0).padding(.horizontal, 16)
-                    }
-                    .padding(.top, 12)
-                    
-                    // Identity input textfield
                     VStack(alignment: .leading, spacing: 6) {
                         Text("WHO IS PLACING THIS ORDER?")
                             .font(.system(size: 11, weight: .black, design: .rounded))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.timsRed) // Changed to Tims Red for a beautiful accent pop
                         
                         TextField("Enter Name (e.g., Alex, Stephanie)", text: $personName)
                             .font(.system(.body, design: .rounded))
                             .foregroundColor(.primary)
                             .padding()
-                            .background(Color(.systemGray6))
+                            .background(Color.timsFieldTan) // Swapped with a slightly deeper accent tan
                             .cornerRadius(12)
                             .disabled(editingOrder != nil)
                     }
+                    .padding(.top, 10)
                     
-                    // Search Entry Bar
+                    // Unified text entry search input bar
                     HStack {
                         Image(systemName: "magnifyingglass")
                             .font(.system(size: 16, weight: .bold))
@@ -140,10 +117,10 @@ struct AddOrderView: View {
                             .autocorrectionDisabled()
                     }
                     .padding(14)
-                    .background(Color(.systemGray6))
+                    .background(Color.timsFieldTan) // Swapped to match fields
                     .cornerRadius(12)
                     
-                    // Main Categories Navigation Switcher
+                    // Main category tab selectors grid
                     VStack(alignment: .leading, spacing: 8) {
                         Text("MAIN CATEGORIES")
                             .font(.system(size: 11, weight: .black, design: .rounded))
@@ -164,16 +141,18 @@ struct AddOrderView: View {
                                     }
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, 12)
-                                    .background(selectedMainMenuTab == categoryName ? Color.timsRed : Color(.systemGray5))
+                                    .background(selectedMainMenuTab == categoryName ? Color.timsRed : Color.timsFieldTan)
                                     .foregroundColor(selectedMainMenuTab == categoryName ? .white : .primary)
                                     .cornerRadius(12)
+                                    .contentShape(Rectangle())
                                     .shadow(color: selectedMainMenuTab == categoryName ? Color.timsRed.opacity(0.3) : Color.clear, radius: 6, x: 0, y: 3)
                                 }
+                                .buttonStyle(.plain)
                             }
                         }
                     }
                     
-                    // Horizontal Subcategories Sub-tabs
+                    // Horizontal scroll secondary submenu tabs
                     if structuralSubMenusList.count > 1 {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
@@ -183,20 +162,23 @@ struct AddOrderView: View {
                                             .font(.system(size: 12, weight: .bold, design: .rounded))
                                             .padding(.horizontal, 16)
                                             .padding(.vertical, 8)
-                                            .background(selectedSubMenuTab == subName ? Color.primary : Color(.systemGray6))
-                                            .foregroundColor(selectedSubMenuTab == subName ? Color(.systemBackground) : .secondary)
+                                            .background(selectedSubMenuTab == subName ? Color.primary : Color.timsFieldTan)
+                                            .foregroundColor(selectedSubMenuTab == subName ? Color.timsTan : .secondary)
                                             .cornerRadius(30)
+                                            .contentShape(Rectangle())
                                     }
+                                    .buttonStyle(.plain)
                                 }
                             }
                         }
                     }
                 }
                 .padding([.horizontal, .bottom])
-                .background(Color.white) // Strictly forces this section to remain white regardless of system traits
+                .background(Color.timsTan) // FIXED: Replaced harsh white panel background with soft tan
+                .zIndex(1)
                 
                 // ==========================================
-                // 2. THE GRID AREA: Deep Swirl Image Canvas Background
+                // 2. THE MAIN CANVAS AREA: Swirl Layer Behind Grid Cards
                 // ==========================================
                 ZStack {
                     Image("brownSwirlBackground")
@@ -223,6 +205,7 @@ struct AddOrderView: View {
                                             itemQuantity = 1
                                         }
                                     }
+                                    .contentShape(Rectangle())
                                 }
                             }
                             .padding(.horizontal, 16)
@@ -232,7 +215,7 @@ struct AddOrderView: View {
                 }
                 
                 // ==========================================
-                // 3. THE FOOTER PANEL: Floating Bottom Dock
+                // 3. THE FLOATING FOOTER PANEL: Selection Checkout Drawer
                 // ==========================================
                 if let selection = temporarySelectedItem {
                     VStack(spacing: 14) {
@@ -270,7 +253,7 @@ struct AddOrderView: View {
                             .font(.system(.subheadline, design: .rounded))
                             .foregroundColor(.primary)
                             .padding(12)
-                            .background(Color(.systemGray6))
+                            .background(Color.timsFieldTan) // Warm accent fill
                             .cornerRadius(10)
                         
                         HStack {
@@ -309,16 +292,27 @@ struct AddOrderView: View {
                                     .cornerRadius(14)
                                     .shadow(color: Color.timsRed.opacity(0.4), radius: 8, x: 0, y: 4)
                             }
+                            .buttonStyle(.plain)
                         }
                     }
                     .padding()
-                    .background(Color.white)
+                    .background(Color.timsTan) // FIXED: Replaced harsh white bottom sheet backdrop with warm soft tan
                     .shadow(color: Color.black.opacity(0.15), radius: 12, x: 0, y: -4)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .zIndex(2)
                 }
             }
-            .toolbar(.hidden, for: .navigationBar) // Employs our customized clean top banner instead
-            .preferredColorScheme(.light) // Fixes internal asset components to remain bright
+            .navigationTitle(editingOrder == nil ? "Build Order" : "Modify Order")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close") { dismiss() }
+                        .font(.system(.body, design: .rounded))
+                        .fontWeight(.bold)
+                        .foregroundColor(.timsRed)
+                }
+            }
+            .preferredColorScheme(.light)
         }
     }
 }

@@ -46,12 +46,6 @@ struct ContentView: View {
         }
     }
 }
-
-// MARK: - Core Color Configurations
-extension Color {
-    static let timsRed = Color(red: 0.75, green: 0.10, blue: 0.15)
-}
-
 #Preview {
     ContentView()
 }
