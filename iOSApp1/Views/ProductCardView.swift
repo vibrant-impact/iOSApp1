@@ -17,19 +17,25 @@ struct ProductCardView: View {
                 
                 // Image layer container matching asset file name strings
                 ZStack {
-                    // FIXED: Changed inner box from harsh gray to match your custom background texture smoothly
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color.timsDarkBrown.opacity(0.04))
                         .frame(height: 110)
                     
+                    // FIXED: Check if the PNG asset exists in the app bundle catalog.
+                    // If it is one of the missing 60 items, it smoothly renders our custom cup placeholder!
                     Image(product.image)
                         .resizable()
                         .scaledToFit()
                         .frame(height: 95)
-                        .placeholder(when: true) {
-                            Image(systemName: "cup.and.saucer.fill")
-                                .font(.title)
-                                .foregroundColor(.gray.opacity(0.4))
+                        .placeholder(when: UIImage(named: product.image) == nil) {
+                            VStack(spacing: 4) {
+                                Image(systemName: "cup.and.saucer.fill")
+                                    .font(.title)
+                                    .foregroundColor(.timsDarkBrown.opacity(0.2))
+                                Text("Coming Soon")
+                                    .font(.system(size: 9, weight: .bold, design: .rounded))
+                                    .foregroundColor(.timsDarkBrown.opacity(0.4))
+                            }
                         }
                 }
                 
@@ -54,9 +60,9 @@ struct ProductCardView: View {
                 }
             }
             .padding(10)
-            .background(Color.timsTan) // FIXED: Swapped harsh white card background out for your creamy Tims Tan theme!
+            .background(Color.timsTan)
             .cornerRadius(16)
-            .shadow(color: Color.timsDarkBrown.opacity(0.12), radius: 6, x: 0, y: 3) // Softened shadow contrast
+            .shadow(color: Color.timsDarkBrown.opacity(0.12), radius: 6, x: 0, y: 3)
         }
         .buttonStyle(.plain)
     }
