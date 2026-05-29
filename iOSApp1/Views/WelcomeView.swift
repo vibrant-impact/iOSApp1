@@ -16,12 +16,11 @@ struct WelcomeView: View {
         VStack(spacing: 24) {
             Spacer()
             
-            // Your custom guy-in-car icon asset placeholder
-            Image(systemName: "car.circle.fill")
+            // Custom App Graphic Asset:
+            Image("welcomeHeroLogo")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 140, height: 140)
-                .foregroundColor(.timsRed)
+                .frame(width: 300, height: 300)
             
             Text("Tims Coffee Runner")
                 .font(.system(size: 32, weight: .black, design: .rounded))

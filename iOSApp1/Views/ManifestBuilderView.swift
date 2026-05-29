@@ -24,131 +24,154 @@ struct ManifestBuilderView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                List {
-                    Section(header: Text(isManifestLocked ? "Current Group Orders" : "Current Group Orders (Tap to Edit)")) {
-                        if appStore.activeOrders.isEmpty {
-                            Text("No orders added yet. Tap '+' below to begin.")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        } else {
-                            ForEach(appStore.activeOrders) { order in
-                                Button(action: {
-                                    if !isManifestLocked {
-                                        selectedOrderToEdit = order
-                                        showingAddOrderForm = true
-                                    }
-                                }) {
-                                    HStack {
-                                        VStack(alignment: .leading, spacing: 4) {
-                                            Text(order.name).font(.headline)
-                                            Text("☕ \(order.drink.quantity)x \(order.drink.itemName)")
-                                                .font(.subheadline)
-                                                .foregroundColor(.secondary)
-                                            if order.food.itemName != "None" {
-                                                Text("🍩 \(order.food.quantity)x \(order.food.itemName)")
+            ZStack {
+                // MASTER BACKGROUND LAYER: Injecting the rich, dark texture asset
+                Image("brownSwirlBackground")
+                    .resizable()
+                    .ignoresSafeArea()
+                
+                VStack {
+                    List {
+                        // Section: Order Registry Loop
+                        Section(header: Text(isManifestLocked ? "Current Group Orders" : "Current Group Orders (Tap to Edit)")
+                            .foregroundColor(.white.opacity(0.8)) // Dynamic text contrast adjustment
+                        ) {
+                            if appStore.activeOrders.isEmpty {
+                                Text("No orders added yet. Tap 'Add Order' below to begin.")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                                    .listRowBackground(Color.white.opacity(0.85)) // Frosted translucent rows
+                            } else {
+                                ForEach(appStore.activeOrders) { order in
+                                    Button(action: {
+                                        if !isManifestLocked {
+                                            selectedOrderToEdit = order
+                                            showingAddOrderForm = true
+                                        }
+                                    }) {
+                                        HStack {
+                                            VStack(alignment: .leading, spacing: 4) {
+                                                Text(order.name)
+                                                    .font(.headline)
+                                                    .foregroundColor(.primary)
+                                                
+                                                Text("☕ \(order.drink.quantity)x \(order.drink.itemName)")
                                                     .font(.subheadline)
                                                     .foregroundColor(.secondary)
+                                                
+                                                if order.food.itemName != "None" {
+                                                    Text("🍩 \(order.food.quantity)x \(order.food.itemName)")
+                                                        .font(.subheadline)
+                                                        .foregroundColor(.secondary)
+                                                }
                                             }
+                                            Spacer()
+                                            Text("$\(String(format: "%.2f", order.checkoutTotal))")
+                                                .font(.subheadline)
+                                                .fontWeight(.semibold)
+                                                .foregroundColor(.primary)
                                         }
-                                        Spacer()
-                                        Text("$\(String(format: "%.2f", order.checkoutTotal))")
-                                            .font(.subheadline)
-                                            .fontWeight(.semibold)
                                     }
                                 }
-                            }
-                            .onDelete(perform: deleteOrderFromActiveRun)
-                        }
-                    }
-                    
-                    if !appStore.activeOrders.isEmpty {
-                        Section(header: Text("💰 Total for All Orders")) {
-                            HStack {
-                                Text("Estimated Run Total:")
-                                    .fontWeight(.bold)
-                                Spacer()
-                                Text("$\(String(format: "%.2f", runningGrandTotal))")
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.green)
+                                .onDelete(perform: deleteOrderFromActiveRun)
+                                .listRowBackground(Color.white.opacity(0.85)) // Frosted translucent rows
                             }
                         }
-                    }
-                    
-                    if isManifestLocked {
-                        Section(header: Text("📋 Select the Designated Runner")) {
-                            Picker("Who is driving?", selection: $appStore.currentRunner) {
-                                Text("Choose Runner...").tag("")
-                                ForEach(appStore.activeOrderNames, id: \.self) { name in
-                                    Text(name).tag(name)
+                        
+                        // Section: Totals Checkout Financial Ledger
+                        if !appStore.activeOrders.isEmpty {
+                            Section(header: Text("💰 Manifest Cost Summary").foregroundColor(.white.opacity(0.8))) {
+                                HStack {
+                                    Text("Estimated Run Total:")
+                                        .fontWeight(.bold)
+                                    Spacer()
+                                    Text("$\(String(format: "%.2f", runningGrandTotal))")
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.green)
                                 }
                             }
-                            .pickerStyle(.menu)
+                            .listRowBackground(Color.white.opacity(0.85))
+                        }
+                        
+                        // Section: Contextual Runner Selector Dropdown (reveals only when locked)
+                        if isManifestLocked {
+                            Section(header: Text("📋 Select the Designated Runner").foregroundColor(.white.opacity(0.8))) {
+                                Picker("Who is driving?", selection: $appStore.currentRunner) {
+                                    Text("Choose Runner...").tag("")
+                                    ForEach(appStore.activeOrderNames, id: \.self) { name in
+                                        Text(name).tag(name)
+                                    }
+                                }
+                                .pickerStyle(.menu)
+                            }
+                            .listRowBackground(Color.white.opacity(0.85))
                         }
                     }
-                }
-                .listStyle(.insetGrouped)
-                
-                // Action Control Tray Base Footer Buttons
-                VStack(spacing: 12) {
-                    if !isManifestLocked {
-                        HStack(spacing: 16) {
-                            // Trigger button to load or construct a brand new individual item sheet modal
-                            Button(action: {
-                                selectedOrderToEdit = nil
-                                showingAddOrderForm = true
-                            }) {
-                                Label("Add Order", systemImage: "plus")
-                                    .font(.headline)
-                                    .foregroundColor(.timsRed)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color.timsRed.opacity(0.1))
-                                    .cornerRadius(12)
+                    .scrollContentBackground(.hidden) // STRIPS out the native system default gray card layers
+                    .listStyle(.insetGrouped)
+                    
+                    // Action Control Tray Base Footer Buttons Container
+                    VStack(spacing: 12) {
+                        if !isManifestLocked {
+                            HStack(spacing: 16) {
+                                Button(action: {
+                                    selectedOrderToEdit = nil
+                                    showingAddOrderForm = true
+                                }) {
+                                    Label("Add Order", systemImage: "plus")
+                                        .font(.headline)
+                                        .foregroundColor(.timsRed)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color.white) // High-contrast solid button look over dark canvas
+                                        .cornerRadius(12)
+                                }
+                                
+                                Button(action: { isManifestLocked = true }) {
+                                    Text("Ready to Run!")
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(appStore.activeOrders.isEmpty ? Color.gray : Color.green)
+                                        .cornerRadius(12)
+                                }
+                                .disabled(appStore.activeOrders.isEmpty)
                             }
-                            
-                            Button(action: { isManifestLocked = true }) {
-                                Text("Ready to Run!")
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(appStore.activeOrders.isEmpty ? Color.gray : Color.green)
-                                    .cornerRadius(12)
+                        } else {
+                            HStack(spacing: 16) {
+                                Button(action: { isManifestLocked = false }) {
+                                    Text("Unlock & Edit")
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color.white.opacity(0.25)) // Blends nicely with swirl textures
+                                        .cornerRadius(12)
+                                }
+                                
+                                Button(action: { runTimerActive = true }) {
+                                    Text("🚀 Start Clock")
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(appStore.currentRunner.isEmpty ? Color.gray : Color.green)
+                                        .cornerRadius(12)
+                                }
+                                .disabled(appStore.currentRunner.isEmpty)
                             }
-                            .disabled(appStore.activeOrders.isEmpty)
-                        }
-                    } else {
-                        HStack(spacing: 16) {
-                            Button(action: { isManifestLocked = false }) {
-                                Text("Unlock & Edit")
-                                    .font(.headline)
-                                    .foregroundColor(.secondary)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color(.systemGray5))
-                                    .cornerRadius(12)
-                            }
-                            
-                            Button(action: { runTimerActive = true }) {
-                                Text("🚀 Start Clock")
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(appStore.currentRunner.isEmpty ? Color.gray : Color.green)
-                                    .cornerRadius(12)
-                            }
-                            .disabled(appStore.currentRunner.isEmpty)
                         }
                     }
+                    .padding()
+                    .background(.ultraThinMaterial) // Beautiful translucent frosting effect directly over the bottom swirl
                 }
-                .padding()
             }
             .navigationTitle("Add Orders")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel Setup") { runSequenceStarted = false }
+                        .foregroundColor(.white) // Ensures bar buttons remain bright
                 }
             }
             .sheet(isPresented: $showingAddOrderForm) {

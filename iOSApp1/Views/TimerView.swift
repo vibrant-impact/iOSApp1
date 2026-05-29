@@ -32,77 +32,85 @@ struct TimerView: View {
     }
     
     var body: some View {
+        
+        ZStack {
+            // Apply your deep brown texture background across the full screen viewport canvas
+            Image("brownSwirlBackground")
+                .resizable()
+                .ignoresSafeArea()
             
-        VStack(spacing: 30) {
-            Text("☕ Run in Progress!")
-                .font(.largeTitle)
-                .bold()
-                .foregroundColor(.white) // Switch text to white for legibility
+            VStack(spacing: 30) {
+                Text("☕ Run in Progress!")
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(.white) // Switch text to white for legibility
                 
-            Text("Runner: \(appStore.currentRunner)")
-                .font(.title2)
-                .foregroundColor(.gray)
+                Text("Runner: \(appStore.currentRunner)")
+                    .font(.title2)
+                    .foregroundColor(.gray)
                 
-            VStack {
-                if secondsElapsed <= targetTimeLimit {
-                    Text(formattedTime)
-                        .font(.system(size: 72, weight: .black, design: .rounded))
-                        .foregroundColor(.green)
-                    Text("Time left for a free drink credit!")
-                        .font(.subheadline)
-                        .foregroundColor(.gray) // Use a lighter gray style
-                } else {
-                    let overage = secondsElapsed - targetTimeLimit
-                    Text("+\(overage / 60):\(String(format: "%02d", overage % 60))")
-                        .font(.system(size: 72, weight: .black, design: .rounded))
-                        .foregroundColor(.timsRed)
-                    Text("Run Time Exceeded Limit")
-                        .font(.subheadline)
-                        .foregroundColor(.timsRed)
+                VStack {
+                    if secondsElapsed <= targetTimeLimit {
+                        Text(formattedTime)
+                            .font(.system(size: 72, weight: .black, design: .rounded))
+                            .foregroundColor(.green)
+                        Text("Time left for a free drink credit!")
+                            .font(.subheadline)
+                            .foregroundColor(.gray) // Use a lighter gray style
+                    } else {
+                        let overage = secondsElapsed - targetTimeLimit
+                        Text("+\(overage / 60):\(String(format: "%02d", overage % 60))")
+                            .font(.system(size: 72, weight: .black, design: .rounded))
+                            .foregroundColor(.timsRed)
+                        Text("Run Time Exceeded Limit")
+                            .font(.subheadline)
+                            .foregroundColor(.timsRed)
+                    }
                 }
+                .padding()
+                
+                Button(action: {
+                    earnedCreditStatus = secondsElapsed <= targetTimeLimit
+                    let totalItems = appStore.activeOrders.count
+                    let summary = CompletedRunSummary(
+                        dateCompleted: Date(),
+                        runnerName: appStore.currentRunner,
+                        totalItemsOrdered: totalItems,
+                        timeTakenSeconds: secondsElapsed,
+                        earnedCredit: earnedCreditStatus
+                    )
+                    appStore.runHistory.append(summary)
+                    showSummaryAlert = true
+                }) {
+                    HStack {
+                        Image(systemName: "cup.and.saucer.fill")
+                        Text("I'm Back! Complete Run")
+                    }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.timsRed)
+                    .cornerRadius(15)
+                }
+                .padding(.horizontal)
+            }
+            .onReceive(activeTimer) { _ in
+                if !isRunCompleted {
+                    secondsElapsed += 1
+                }
+            }
+            .alert(isPresented: $showSummaryAlert) {
+                Alert(
+                    title: Text(earnedCreditStatus ? "🎉 Quick Run Reward!" : "Welcome Back!"),
+                    message: Text(earnedCreditStatus ? "\(appStore.currentRunner) completed the run in under 15 minutes and earned 1 Free Drink Credit!" : "Run completed in \(secondsElapsed / 60)m \(secondsElapsed % 60)s."),
+                    dismissButton: .default(Text("Awesome"), action: {
+                        appStore.resetActiveRun()
+                        isRunActive = false
+                    })
+                )
             }
             .padding()
-                
-            Button(action: {
-                earnedCreditStatus = secondsElapsed <= targetTimeLimit
-                let totalItems = appStore.activeOrders.count
-                let summary = CompletedRunSummary(
-                    dateCompleted: Date(),
-                    runnerName: appStore.currentRunner,
-                    totalItemsOrdered: totalItems,
-                    timeTakenSeconds: secondsElapsed,
-                    earnedCredit: earnedCreditStatus
-                )
-                appStore.runHistory.append(summary)
-                showSummaryAlert = true
-            }) {
-                HStack {
-                    Image(systemName: "cup.and.saucer.fill")
-                    Text("I'm Back! Complete Run")
-                }
-                .font(.headline)
-                .foregroundColor(.white)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.timsRed)
-                .cornerRadius(15)
-            }
-            .padding(.horizontal)
-        }
-        .onReceive(activeTimer) { _ in
-            if !isRunCompleted {
-                secondsElapsed += 1
-            }
-        }
-        .alert(isPresented: $showSummaryAlert) {
-            Alert(
-                title: Text(earnedCreditStatus ? "🎉 Quick Run Reward!" : "Welcome Back!"),
-                message: Text(earnedCreditStatus ? "\(appStore.currentRunner) completed the run in under 15 minutes and earned 1 Free Drink Credit!" : "Run completed in \(secondsElapsed / 60)m \(secondsElapsed % 60)s."),
-                dismissButton: .default(Text("Awesome"), action: {
-                    appStore.resetActiveRun()
-                    isRunActive = false
-                })
-            )
         }
     }
 }
