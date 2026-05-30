@@ -24,6 +24,7 @@ struct AddOrderView: View {
     @State private var pendingItems: [OrderItem] = []
     @State private var useDrinkCredit = false
     @State private var showingNameWarningAlert = false
+    @State private var isShowingBasketSummary = false
     
     // MARK: - Menu Tab State Anchors
     @State private var selectedCategory: String? = nil
@@ -61,44 +62,47 @@ struct AddOrderView: View {
         let textQuery = globalSearchQuery.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         
         return appStore.allProducts.filter { product in
-            // 1. Text Search Filter (scans names and categories)
             if !textQuery.isEmpty {
                 let nameMatches = product.name.lowercased().contains(textQuery)
                 let categoryMatches = product.category.lowercased().contains(textQuery)
                 guard nameMatches || categoryMatches else { return false }
             }
-            
-            // 2. Main Category Filter (matches based on button selection)
             if let mainCat = selectedCategory {
                 guard product.category.lowercased().contains(mainCat.lowercased()) else { return false }
             }
-            
-            // 3. Subcategory Filter (matches based on sub-pill selection)
             if let subCat = selectedSubcategory {
                 guard product.category.lowercased().contains(subCat.lowercased()) else { return false }
             }
-            
             return true
         }
     }
 
-    
-    /// Finds the real-time credit balance of the typed profile instance name
     var userProfileCreditBalance: Int {
         let targetName = personName.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !targetName.isEmpty else { return 0 }
         return appStore.userProfiles.first(where: { $0.name.lowercased() == targetName.lowercased() })?.drinkCreditsBalance ?? 0
     }
     
-    /// Computes the final basket cost total, zeroing out the highest-priced item if the redemption toggle is active
+    /// Computes the final basket cost total, applying a max $6.00 credit to the most expensive beverage if active
     var computedBasketTotal: Double {
         let rawTotal = pendingItems.reduce(0) { $0 + $1.itemTotal }
         guard useDrinkCredit, !pendingItems.isEmpty else { return rawTotal }
         
-        // Finds the maximum single unit price item inside the basket list array
-        if let highestPricedItem = pendingItems.max(by: { $0.unitPrice < $1.unitPrice }) {
-            return rawTotal - highestPricedItem.unitPrice
+        // Filters to find only beverage items, ignoring food or merchandise box items
+        let beverages = pendingItems.filter { item in
+            let name = item.itemName.lowercased()
+            return name.contains("coffee") || name.contains("capp") || name.contains("latte") ||
+                   name.contains("tea") || name.contains("quencher") || name.contains("drink") ||
+                   name.contains("brew") || name.contains("lemonade") || name.contains("chocolate")
         }
+        
+        // Finds the single highest-priced beverage unit in the basket
+        if let highestPricedBeverage = beverages.max(by: { $0.unitPrice < $1.unitPrice }) {
+            // Caps the discount deduction at a maximum value of $6.00
+            let discountAmount = min(highestPricedBeverage.unitPrice, 6.00)
+            return max(0.0, rawTotal - discountAmount)
+        }
+        
         return rawTotal
     }
     
@@ -132,7 +136,6 @@ struct AddOrderView: View {
         NavigationStack {
             ZStack {
                 VStack(spacing: 0) {
-                    
                     // ==========================================
                     // 1. THE TOP AREA: Header Panel
                     // ==========================================
@@ -141,7 +144,6 @@ struct AddOrderView: View {
                             Text("WHO IS PLACING THIS ORDER?")
                                 .font(.system(size: 11, weight: .black, design: .rounded))
                                 .foregroundColor(.timsRed)
-                            
                             
                             TextField("Enter Name (e.g., Alex, Stephanie)", text: $personName)
                                 .font(.system(.body, design: .rounded))
@@ -199,16 +201,16 @@ struct AddOrderView: View {
                             LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], spacing: 8) {
                                 ForEach(mainMenuCategories, id: \.0) { categoryName, symbolIcon in
                                     let isMainActive = selectedCategory?.lowercased() == categoryName.lowercased()
-                                                       
+                                    
                                     Button(action: {
                                         SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
                                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                             if isMainActive {
                                                 selectedCategory = nil
-                                                selectedSubcategory = nil // Clear child filters
+                                                selectedSubcategory = nil
                                             } else {
                                                 selectedCategory = categoryName
-                                                selectedSubcategory = nil // Reset sub-tier state on switch
+                                                selectedSubcategory = nil
                                             }
                                         }
                                     }) {
@@ -222,7 +224,7 @@ struct AddOrderView: View {
                                         .frame(maxWidth: .infinity)
                                         .padding(.vertical, 12)
                                         .background(isMainActive ? Color.orange : Color.timsFieldTan)
-                                        .foregroundColor(isMainActive ? .timsDarkBrown : .timsDarkBrown)
+                                        .foregroundColor(.timsDarkBrown)
                                         .cornerRadius(12)
                                         .contentShape(Rectangle())
                                     }
@@ -234,50 +236,44 @@ struct AddOrderView: View {
                         if structuralSubMenusList.count > 1 {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 8) {
-                                            
-                                // "All" Pill Layout
-                                let showAllActive = selectedSubcategory == nil
+                                    let showAllActive = selectedSubcategory == nil
                                     
-                                Text("All")
-                                    .font(.system(size: 12, weight: .medium, design: .rounded))
-                                    .foregroundColor(showAllActive ? .timsDarkBrown : .timsDarkBrown)
-                                    .padding(.horizontal, 14)
-                                    .padding(.vertical, 6)
-                                    .background(showAllActive ? Color.orange : Color.timsFieldTan.opacity(0.6))
-                                    .cornerRadius(16)
-                                    .onTapGesture {
-                                        SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
-                                        withAnimation(.spring(response: 0.25, dampingFraction: 0.8)) {
-                                            // Clears the subcategory filter so the grid displays all items in the main category!
-                                            selectedSubcategory = nil
-                                        }
-                                    }
-                                            
-                                ForEach(structuralSubMenusList, id: \.self) { subName in
-                                    // Normalizes string structures so partial strings don't fail active flag state checks
-                                    let isSubActive = selectedSubcategory?.lowercased() == subName.lowercased()
-                                                
-                                    Button(action: {
-                                        SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
-                                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                                            if isSubActive {
+                                    Text("All")
+                                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                                        .foregroundColor(.timsDarkBrown)
+                                        .padding(.horizontal, 14)
+                                        .padding(.vertical, 6)
+                                        .background(showAllActive ? Color.orange : Color.timsFieldTan.opacity(0.6))
+                                        .cornerRadius(16)
+                                        .onTapGesture {
+                                            SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
+                                            withAnimation(.spring(response: 0.25, dampingFraction: 0.8)) {
                                                 selectedSubcategory = nil
-                                            } else {
-                                                selectedSubcategory = subName
                                             }
                                         }
-                                    }) {
-                                        Text(subName)
-                                            .font(.system(size: 12, weight: .medium, design: .rounded))
-                                            // Uses normalized flag state values for white text highlights
-                                            .foregroundColor(isSubActive ? .timsDarkBrown : .timsDarkBrown)
-                                            .padding(.horizontal, 14)
-                                            .padding(.vertical, 6)
-                                            // Uses normalized flag state values for orange background shifts
-                                            .background(isSubActive ? Color.orange : Color.timsFieldTan.opacity(0.6))
-                                            .cornerRadius(16)
-                                    }
-                                    .buttonStyle(.plain)
+                                    
+                                    ForEach(structuralSubMenusList, id: \.self) { subName in
+                                        let isSubActive = selectedSubcategory?.lowercased() == subName.lowercased()
+                                        
+                                        Button(action: {
+                                            SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
+                                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                                if isSubActive {
+                                                    selectedSubcategory = nil
+                                                } else {
+                                                    selectedSubcategory = subName
+                                                }
+                                            }
+                                        }) {
+                                            Text(subName)
+                                                .font(.system(size: 12, weight: .medium, design: .rounded))
+                                                .foregroundColor(.timsDarkBrown)
+                                                .padding(.horizontal, 14)
+                                                .padding(.vertical, 6)
+                                                .background(isSubActive ? Color.orange : Color.timsFieldTan.opacity(0.6))
+                                                .cornerRadius(16)
+                                        }
+                                        .buttonStyle(.plain)
                                     }
                                 }
                             }
@@ -309,8 +305,8 @@ struct AddOrderView: View {
                             }
                             .padding(.horizontal, 16)
                             .padding(.vertical, 20)
-                            // Adds dynamic scroll cushion so content never gets permanently hidden behind floating bars
-                            .padding(.bottom, pendingItems.isEmpty ? 20 : 130)
+                            // FIXED: Dynamic scroll cushion aligns perfectly with drawer presentation states
+                            .padding(.bottom, 90)
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -325,6 +321,38 @@ struct AddOrderView: View {
                                 temporarySelectedItem = nil
                             }
                         }
+                }
+                
+                if !pendingItems.isEmpty && temporarySelectedItem == nil && !isShowingBasketSummary {
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                                    isShowingBasketSummary = true
+                                }
+                            }) {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "basket.fill")
+                                    Text("View Basket (\(pendingItems.reduce(0) { $0 + $1.quantity }))")
+                                        .font(.system(size: 14, weight: .black, design: .rounded))
+                                }
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 14)
+                                .background(Color.timsRed)
+                                .cornerRadius(30)
+                                .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
+                            }
+                            .buttonStyle(.plain)
+                            .padding(.trailing, 20)
+                            .padding(.bottom, 20) // Snaps perfectly near the lower boundary
+                        }
+                    }
+                    .zIndex(3)
+                    .transition(.scale.combined(with: .opacity))
                 }
                 
                 // ==========================================
@@ -362,35 +390,39 @@ struct AddOrderView: View {
                                 Text("$\(String(format: "%.2f", selection.price)) each")
                                     .font(.system(size: 14, weight: .bold, design: .rounded))
                                     .foregroundColor(.orange)
+                                
                                 Spacer()
                                 
-                                HStack(spacing: 16) {
-                                    Button(action: {
-                                        if itemQuantity > 1 {
-                                            itemQuantity -= 1
-                                            SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                    HStack(spacing: 16) {
+                                        Button(action: {
+                                            if itemQuantity > 1 {
+                                                itemQuantity -= 1
+                                                SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                            }
+                                        }) {
+                                            Image(systemName: "minus.circle.fill")
+                                                .font(.title2)
+                                                .foregroundColor(itemQuantity > 1 ? .timsRed : .brown.opacity(0.5))
                                         }
-                                    }) {
-                                        Image(systemName: "minus.circle.fill")
-                                            .font(.title2)
-                                            .foregroundColor(itemQuantity > 1 ? .timsRed : .brown.opacity(0.5))
-                                    }
-                                    Text("\(itemQuantity)")
-                                        .font(.system(size: 18, weight: .black, design: .rounded))
-                                        .foregroundColor(.timsDarkBrown)
-                                        .frame(minWidth: 24)
-                                    Button(action: {
-                                        if itemQuantity < 10 {
-                                            itemQuantity += 1
-                                            SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                        
+                                        Text("\(itemQuantity)")
+                                            .font(.system(size: 18, weight: .black, design: .rounded))
+                                            .foregroundColor(.timsDarkBrown)
+                                            .frame(minWidth: 24)
+                                        
+                                        Button(action: {
+                                            if itemQuantity < 10 {
+                                                itemQuantity += 1
+                                                SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                            }
+                                        }) {
+                                            Image(systemName: "plus.circle.fill")
+                                                .font(.title2)
+                                                .foregroundColor(.timsRed)
                                         }
-                                    }) {
-                                        Image(systemName: "plus.circle.fill")
-                                            .font(.title2)
-                                            .foregroundColor(.timsRed)
                                     }
                                 }
-                            }
+
                             
                             TextField("Add customization notes (e.g., extra hot)...", text: $itemNotes)
                                 .font(.system(.subheadline, design: .rounded))
@@ -401,7 +433,6 @@ struct AddOrderView: View {
                             
                             HStack {
                                 Spacer()
-                                
                                 Button(action: {
                                     let nestedItem = OrderItem(itemName: selection.name, quantity: itemQuantity, notes: itemNotes, unitPrice: selection.price)
                                     SoundManager.shared.playSound(named: "pouring", withExtension: "mp3")
@@ -411,6 +442,7 @@ struct AddOrderView: View {
                                         temporarySelectedItem = nil
                                         itemNotes = ""
                                         itemQuantity = 1
+                                        isShowingBasketSummary = true
                                     }
                                 }) {
                                     Text("Add to Basket")
@@ -434,113 +466,215 @@ struct AddOrderView: View {
                 }
             }
             // ==========================================
-            // FIXED OVERLAY: Absolute Bottom Safe Area Pinning with Reward Redemption
+            // Absolute Bottom Safe Area Pinning (Overlay)
             // ==========================================
             .overlay(alignment: .bottom) {
-                if !pendingItems.isEmpty && temporarySelectedItem == nil {
-                    VStack(alignment: .leading, spacing: 12) {
-                        HStack {
-                            Text("\(personName.isEmpty ? "Guest" : personName)'s Basket (\(pendingItems.reduce(0) { $0 + $1.quantity }) items)")
-                                .font(.system(size: 13, weight: .black, design: .rounded))
-                                .foregroundColor(.timsDarkBrown)
-                            Spacer()
-                            Text("$\(String(format: "%.2f", computedBasketTotal))")
-                                .font(.system(size: 14, weight: .black, design: .rounded))
-                                .foregroundColor(.timsRed)
-                        }
+                if isShowingBasketSummary && temporarySelectedItem == nil {
+                    ZStack(alignment: .bottom) {
                         
-                        Toggle(isOn: $saveAsFavorite) {
-                            Label("Save this complete order as Favorite", systemImage: "star.fill")
-                                .font(.system(size: 13, weight: .bold, design: .rounded))
-                                .foregroundColor(.orange)
-                        }
-                        .toggleStyle(SwitchToggleStyle(tint: .orange))
-                        // If the account profile has any free drink tokens, expose a redemption control row slider
-                        if userProfileCreditBalance > 0 {
-                            Toggle(isOn: $useDrinkCredit) {
-                                Label("Apply Free Drink Credit (Available: \(userProfileCreditBalance)) 🌟", systemImage: "ticket.fill")
-                                    .font(.system(size: 13, weight: .bold, design: .rounded))
-                                    .foregroundColor(.green)
+                        // Full Screen Backdrop Dimmer Layer
+                        Color.black.opacity(0.4)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                    isShowingBasketSummary = false
+                                }
                             }
-                            .toggleStyle(SwitchToggleStyle(tint: .green))
-                            .padding(.top, 2)
-                            .transition(.move(edge: .leading).combined(with: .opacity))
-                        }
                         
-                        Button(action: {
-                            // Checks if the user actually typed a name. If blank, show the warning instead of submitting!
-                            let cleanedName = personName.trimmingCharacters(in: .whitespacesAndNewlines)
-                            if cleanedName.isEmpty {
-                                SoundManager.shared.playSound(named: "buzzer", withExtension: "mp3")
-                                    showingNameWarningAlert = true
-                            } else {
-                                SoundManager.shared.playSound(named: "success", withExtension: "mp3")
-                                
-                                // Automatically locates the user's profile and subtracts a credit token if applied
-                                if useDrinkCredit, let index = appStore.userProfiles.firstIndex(where: { $0.name.lowercased() == personName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }) {
-                                    if appStore.userProfiles[index].drinkCreditsBalance > 0 {
-                                        appStore.userProfiles[index].drinkCreditsBalance -= 1
+                        // The Bottom-Pinned Detail Card View
+                        VStack(alignment: .leading, spacing: 16) {
+                            // Pull handle visual decorator
+                            HStack {
+                                Spacer()
+                                Capsule()
+                                    .frame(width: 40, height: 5)
+                                    .foregroundColor(.brown.opacity(0.3))
+                                Spacer()
+                            }
+                            .padding(.top, 4)
+                            
+                            // Basket Totals Header
+                            HStack {
+                                Text("\(personName.isEmpty ? "Guest" : personName)'s Basket (\(pendingItems.reduce(0) { $0 + $1.quantity }) items)")
+                                    .font(.system(size: 13, weight: .black, design: .rounded))
+                                    .foregroundColor(.timsDarkBrown)
+                                Spacer()
+                                Text("$\(String(format: "%.2f", computedBasketTotal))")
+                                    .font(.system(size: 14, weight: .black, design: .rounded))
+                                    .foregroundColor(.timsRed)
+                            }
+                            
+                            Divider()
+                            
+                            // NEW EMBEDDED ELEMENT: Scrollable item breakdown list
+                            ScrollView(.vertical, showsIndicators: true) {
+                                VStack(spacing: 10) {
+                                    ForEach(pendingItems) { item in
+                                        HStack(alignment: .top) {
+                                            // Quantity Bubble
+                                            Text("\(item.quantity)x")
+                                                .font(.system(size: 13, weight: .black, design: .rounded))
+                                                .foregroundColor(.white)
+                                                .padding(.horizontal, 8)
+                                                .padding(.vertical, 4)
+                                                .background(Color.orange)
+                                                .cornerRadius(6)
+                                            
+                                            // Item Name and Notes
+                                            VStack(alignment: .leading, spacing: 2) {
+                                                Text(item.itemName)
+                                                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                                                    .foregroundColor(.timsDarkBrown)
+                                                
+                                                if !item.notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                                                    Text("“\(item.notes)”")
+                                                        .font(.system(size: 12, design: .rounded))
+                                                        .foregroundColor(.secondary)
+                                                        .italic()
+                                                }
+                                            }
+                                            Spacer()
+                                            // Item Cost
+                                            Text("$\(String(format: "%.2f", item.itemTotal))")
+                                                .font(.system(size: 14, weight: .bold, design: .rounded))
+                                                .foregroundColor(.timsDarkBrown.opacity(0.8))
+                                        }
+                                        .padding(10)
+                                        .background(Color.timsFieldTan.opacity(0.5))
+                                        .cornerRadius(10)
                                     }
                                 }
-                                
-                                let finalGroupOrder = TeamOrder(
-                                    name: personName.isEmpty ? "Guest" : personName,
-                                    items: pendingItems,
-                                    isSavedAsFavorite: saveAsFavorite
-                                )
-                                
-                                // Writes the profile information to local disk persistence states
-                                if saveAsFavorite {
-                                    appStore.saveFavoriteBasket(for: personName, items: pendingItems)
-                                }
-                                
-                                if let original = editingOrder,
-                                   let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
-                                    appStore.activeOrders[index] = finalGroupOrder
-                                } else {
-                                    appStore.saveOrderToActiveRun(finalGroupOrder)
-                                }
-                                dismiss()
+                                .padding(.vertical, 2)
                             }
-                        }) {
-                            Label("Complete Individual Order", systemImage: "checkmark.circle.fill")
-                                .font(.system(size: 15, weight: .black, design: .rounded))
-                                .foregroundColor(.timsDarkBrown)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 14)
-                                .background(personName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Color.timsGold.opacity(0.5) : Color.timsGold)
-                                .cornerRadius(12)
-                                .shadow(color: Color.orange.opacity(0.4), radius: 6, x: 0, y: 3)
+                            .frame(maxHeight: 160) // Clamps scroll heights neatly inside the sheet bounds
+                            
+                            Divider()
+                            
+                            Toggle(isOn: $saveAsFavorite) {
+                                Label("Save this complete order as Favorite", systemImage: "star.fill")
+                                    .font(.system(size: 13, weight: .bold, design: .rounded))
+                                    .foregroundColor(.orange)
+                            }
+                            .toggleStyle(SwitchToggleStyle(tint: .orange))
+                            
+                            if userProfileCreditBalance > 0 {
+                                Toggle(isOn: $useDrinkCredit) {
+                                    Label("Apply Free Drink Credit (Available: \(userProfileCreditBalance)) 🌟", systemImage: "ticket.fill")
+                                        .font(.system(size: 13, weight: .bold, design: .rounded))
+                                        .foregroundColor(.green)
+                                }
+                                .toggleStyle(SwitchToggleStyle(tint: .green))
+                                .padding(.top, 2)
+                                .transition(.move(edge: .leading).combined(with: .opacity))
+                            }
+                            
+                            Button(action: {
+                                let cleanedName = personName.trimmingCharacters(in: .whitespacesAndNewlines)
+                                if cleanedName.isEmpty {
+                                    SoundManager.shared.playSound(named: "buzzer", withExtension: "mp3")
+                                    showingNameWarningAlert = true
+                                } else {
+                                    SoundManager.shared.playSound(named: "success", withExtension: "mp3")
+                                    
+                                    var finalItemsForManifest = pendingItems
+                                    // If they are using a credit, modify the actual item price inside the manifest list array
+                                    if useDrinkCredit {
+                                        let beveragesIndices = finalItemsForManifest.indices.filter { idx in
+                                            let name = finalItemsForManifest[idx].itemName.lowercased()
+                                            return name.contains("coffee") || name.contains("capp") || name.contains("latte") || name.contains("tea") || name.contains("quencher") || name.contains("drink") ||
+                                                name.contains("brew") || name.contains("lemonade") || name.contains("chocolate")
+                                        }
+                                        
+                                        // Find the highest priced beverage index position
+                                        if let highestIdx = beveragesIndices.max(by: { finalItemsForManifest[$0].unitPrice < finalItemsForManifest[$1].unitPrice }) {
+                                            let originalUnitPrice = finalItemsForManifest[highestIdx].unitPrice
+                                            let discount = min(originalUnitPrice, 6.00)
+                                            
+                                            // Split the item so only 1 quantity gets the discount, if they ordered multiple of the same drink
+                                            if finalItemsForManifest[highestIdx].quantity > 1 {
+                                                finalItemsForManifest[highestIdx].quantity -= 1
+                                                
+                                                let discountedSingleItem = OrderItem(
+                                                    itemName: finalItemsForManifest[highestIdx].itemName + " (Credit Applied 🌟)",
+                                                    quantity: 1,
+                                                    notes: finalItemsForManifest[highestIdx].notes,
+                                                    unitPrice: originalUnitPrice - discount
+                                                )
+                                                finalItemsForManifest.append(discountedSingleItem)
+                                            } else {
+                                                // If quantity is just 1, rename it and update the price directly
+                                                finalItemsForManifest[highestIdx].itemName += " (Credit Applied 🌟)"
+                                                finalItemsForManifest[highestIdx].unitPrice = originalUnitPrice - discount
+                                            }
+                                        }
+                                    }
+
+                                    // 3. Deduct the user profile token balance from the global database store
+                                    if useDrinkCredit, let index = appStore.userProfiles.firstIndex(where: { $0.name.lowercased() == personName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }) {
+                                        if appStore.userProfiles[index].drinkCreditsBalance > 0 {
+                                            appStore.userProfiles[index].drinkCreditsBalance -= 1
+                                        }
+                                    }
+
+                                    // 4. Build the final order using our updated, discounted items list array!
+                                    let finalGroupOrder = TeamOrder(
+                                        name: personName.isEmpty ? "Guest" : personName,
+                                        items: finalItemsForManifest, // FIXED: Uses the discounted item stream data array
+                                        isSavedAsFavorite: saveAsFavorite
+                                    )
+
+                                    if saveAsFavorite {
+                                        appStore.saveFavoriteBasket(for: personName, items: pendingItems) // Keep original items clean for favorites
+                                    }
+
+                                    if let original = editingOrder,
+                                       let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
+                                        appStore.activeOrders[index] = finalGroupOrder
+                                    } else {
+                                        appStore.saveOrderToActiveRun(finalGroupOrder)
+                                    }
+                                    isShowingBasketSummary = false
+                                    dismiss()                                }
+                            }) {
+                                Label("Complete Individual Order", systemImage: "checkmark.circle.fill")
+                                    .font(.system(size: 15, weight: .black, design: .rounded))
+                                    .foregroundColor(.timsDarkBrown)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 14)
+                                    .background(personName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Color.timsGold.opacity(0.5) : Color.timsGold)
+                                    .cornerRadius(12)
+                                    .shadow(color: Color.orange.opacity(0.4), radius: 6, x: 0, y: 3)
+                            }
+                            .buttonStyle(.plain)
+                            .alert("Name Required", isPresented: $showingNameWarningAlert) {
+                                Button("OK", role: .cancel) { }
+                            } message: {
+                                Text("Please enter a name for who is placing this order before completing it.")
+                            }
+                            .disabled(personName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && pendingItems.isEmpty)
+                            .opacity(personName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.5 : 1.0)
                         }
-                        .buttonStyle(.plain)
-                        .alert("Name Required", isPresented: $showingNameWarningAlert) {
-                            Button("OK", role: .cancel) { }
-                        } message: {
-                            Text("Please enter a name for who is placing this order before completing it.")
-                        }
-                        // Prevents creating accidental blank accounts
-                        .disabled(personName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && pendingItems.isEmpty)
-                        .opacity(personName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.5 : 1.0)
+                        .padding([.horizontal, .top], 16)
+                        .padding(.bottom, 34)
+                        .background(Color.timsTan)
+                        .cornerRadius(20, corners: [.topLeft, .topRight])
+                        .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: -4)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .zIndex(3)
                     }
-                    .padding([.horizontal, .top], 16)
-                    .padding(.bottom, 34) // Flows cleanly into the virtual home indicator space
-                    .background(Color.timsTan)
-                    .cornerRadius(20, corners: [.topLeft, .topRight])
-                    .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: -4)
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                    .zIndex(3)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .ignoresSafeArea()
+                    .zIndex(6)
                 }
             }
             .edgesIgnoringSafeArea(.bottom)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // Custom large, orange typography
                 ToolbarItem(placement: .principal) {
                     Text(editingOrder == nil ? "Build Order" : "Modify Order")
-                        .font(.system(size: 36, weight: .black, design: .rounded)) // Made larger and bolder
-                        .foregroundColor(.orange) // Swapped to your new custom orange accent
+                        .font(.system(size: 36, weight: .black, design: .rounded))
+                        .foregroundColor(.orange)
                 }
-                            
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }
                         .font(.system(.body, design: .rounded))
