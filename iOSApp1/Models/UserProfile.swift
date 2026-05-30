@@ -7,9 +7,31 @@
 
 import Foundation
 
+// MARK: - Completed Run Analytics Record Blueprint
+struct PastRunRecord: Identifiable, Codable {
+    var id = UUID()
+    var completionDate: Date
+    var totalSecondsElapsed: Int
+    var targetLimitSeconds: Int
+    var earnedACredit: Bool
+    
+    var wasUnderFifteenMinutes: Bool {
+        return totalSecondsElapsed <= targetLimitSeconds
+    }
+}
+
+// MARK: - Core User Profile System Blueprint
 struct UserProfile: Identifiable, Codable {
     var id = UUID()
     var name: String
-    var accumulatedRewardCredits: Int
-    var savedFavoriteItems: [OrderItem] // Links directly to your multi-item basket structure!
+    
+    // Core Balances
+    var drinkCreditsBalance: Int
+    
+    // Saved Templates (Option A: Saved Basket Configurations)
+    var savedFavoriteOrders: [OrderItem]
+    
+    // Analytics & History Logs
+    var pastOrdersHistory: [[OrderItem]] // Arrays of past items ordered
+    var runPerformanceHistory: [PastRunRecord] // Tracks their historical driving speed metrics
 }
