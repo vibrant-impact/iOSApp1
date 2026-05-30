@@ -508,19 +508,31 @@ struct AddOrderView: View {
                             
                             // NEW EMBEDDED ELEMENT: Scrollable item breakdown list
                             ScrollView(.vertical, showsIndicators: true) {
-                                VStack(spacing: 10) {
-                                    ForEach(pendingItems) { item in
-                                        HStack(alignment: .top) {
-                                            // Quantity Bubble
-                                            Text("\(item.quantity)x")
-                                                .font(.system(size: 13, weight: .black, design: .rounded))
-                                                .foregroundColor(.white)
-                                                .padding(.horizontal, 8)
-                                                .padding(.vertical, 4)
-                                                .background(Color.orange)
-                                                .cornerRadius(6)
+                                VStack(spacing: 12) {
+                                    ForEach(pendingItems.indices, id: \.self) { index in
+                                        let item = pendingItems[index]
+                                        
+                                        HStack(alignment: .center, spacing: 10) {
                                             
-                                            // Item Name and Notes
+                                            // 1. REMOVE BUTTON (The X)
+                                            Button(action: {
+                                                SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
+                                                withAnimation(.spring(response: 0.25, dampingFraction: 0.8)) {
+                                                    pendingItems.remove(at: index)
+                                                    
+                                                    // Auto-collapse the drawer if the basket becomes completely empty
+                                                    if pendingItems.isEmpty {
+                                                        isShowingBasketSummary = false
+                                                    }
+                                                }
+                                            }) {
+                                                Image(systemName: "xmark.circle.fill")
+                                                    .font(.system(size: 18))
+                                                    .foregroundColor(.timsRed.opacity(0.7))
+                                            }
+                                            .buttonStyle(.plain)
+                                            
+                                            // 2. ITEM DETAILS BLOCK
                                             VStack(alignment: .leading, spacing: 2) {
                                                 Text(item.itemName)
                                                     .font(.system(size: 14, weight: .bold, design: .rounded))
@@ -533,20 +545,63 @@ struct AddOrderView: View {
                                                         .italic()
                                                 }
                                             }
+                                            
                                             Spacer()
-                                            // Item Cost
+                                            
+                                            // 3. STEPPER CONTROLS (Inline Quantity Adjustment)
+                                            HStack(spacing: 10) {
+                                                Button(action: {
+                                                    if pendingItems[index].quantity > 1 {
+                                                        SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                                        withAnimation {
+                                                            pendingItems[index].quantity -= 1
+                                                        }
+                                                    }
+                                                }) {
+                                                    Image(systemName: "minus.circle")
+                                                        .font(.system(size: 16, weight: .bold))
+                                                        .foregroundColor(item.quantity > 1 ? .timsRed : .brown.opacity(0.4))
+                                                }
+                                                .buttonStyle(.plain)
+                                                
+                                                Text("\(item.quantity)")
+                                                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                                                    .foregroundColor(.timsDarkBrown)
+                                                    .frame(minWidth: 18)
+                                                
+                                                Button(action: {
+                                                    if pendingItems[index].quantity < 10 {
+                                                        SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                                        withAnimation {
+                                                            pendingItems[index].quantity += 1
+                                                        }
+                                                    }
+                                                }) {
+                                                    Image(systemName: "plus.circle")
+                                                        .font(.system(size: 16, weight: .bold))
+                                                        .foregroundColor(.timsRed)
+                                                }
+                                                .buttonStyle(.plain)
+                                            }
+                                            .padding(.horizontal, 6)
+                                            .padding(.vertical, 4)
+                                            .background(Color.timsFieldTan.opacity(0.5))
+                                            .cornerRadius(8)
+                                            
+                                            // 4. COST DISPLAY
                                             Text("$\(String(format: "%.2f", item.itemTotal))")
                                                 .font(.system(size: 14, weight: .bold, design: .rounded))
                                                 .foregroundColor(.timsDarkBrown.opacity(0.8))
+                                                .frame(minWidth: 50, alignment: .trailing)
                                         }
                                         .padding(10)
-                                        .background(Color.timsFieldTan.opacity(0.5))
+                                        .background(Color.timsFieldTan.opacity(0.3))
                                         .cornerRadius(10)
                                     }
                                 }
                                 .padding(.vertical, 2)
                             }
-                            .frame(maxHeight: 160) // Clamps scroll heights neatly inside the sheet bounds
+                            .frame(maxHeight: 180)
                             
                             Divider()
                             
