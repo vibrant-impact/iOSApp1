@@ -53,17 +53,23 @@ struct AddOrderView: View {
         }
     }
     
-    var filteredProductsManifestList: [JSONProduct] {
-        appStore.allProducts.filter { product in
-            let matchesSearchText = globalSearchQuery.isEmpty ? true : (
-                product.name.lowercased().contains(globalSearchQuery.lowercased()) ||
-                product.category.lowercased().contains(globalSearchQuery.lowercased())
-            )
-            let matchesMainMenu = product.category.lowercased().contains(selectedMainMenuTab.lowercased())
-            let matchesSubMenu = selectedSubMenuTab == "All" ? true : product.category.lowercased().contains(selectedSubMenuTab.lowercased())
-            return matchesSearchText && matchesMainMenu && matchesSubMenu
+    var filteredProducts: [JSONProduct] {
+        let query = globalSearchQuery.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        
+        // If search bar is completely empty, serve up the full product catalog list
+        guard !query.isEmpty else { return appStore.allProducts }
+        
+        return appStore.allProducts.filter { product in
+            let nameMatches = product.name.lowercased().contains(query)
+                
+            // Sweeps the product's category tags array to find any keyword matches
+            let categoryMatches = product.category.lowercased().contains(query)
+                
+            // FIXED: Removed the stray closing brace so this returns inside the filter closure perfectly!
+            return nameMatches || categoryMatches
         }
     }
+
     
     /// Finds the real-time credit balance of the typed profile instance name
     var userProfileCreditBalance: Int {
@@ -248,7 +254,7 @@ struct AddOrderView: View {
                         
                         ScrollView {
                             LazyVGrid(columns: cardGridLayoutColumns, spacing: 14) {
-                                ForEach(filteredProductsManifestList) { product in
+                                ForEach(filteredProducts) { product in
                                     ProductCardView(product: product) {
                                         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                             temporarySelectedItem = product
