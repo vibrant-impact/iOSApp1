@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 class OrderStore: ObservableObject {
+    
     // MARK: - Master Product Inventories
     @Published var allProducts: [JSONProduct] = []
     @Published var activeOrders: [TeamOrder] = []

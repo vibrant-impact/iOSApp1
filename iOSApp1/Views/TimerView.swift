@@ -124,7 +124,9 @@ struct TimerView: View {
                     Button(action: {
                         SoundManager.shared.playSound(named: "click", withExtension: "mp3")
                         
-                        withAnimation {
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            appStore.resetActiveRun()
+                            
                             showSummaryAlert = false
                             isRunActive = false // FIXED: Turns off navigation run sequence flag to snap cleanly back to welcome splash!
                         }
