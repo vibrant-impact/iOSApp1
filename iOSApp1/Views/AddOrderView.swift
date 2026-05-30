@@ -456,6 +456,9 @@ struct AddOrderView: View {
                                 .shadow(color: Color.orange.opacity(0.4), radius: 6, x: 0, y: 3)
                         }
                         .buttonStyle(.plain)
+                        // Prevents creating accidental blank accounts
+                        .disabled(personName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && pendingItems.isEmpty)
+                        .opacity(personName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.5 : 1.0)
                     }
                     .padding([.horizontal, .top], 16)
                     .padding(.bottom, 34) // Flows cleanly into the virtual home indicator space

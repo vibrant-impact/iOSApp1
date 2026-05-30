@@ -113,11 +113,24 @@ struct TimerView: View {
                         .font(.system(size: 18, weight: .black, design: .rounded))
                         .foregroundColor(.timsDarkBrown)
                     
+                    HStack {
+                        Image(systemName: earnedCreditStatus ? "bolt.fill" : "hourglass.badge.plus")
+                        Text(earnedCreditStatus ?
+                             "Speed Run Finish: \(secondsElapsed / 60)m \(secondsElapsed % 60)s!" :
+                             "Overage: +\( (secondsElapsed - targetTimeLimit) / 60)m \((secondsElapsed - targetTimeLimit) % 60)s")
+                    }
+                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                    .foregroundColor(earnedCreditStatus ? .green : .timsRed)
+                    .padding(.vertical, 6)
+                    .padding(.horizontal, 12)
+                    .background((earnedCreditStatus ? Color.green : Color.timsRed).opacity(0.15))
+                    .cornerRadius(8)
+                    
                     Text(earnedCreditStatus ?
                          "\(appStore.currentRunner.isEmpty ? "Guest" : appStore.currentRunner) completed the run in under 15 minutes and earned 1 Free Drink Credit!" :
                          "Good effort! The manifest order run is complete. Time to hand out the coffees!")
                         .font(.system(.subheadline, design: .rounded))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.brown)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 8)
                     

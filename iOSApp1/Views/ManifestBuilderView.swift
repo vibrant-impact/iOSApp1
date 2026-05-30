@@ -64,10 +64,13 @@ struct ManifestBuilderView: View {
                                 HStack {
                                     Spacer()
                                     VStack(spacing: 8) {
-                                        Image(systemName: "plus.circle.fill")
-                                            .font(.title2)
+                                        Image(systemName: "cup.and.saucer.fill")
+                                            .font(.system(size: 48))
                                             .foregroundColor(.brown)
-                                        Text("No orders added yet.\nTap 'Add Order' below to begin.")
+                                        Text("No Orders in Manifest")
+                                            .font(.system(.headline, design: .rounded))
+                                            .foregroundColor(.brown)
+                                        Text("Tap '+' below to add your team's coffee orders and start the run!")
                                             .font(.system(.subheadline, design: .rounded))
                                             .fontWeight(.bold)
                                             .foregroundColor(.brown)
