@@ -41,7 +41,7 @@ struct AddOrderView: View {
     var structuralSubMenusList: [String] {
         switch selectedMainMenuTab {
         case "Hot Drinks":
-            return ["All", "Brewed Coffee", "Espresso Drinks", "Tea", "Hot Chocolate"]
+            return ["Brewed Coffee", "Espresso Drinks", "Tea", "Hot Chocolate"]
         case "Cold Drinks":
             return ["All", "Iced Coffee", "Iced Capp", "Cold Brew", "Iced Lattes", "Fruit Quenchers", "Frozen Lemonade", "Fountain Pop", "Bottled Drinks"]
         case "Lunch and Dinner":
@@ -186,13 +186,16 @@ struct AddOrderView: View {
                             
                             LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], spacing: 8) {
                                 ForEach(mainMenuCategories, id: \.0) { categoryName, symbolIcon in
+                                    let isActive = globalSearchQuery.lowercased() == categoryName.lowercased() ||
+                                        (!globalSearchQuery.isEmpty && categoryName.lowercased() == "hot drinks" && globalSearchQuery.lowercased() == "brewed coffee")
+                                                       
                                     Button(action: {
                                         SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
                                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                                            if globalSearchQuery.lowercased() == categoryName.lowercased() {
-                                                globalSearchQuery = "" // Tapping it again clears the filter
+                                            if categoryName.lowercased() == "hot drinks" {
+                                                globalSearchQuery = "Brewed Coffee"
                                             } else {
-                                                globalSearchQuery = categoryName // Sets the filter to this category
+                                                globalSearchQuery = categoryName
                                             }
                                         }
                                     }) {
@@ -205,11 +208,10 @@ struct AddOrderView: View {
                                         }
                                         .frame(maxWidth: .infinity)
                                         .padding(.vertical, 12)
-                                        .background(selectedMainMenuTab == categoryName ? Color.orange : Color.timsFieldTan)
-                                        .foregroundColor(selectedMainMenuTab == categoryName ? .timsDarkBrown : .timsDarkBrown)
+                                        .background(isActive ? Color.orange : Color.timsFieldTan)
+                                        .foregroundColor(isActive ? .timsDarkBrown : .timsDarkBrown)
                                         .cornerRadius(12)
                                         .contentShape(Rectangle())
-                                        .shadow(color: selectedMainMenuTab == categoryName ? Color.orange.opacity(0.3) : Color.clear, radius: 6, x: 0, y: 3)
                                     }
                                     .buttonStyle(.plain)
                                 }
@@ -219,27 +221,44 @@ struct AddOrderView: View {
                         if structuralSubMenusList.count > 1 {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 8) {
-                                    ForEach(structuralSubMenusList, id: \.self) { subName in
-                                        Button(action: {
-                                            SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
-                                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                                                if globalSearchQuery.lowercased() == subName.lowercased() {
-                                                    globalSearchQuery = ""
-                                                } else {
-                                                    globalSearchQuery = subName // Otherwise, filter by this subcategory
-                                                }
+                                            
+                                // "All" Pill highlights orange if the search string is empty or matches a broad parent category
+                                Text("All")
+                                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                                    .foregroundColor(globalSearchQuery.isEmpty ? .timsDarkBrown : .timsDarkBrown)
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 6)
+                                    .background(globalSearchQuery.isEmpty ? Color.orange : Color.timsFieldTan.opacity(0.6))
+                                    .cornerRadius(16)
+                                    .onTapGesture {
+                                        globalSearchQuery = ""
+                                    }
+                                            
+                                ForEach(structuralSubMenusList, id: \.self) { subName in
+                                    // Normalizes string structures so partial strings don't fail active flag state checks
+                                    let isSubActive = globalSearchQuery.lowercased() == subName.lowercased()
+                                                
+                                    Button(action: {
+                                        SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
+                                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                            if isSubActive {
+                                                globalSearchQuery = ""
+                                            } else {
+                                                globalSearchQuery = subName
                                             }
-                                        }) {
-                                            Text(subName)
-                                                .font(.system(size: 12, weight: .bold, design: .rounded))
-                                                .padding(.horizontal, 16)
-                                                .padding(.vertical, 8)
-                                                .background(selectedSubMenuTab == subName ? Color.timsDarkBrown : Color.timsFieldTan)
-                                                .foregroundColor(selectedSubMenuTab == subName ? Color.timsTan : .brown)
-                                                .cornerRadius(30)
-                                                .contentShape(Rectangle())
                                         }
-                                        .buttonStyle(.plain)
+                                    }) {
+                                        Text(subName)
+                                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                                            // Uses normalized flag state values for white text highlights
+                                            .foregroundColor(isSubActive ? .timsDarkBrown : .timsDarkBrown)
+                                            .padding(.horizontal, 14)
+                                            .padding(.vertical, 6)
+                                            // Uses normalized flag state values for orange background shifts
+                                            .background(isSubActive ? Color.orange : Color.timsFieldTan.opacity(0.6))
+                                            .cornerRadius(16)
+                                    }
+                                    .buttonStyle(.plain)
                                     }
                                 }
                             }
