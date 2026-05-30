@@ -295,14 +295,7 @@ struct AddOrderView: View {
                                 .cornerRadius(10)
                             
                             HStack {
-                                Toggle(isOn: $saveAsFavorite) {
-                                    Label("Save Favorite", systemImage: "star.fill")
-                                        .font(.system(size: 13, weight: .bold, design: .rounded))
-                                        .foregroundColor(.orange)
-                                }
-                                .toggleStyle(SwitchToggleStyle(tint: .orange))
-                                
-                                Spacer(minLength: 20)
+                                Spacer()
                                 
                                 Button(action: {
                                     let nestedItem = OrderItem(itemName: selection.name, quantity: itemQuantity, notes: itemNotes, unitPrice: selection.price)
@@ -350,6 +343,14 @@ struct AddOrderView: View {
                                 .font(.system(size: 14, weight: .black, design: .rounded))
                                 .foregroundColor(.timsRed)
                         }
+                        
+                        Toggle(isOn: $saveAsFavorite) {
+                            Label("Save this complete order as Favorite", systemImage: "star.fill")
+                                .font(.system(size: 13, weight: .bold, design: .rounded))
+                                .foregroundColor(.orange)
+                        }
+                        .toggleStyle(SwitchToggleStyle(tint: .orange))
+                        .padding(.vertical, 4)
                         
                         Button(action: {
                             SoundManager.shared.playSound(named: "success", withExtension: "mp3")
