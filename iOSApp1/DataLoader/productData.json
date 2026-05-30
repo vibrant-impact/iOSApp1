@@ -4,7 +4,7 @@
     "name": "Raspberry Mojito Frozen Quencher",
     "description": "",
     "price": 3.99,
-    "category": "Cold Drinks, New and Seasonal",
+    "category": "Cold Drinks, Fruit Quenchers",
     "image": "raspberry-mojito-frozen-quencher"
   },
   
@@ -13,53 +13,8 @@
     "name": "Raspberry Mojito Lemonade Quencher",
     "description": "",
     "price": 2.99,
-    "category": "Cold Drinks, New and Seasonal",
+    "category": "Cold Drinks, Fruit Quenchers",
     "image": "raspberry-mojito-lemonade-quencher"
-  },
-  
-  {
-    "id": "28",
-    "name": "Peach Iced Tea Quencher",
-    "description": "",
-    "price": 2.99,
-    "category": "Cold Drinks, New and Seasonal",
-    "image": "peach-iced-tea-quencher"
-  },
-  
-  {
-    "id": "29",
-    "name": "Strawberry Watermelon Iced Tea Quencher",
-    "description": "",
-    "price": 2.99,
-    "category": "Cold Drinks, New and Seasonal",
-    "image": "strawberry-watermelon-iced-tea-quencher"
-  },
-  
-  {
-    "id": "30",
-    "name": "Blackberry Yuzu Iced Tea Quencher",
-    "description": "",
-    "price": 2.99,
-    "category": "Cold Drinks, New and Seasonal",
-    "image": "blackberry-yuzu-iced-tea-quencher"
-  },
-  
-  {
-    "id": "31",
-    "name": "Orange Tangerine Iced Tea Quencher",
-    "description": "",
-    "price": 2.99,
-    "category": "Cold Drinks, New and Seasonal",
-    "image": "orange-tangerine-iced-tea-quencher"
-  },
-  
-  {
-    "id": "33",
-    "name": "Custard Tart",
-    "description": "",
-    "price": 2.59,
-    "category": "Baked Goods, New and Seasonal",
-    "image": "custard-tart"
   },
   
   {
@@ -256,7 +211,7 @@
     "name": "Iced Capp",
     "description": "",
     "price": 2.79,
-    "category": "Cold Drinks",
+    "category": "Cold Drinks, Iced Capp",
     "image": "black-iced-coffee"
   },
   
@@ -265,7 +220,7 @@
     "name": "Caramel Churro Cold Brew",
     "description": "",
     "price": 3.99,
-    "category": "Cold Drinks, Cold Brew, New and Seasonal",
+    "category": "Cold Drinks, Cold Brew",
     "image": "caramel-churro-cold-brew"
   },
   
@@ -319,7 +274,7 @@
     "name": "Caramel Churro Iced Latte",
     "description": "",
     "price": 4.19,
-    "category": "Cold Drinks, Iced Lattes, New and Seasonal",
+    "category": "Cold Drinks, Iced Lattes",
     "image": "caramel-churro-iced-latte"
   },
   
@@ -328,7 +283,7 @@
     "name": "Protein Iced Chai Latte",
     "description": "",
     "price": 4.99,
-    "category": "Cold Drinks, Iced Lattes, New and Seasonal",
+    "category": "Cold Drinks, Iced Lattes",
     "image": "protein-iced-chai-latte"
   },
   
@@ -391,7 +346,7 @@
     "name": "Blackberry Yuzu Protein Quencher",
     "description": "",
     "price": 3.99,
-    "category": "Cold Drinks, Fruit Quenchers, New and Seasonal",
+    "category": "Cold Drinks, Fruit Quenchers",
     "image": "blackberry-yuzu-protein-quencher"
   },
   
@@ -400,7 +355,7 @@
     "name": "Peach Protein Quencher",
     "description": "",
     "price": 3.99,
-    "category": "Cold Drinks, Fruit Quenchers, New and Seasonal",
+    "category": "Cold Drinks, Fruit Quenchers",
     "image": "peach-protein-quencher"
   },
   
@@ -409,7 +364,7 @@
     "name": "Strawberry Watermelon Protein Quencher",
     "description": "",
     "price": 3.99,
-    "category": "Cold Drinks, Fruit Quenchers, New and Seasonal",
+    "category": "Cold Drinks, Fruit Quenchers",
     "image": "strawberry-watermelon-protein-quencher"
   },
   
@@ -436,7 +391,7 @@
     "name": "Raspberry Mojito Zero Sugar Sparkling Quencher",
     "description": "",
     "price": 3.29,
-    "category": "Cold Drinks, Fruit Quenchers, New and Seasonal",
+    "category": "Cold Drinks, Fruit Quenchers",
     "image": "raspberry-mojito-zero-sugar-sparkling-quencher"
   },
   
@@ -445,7 +400,7 @@
     "name": "Raspberry Mojito Iced Tea Quencher",
     "description": "",
     "price": 2.99,
-    "category": "Cold Drinks, Fruit Quenchers, New and Seasonal",
+    "category": "Cold Drinks, Fruit Quenchers",
     "image": "raspberry-mojito-iced-tea-quencher"
   },
   
@@ -522,15 +477,6 @@
   },
   
   {
-    "id": "95",
-    "name": "Peach Lemonade Quencher",
-    "description": "",
-    "price": 2.99,
-    "category": "Cold Drinks, Fruit Quenchers",
-    "image": "peach-lemonade-quencher"
-  },
-  
-  {
     "id": "96",
     "name": "Strawberry Watermelon Lemonade Quencher",
     "description": "",
@@ -558,24 +504,6 @@
   },
   
   {
-    "id": "99",
-    "name": "Peach Sparkling Quencher",
-    "description": "",
-    "price": 3.29,
-    "category": "Cold Drinks, Fruit Quenchers",
-    "image": "peach-sparkling-quencher"
-  },
-  
-  {
-    "id": "100",
-    "name": "Strawberry Watermelon Sparkling Quencher",
-    "description": "",
-    "price": 3.29,
-    "category": "Cold Drinks, Fruit Quenchers",
-    "image": "strawberry-watermelon-sparkling-quencher"
-  },
-  
-  {
     "id": "101",
     "name": "Classic Lemonade Quencher",
     "description": "",
@@ -583,25 +511,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "classic-lemonade-quencher"
   },
-  
-  {
-    "id": "102",
-    "name": "Mango Frozen Lemonade",
-    "description": "",
-    "price": 2.89,
-    "category": "Cold Drinks, Frozen Lemonade",
-    "image": "mango-frozen-lemonade"
-  },
-  
-  {
-    "id": "103",
-    "name": "Strawberry Frozen Lemonade",
-    "description": "",
-    "price": 3.49,
-    "category": "Cold Drinks, Frozen Lemonade",
-    "image": "strawberry-frozen-lemonade"
-  },
-
   
   {
     "id": "104",
@@ -617,7 +526,7 @@
     "name": "Cherry Soda Swirl",
     "description": "",
     "price": 3.49,
-    "category": "Cold Drinks, Fountain Pop, New and Seasonal",
+    "category": "Cold Drinks, Fountain Pop",
     "image": "cherry-soda-swirl"
   },
   
@@ -626,7 +535,7 @@
     "name": "Vanilla Soda Swirl",
     "description": "",
     "price": 3.49,
-    "category": "Cold Drinks, Fountain Pop, New and Seasonal",
+    "category": "Cold Drinks, Fountain Pop",
     "image": "vanilla-soda-swirl"
   },
   
@@ -635,44 +544,8 @@
     "name": "Vanilla Light Soda Swirl",
     "description": "",
     "price": 2.99,
-    "category": "Cold Drinks, Fountain Pop, New and Seasonal",
+    "category": "Cold Drinks, Fountain Pop",
     "image": "vanilla-light-soda-swirl"
-  },
-  
-  {
-    "id": "108",
-    "name": "Coke",
-    "description": "",
-    "price": 2.49,
-    "category": "Cold Drinks, Fountain Pop",
-    "image": "coke"
-  },
-  
-  {
-    "id": "109",
-    "name": "Diet Coke",
-    "description": "",
-    "price": 2.49,
-    "category": "Cold Drinks, Fountain Pop",
-    "image": "diet-coke"
-  },
-  
-  {
-    "id": "110",
-    "name": "Fuze Iced Tea",
-    "description": "",
-    "price": 2.49,
-    "category": "Cold Drinks, Fountain Pop",
-    "image": "fuze-iced-tea"
-  },
-  
-  {
-    "id": "111",
-    "name": "Minute Maid Lemonade",
-    "description": "",
-    "price": 2.49,
-    "category": "Cold Drinks, Fountain Pop",
-    "image": "minute-maid-lemonade"
   },
   
   {
@@ -770,7 +643,7 @@
     "name": "Blackberry Yuzu Infusr Energy Drink",
     "description": "",
     "price": 3.19,
-    "category": "Cold Drinks, Infusr Energy Drink",
+    "category": "Cold Drinks",
     "image": "blackberry-yuzu-infusr-energy-drink"
   },
   
@@ -779,7 +652,7 @@
     "name": "Mango Starfruit Infusr Energy Drink",
     "description": "",
     "price": 3.19,
-    "category": "Cold Drinks, Infusr Energy Drink",
+    "category": "Cold Drinks",
     "image": "mango-starfruit-infusr-energy-drink"
   },
   
@@ -788,7 +661,7 @@
     "name": "Chicken Parmesan Flatbread Pizza",
     "description": "",
     "price": 7.99,
-    "category": "Lunch and Dinner, Flatbread Pizzas",
+    "category": "Lunch & Dinner, Flatbread Pizzas",
     "image": "chicken-parmesan-flatbread-pizza"
   },
   
@@ -797,7 +670,7 @@
     "name": "Pepperoni Flatbread Pizza",
     "description": "",
     "price": 7.99,
-    "category": "Lunch and Dinner, Flatbread Pizzas",
+    "category": "Lunch & Dinner, Flatbread Pizzas",
     "image": "pepperoni-flatbread-pizza"
   },
   
@@ -806,7 +679,7 @@
     "name": "Simply Cheese Flatbread Pizza",
     "description": "",
     "price": 6.99,
-    "category": "Lunch and Dinner, Flatbread Pizzas",
+    "category": "Lunch & Dinner, Flatbread Pizzas",
     "image": "simply-cheese-flatbread-pizza"
   },
   
@@ -815,7 +688,7 @@
     "name": "Cilantro Lime Chicken Loaded Wrap with Cheese",
     "description": "",
     "price": 8.79,
-    "category": "Lunch and Dinner, Wraps",
+    "category": "Lunch & Dinner, Wraps",
     "image": "cilantro-lime-chicken-loaded-wrap-with-cheese"
   },
   
@@ -824,7 +697,7 @@
     "name": "Cilantro Lime Veggie Loaded Wrap with Cheese",
     "description": "",
     "price": 7.79,
-    "category": "Lunch and Dinner, Wraps",
+    "category": "Lunch & Dinner, Wraps",
     "image": "cilantro-lime-veggie-loaded-wrap-with-cheese"
   },
   
@@ -833,7 +706,7 @@
     "name": "Habanero Chicken Loaded Wrap with Cheese",
     "description": "",
     "price": 8.79,
-    "category": "Lunch and Dinner, Wraps",
+    "category": "Lunch & Dinner, Wraps",
     "image": "habanero-chicken-loaded-wrap-with-cheese"
   },
   
@@ -842,7 +715,7 @@
     "name": "Habanero Veggie Loaded Wrap with Cheese",
     "description": "",
     "price": 7.79,
-    "category": "Lunch and Dinner, Wraps",
+    "category": "Lunch & Dinner, Wraps",
     "image": "habanero-veggie-loaded-wrap-with-cheese"
   },
   
@@ -851,7 +724,7 @@
     "name": "Chicken Bacon Ranch Wrap",
     "description": "",
     "price": 6.99,
-    "category": "Lunch and Dinner, Wraps",
+    "category": "Lunch & Dinner, Wraps",
     "image": "chicken-bacon-ranch-wrap"
   },
   
@@ -860,7 +733,7 @@
     "name": "Classic Chicken Wrap",
     "description": "",
     "price": 6.49,
-    "category": "Lunch and Dinner, Wraps",
+    "category": "Lunch & Dinner, Wraps",
     "image": "classic-chicken-wrap"
   },
   
@@ -869,7 +742,7 @@
     "name": "Chipotle Craveable Wrap",
     "description": "",
     "price": 3.99,
-    "category": "Lunch and Dinner, Wraps",
+    "category": "Lunch & Dinner, Wraps",
     "image": "chipotle-craveable-wrap"
   },
   
@@ -878,7 +751,7 @@
     "name": "Ranch Craveable Wrap",
     "description": "",
     "price": 3.99,
-    "category": "Lunch and Dinner, Wraps",
+    "category": "Lunch & Dinner, Wraps",
     "image": "ranch-craveable-wrap"
   },
   
@@ -887,7 +760,7 @@
     "name": "Supreme Stack",
     "description": "",
     "price": 8.99,
-    "category": "Lunch and Dinner, Sandwiches, New and Seasonal",
+    "category": "Lunch & Dinner, Sandwiches",
     "image": "supreme-stack"
   },
   
@@ -896,7 +769,7 @@
     "name": "Steak & Cheddar Artisan Sandwich",
     "description": "",
     "price": 7.49,
-    "category": "Lunch and Dinner, Sandwiches",
+    "category": "Lunch & Dinner, Sandwiches",
     "image": "steak-cheddar-artisan-sandwich"
   },
   
@@ -905,7 +778,7 @@
     "name": "Steak Craveable",
     "description": "",
     "price": 4.99,
-    "category": "Lunch and Dinner, Sandwiches",
+    "category": "Lunch & Dinner, Sandwiches",
     "image": "steak-craveable"
   },
   
@@ -914,7 +787,7 @@
     "name": "Cilantro Lime Chicken Loaded Bowl with Cheese",
     "description": "",
     "price": 9.99,
-    "category": "Lunch and Dinner, Bowls",
+    "category": "Lunch & Dinner, Bowls",
     "image": "cilantro-lime-chicken-loaded-bowl-with-cheese"
   },
   
@@ -923,7 +796,7 @@
     "name": "Cilantro Lime Veggie Loaded Bowl with Cheese",
     "description": "",
     "price": 8.99,
-    "category": "Lunch and Dinner, Bowls",
+    "category": "Lunch & Dinner, Bowls",
     "image": "cilantro-lime-veggie-loaded-bowl-with-cheese"
   },
 
@@ -933,7 +806,7 @@
     "name": "Habanero Chicken Loaded Bowl with Cheese",
     "description": "",
     "price": 9.99,
-    "category": "Lunch and Dinner, Bowls",
+    "category": "Lunch & Dinner, Bowls",
     "image": "habanero-chicken-loaded-bowl-with-cheese"
   },
 
@@ -943,7 +816,7 @@
     "name": "Habanero Veggie Loaded Bowl with Cheese",
     "description": "",
     "price": 8.99,
-    "category": "Lunch and Dinner, Bowls",
+    "category": "Lunch & Dinner, Bowls",
     "image": "habanero-veggie-loaded-bowl-with-cheese"
   },
   
@@ -952,7 +825,7 @@
     "name": "Potato Wedges",
     "description": "",
     "price": 8.99,
-    "category": "Lunch and Dinner",
+    "category": "Lunch & Dinner, Potato Wedges",
     "image": "potato-wedges"
   },
   
@@ -979,7 +852,7 @@
     "name": "Maple Glazed Donut",
     "description": "",
     "price": 1.69,
-    "category": "Baked Goods, Donuts, New and Seasonal",
+    "category": "Baked Goods, Donuts",
     "image": "maple-glazed-donut"
   },
   
@@ -1123,7 +996,7 @@
     "name": "Canadian Fireworks Timbit",
     "description": "",
     "price": 0.49,
-    "category": "Baked Goods, Timbits, New and Seasonal",
+    "category": "Baked Goods, Timbits",
     "image": "canadian-fireworks-timbit"
   },
   
@@ -1132,7 +1005,7 @@
     "name": "Cappuccino Timbit",
     "description": "",
     "price": 0.49,
-    "category": "Baked Goods, Timbits, New and Seasonal",
+    "category": "Baked Goods, Timbits",
     "image": "cappuccino-timbit"
   },
   
@@ -1141,7 +1014,7 @@
     "name": "Chocolate Creme Brulee Filled Timbit",
     "description": "",
     "price": 0.49,
-    "category": "Baked Goods, Timbits, New and Seasonal",
+    "category": "Baked Goods, Timbits",
     "image": "chocolate-creme-brulee-filled-timbit"
   },
   
@@ -1150,7 +1023,7 @@
     "name": "Lime Cheesecake Filled Timbit",
     "description": "",
     "price": 0.49,
-    "category": "Baked Goods, Timbits, New and Seasonal",
+    "category": "Baked Goods, Timbits",
     "image": "lime-cheesecake-filled-timbit"
   },
   
@@ -1170,15 +1043,6 @@
     "price": 0.39,
     "category": "Baked Goods, Timbits",
     "image": "old-fashioned-plain-timbit"
-  },
-  
-  {
-    "id": "166",
-    "name": "Philadelphia Original Cream Cheese",
-    "description": "",
-    "price": 3.79,
-    "category": "Condiments",
-    "image": "philadelphia-original-cream-cheese"
   },
   
   {
@@ -1213,7 +1077,7 @@
     "name": "Oatmeal Raisin Cookie",
     "description": "",
     "price": 1.69,
-    "category": "Baked Goods, Cookies, New and Seasonal",
+    "category": "Baked Goods, Cookies",
     "image": "oatmeal-raisin-cookie"
   },
   
@@ -1231,7 +1095,7 @@
     "name": "Lemon Blueberry Tart",
     "description": "",
     "price": 1.69,
-    "category": "Baked Goods, New and Seasonal",
+    "category": "Baked Goods",
     "image": "lemon-blueberry-tart"
   },
   
@@ -1240,7 +1104,7 @@
     "name": "Pecan Butter Tart",
     "description": "",
     "price": 1.69,
-    "category": "Baked Goods, New and Seasonal",
+    "category": "Baked Goods",
     "image": "pecan-butter-tart"
   },
   
@@ -1251,213 +1115,6 @@
     "price": 1.69,
     "category": "Baked Goods",
     "image": "double-chocolate-brownie"
-  },
-  
-  {
-    "id": "175",
-    "name": "Canada Plastic Straw Tumbler 24oz",
-    "description": "",
-    "price": 17.99,
-    "category": "Merchandise, New and Seasonal",
-    "image": "canada-plastic-straw-tumbler-24oz"
-  },
-  
-  {
-    "id": "176",
-    "name": "Alberta Plastic Straw Tumbler 24oz",
-    "description": "",
-    "price": 17.99,
-    "category": "Merchandise",
-    "image": "alberta-plastic-straw-tumbler-24oz"
-  },
-  
-  {
-    "id": "177",
-    "name": "Alberta Stainless Steel Travel Mug 22oz",
-    "description": "",
-    "price": 25.99,
-    "category": "Merchandise",
-    "image": "alberta-stainless-steel-travel-mug-22oz"
-  },
-  
-  {
-    "id": "178",
-    "name": "Ryan Reynolds Charitable T-Shirt English",
-    "description": "",
-    "price": 19.99,
-    "category": "Merchandise, New and Seasonal",
-    "image": "ryan-reynolds-charitable-t-shirt-english"
-  },
-  
-  {
-    "id": "179",
-    "name": "Retro Stainless Steel Travel Mug with Handle 20oz",
-    "description": "",
-    "price": 24.99,
-    "category": "Merchandise",
-    "image": "retro-stainless-steel-travel-mug-with-handle-20oz"
-  },
-  
-  {
-    "id": "180",
-    "name": "Retro Pet Toy Iced Capp",
-    "description": "",
-    "price": 14.99,
-    "category": "Merchandise",
-    "image": "retro-pet-toy-iced-capp"
-  },
-  
-  {
-    "id": "181",
-    "name": "Retro Dad Hat Iced Capp",
-    "description": "",
-    "price": 29.99,
-    "category": "Merchandise",
-    "image": "retro-dad-hat-iced-capp"
-  },
-  
-  {
-    "id": "182",
-    "name": "Timbits Team Canada Reusable Hot Cup 16oz",
-    "description": "",
-    "price": 9.99,
-    "category": "Merchandise, New and Seasonal",
-    "image": "timbits-team-canada-reusable-hot-cup-16oz"
-  },
-  
-  {
-    "id": "183",
-    "name": "Floral Stainless Steel Travel Mug with Handle 20oz",
-    "description": "",
-    "price": 24.99,
-    "category": "Merchandise",
-    "image": "floral-stainless-steel-travel-mug-with-handle-20oz"
-  },
-  
-  {
-    "id": "184",
-    "name": "Color Changing Cold Cup with Straw Buddy 24oz",
-    "description": "",
-    "price": 9.99,
-    "category": "Merchandise",
-    "image": "color-changing-cold-cup-with-straw-buddy-24oz"
-  },
-  
-  {
-    "id": "185",
-    "name": "Hockey Squeeze Water Bottle 32oz",
-    "description": "",
-    "price": 12.99,
-    "category": "Merchandise",
-    "image": "hockey-squeeze-water-bottle-32oz"
-  },
-  
-  {
-    "id": "186",
-    "name": "Hockey Timbits Plush",
-    "description": "",
-    "price": 15.99,
-    "category": "Merchandise",
-    "image": "hockey-timbits-plush"
-  },
-  
-  {
-    "id": "187",
-    "name": "Holiday Stainless Steel Travel Mug Glossy Shimmer Blue 20oz",
-    "description": "",
-    "price": 24.99,
-    "category": "Merchandise",
-    "image": "holiday-stainless-steel-travel-mug-glossy-shimmer-blue-20oz"
-  },
-  
-  {
-    "id": "188",
-    "name": "Holiday Dual Wall Plastic Straw Tumbler 24oz",
-    "description": "",
-    "price": 14.99,
-    "category": "Merchandise",
-    "image": "holiday-dual-wall-plastic-straw-tumbler-24oz"
-  },
-  
-  {
-    "id": "189",
-    "name": "Ornament Bear",
-    "description": "",
-    "price": 9.99,
-    "category": "Merchandise",
-    "image": "ornament-bear"
-  },
-  
-  {
-    "id": "190",
-    "name": "20oz Stainless Steel Travel Mug Cream Shimmer",
-    "description": "",
-    "price": 24.99,
-    "category": "Merchandise",
-    "image": "20oz-stainless-steel-travel-mug-cream-shimmer"
-  },
-  
-  {
-    "id": "191",
-    "name": "20oz Stainless Steel Travel Mug Wood Grain",
-    "description": "",
-    "price": 24.99,
-    "category": "Merchandise",
-    "image": "20oz-stainless-steel-travel-mug-wood-grain"
-  },
-  
-  {
-    "id": "192",
-    "name": "24oz Plastic Straw Tumbler Sage",
-    "description": "",
-    "price": 14.99,
-    "category": "Merchandise",
-    "image": "24oz-plastic-straw-tumbler-sage"
-  },
-  
-  {
-    "id": "193",
-    "name": "24oz Plastic Straw Tumbler Floral",
-    "description": "",
-    "price": 14.99,
-    "category": "Merchandise",
-    "image": "24oz-plastic-straw-tumbler-floral"
-  },
-  
-  {
-    "id": "194",
-    "name": "30oz Stainless Steel Tumbler with Top Handle Navy",
-    "description": "",
-    "price": 29.99,
-    "category": "Merchandise",
-    "image": "30oz-stainless-steel-tumbler-with-top-handle-navy"
-  },
-  
-  {
-    "id": "195",
-    "name": "40oz Stainless Steel Tumbler Beige",
-    "description": "",
-    "price": 37.49,
-    "category": "Merchandise",
-    "image": "40oz-stainless-steel-tumbler-beige"
-  },
-  
-  {
-    "id": "196",
-    "name": "Large Reusable Bag",
-    "description": "",
-    "price": 1.00,
-    "category": "Merchandise",
-    "image": "large-reusable-bag"
-  },
-  
-  {
-    "id": "197",
-    "name": "Dipping Sauces",
-    "description": "",
-    "price": 1.00,
-    "category": "Dipping Sauces",
-    "image": "dipping-sauce"
   },
   
   {
@@ -1564,7 +1221,7 @@
     "name": "Bagel BELT",
     "description": "",
     "price": 5.59,
-    "category": "Breakfast, Breakfast Sandwiches",
+    "category": "Breakfast, Breakfast Sandwiches, Bagels",
     "image": "bagel-BELT"
   },
   
@@ -1582,7 +1239,7 @@
     "name": "Hashbrown",
     "description": "",
     "price": 2.19,
-    "category": "Breakfast",
+    "category": "Breakfast, Hashbrown",
     "image": "hashbrown"
   },
   
@@ -1591,7 +1248,7 @@
     "name": "Omelette Bites",
     "description": "",
     "price": 3.99,
-    "category": "Breakfast",
+    "category": "Breakfast, Omelette Bites",
     "image": "omelette-bites"
   },
   
@@ -1600,7 +1257,7 @@
     "name": "Soup",
     "description": "",
     "price": 4.49,
-    "category": "Lunch and Dinner, Soup & Chili",
+    "category": "Lunch & Dinner, Soup & Chili",
     "image": "soup"
   },
   
@@ -1609,7 +1266,7 @@
     "name": "Chili",
     "description": "",
     "price": 5.99,
-    "category": "Lunch and Dinner, Soup & Chili",
+    "category": "Lunch & Dinner, Soup & Chili",
     "image": "chili"
   },
   
@@ -1618,7 +1275,7 @@
     "name": "Herb & Garlic Savoury Pastry",
     "description": "",
     "price": 2.99,
-    "category": "Lunch and Dinner",
+    "category": "Baked Goods",
     "image": "herb-garlic-savoury-pastry"
   },
   
@@ -1627,7 +1284,7 @@
     "name": "Bacon Grilled Cheese Melt",
     "description": "",
     "price": 7.19,
-    "category": "Lunch and Dinner, New and Seasonal",
+    "category": "Lunch & Dinner, Sandwiches",
     "image": "bacon-grilled-cheese-melt"
   },
   
@@ -1636,7 +1293,7 @@
     "name": "Grilled Cheese Melt",
     "description": "",
     "price": 5.79,
-    "category": "Lunch and Dinner, New and Seasonal",
+    "category": "Lunch & Dinner, Sandwiches",
     "image": "grilled-cheese-melt"
   },
   
@@ -1645,7 +1302,7 @@
     "name": "Chipotle Veggie Wrap",
     "description": "",
     "price": 5.29,
-    "category": "Lunch and Dinner, New and Seasonal",
+    "category": "Lunch and Dinner, Wraps",
     "image": "chipotle-veggie-wrap"
   },
   
@@ -1663,7 +1320,7 @@
     "name": "Caramel Churro Iced Capp",
     "description": "",
     "price": 4.69,
-    "category": "Cold Drinks, Iced Capp, New and Seasonal",
+    "category": "Cold Drinks, Iced Capp",
     "image": "caramel-churro-iced-capp"
   },
   
@@ -1696,11 +1353,146 @@
   
   {
     "id": "224",
-    "name": "Donation to Tim Hortons Foundation Camps",
+    "name": "6 Assorted Bagels",
     "description": "",
-    "price": 1.00,
-    "category": "Donation",
-    "image": "donation-to-tim-hortons-foundation-camps"
+    "price": 10.49,
+    "category": "Baked Goods, Bagels",
+    "image": "6-assorted-bagels"
+  },
+  
+  {
+    "id": "225",
+    "name": "Plain Bagel",
+    "description": "",
+    "price": 2.29,
+    "category": "Baked Goods, Bagels",
+    "image": "plain-bagel"
+  },
+  
+  {
+    "id": "226",
+    "name": "Everything Bagel",
+    "description": "",
+    "price": 2.29,
+    "category": "Baked Goods, Bagels",
+    "image": "everything-bagel"
+  },
+  
+  {
+    "id": "227",
+    "name": "12 Grain Bagel",
+    "description": "",
+    "price": 2.29,
+    "category": "Baked Goods, Bagels",
+    "image": "12-grain-bagel"
+  },
+  
+  {
+    "id": "228",
+    "name": "Four Cheese Bagel",
+    "description": "",
+    "price": 2.99,
+    "category": "Baked Goods, Bagels",
+    "image": "four-cheese-bagel"
+  },
+  
+  {
+    "id": "229",
+    "name": "Cinnamon Raisin Bagel",
+    "description": "",
+    "price": 2.29,
+    "category": "Baked Goods, Bagels",
+    "image": "cinnamon-raisin-bagel"
+  },
+  
+  {
+    "id": "230",
+    "name": "6 Assorted Muffins",
+    "description": "",
+    "price": 10.49,
+    "category": "Baked Goods, Muffins",
+    "image": "6-assorted-muffins"
+  },
+  
+  {
+    "id": "231",
+    "name": "12 Assorted Muffins",
+    "description": "",
+    "price": 18.99,
+    "category": "Baked Goods, Muffins",
+    "image": "12-assorted-muffins"
+  },
+  
+  {
+    "id": "232",
+    "name": "Chocolate Chip Muffin",
+    "description": "",
+    "price": 2.39,
+    "category": "Baked Goods, Muffins",
+    "image": "chocolate-chip-muffin"
+  },
+  
+  {
+    "id": "233",
+    "name": "Fruit Explosion Muffin",
+    "description": "",
+    "price": 2.59,
+    "category": "Baked Goods, Muffins",
+    "image": "fruit-explosion-muffin"
+  },
+  
+  {
+    "id": "234",
+    "name": "Raisin Bran Muffin",
+    "description": "",
+    "price": 2.39,
+    "category": "Baked Goods, Muffins",
+    "image": "raisin-bran-muffin"
+  },
+  
+  {
+    "id": "235",
+    "name": "Wild Blueberry Muffin",
+    "description": "",
+    "price": 2.39,
+    "category": "Baked Goods, Muffins",
+    "image": "wild-blueberry-muffin"
+  },
+  
+  {
+    "id": "236",
+    "name": "Whole Grain Pecan Banana Bread Muffin",
+    "description": "",
+    "price": 2.39,
+    "category": "Baked Goods, Muffins",
+    "image": "whole-grain-pecan-banana-bread-muffin"
+  },
+  
+  {
+    "id": "237",
+    "name": "Cheese Croissant",
+    "description": "",
+    "price": 2.69,
+    "category": "Baked Goods, Croissants",
+    "image": "cheese-croissant"
+  },
+  
+  {
+    "id": "238",
+    "name": "Plain Croissant",
+    "description": "",
+    "price": 2.39,
+    "category": "Baked Goods, Croissants",
+    "image": "plain-croissant"
+  },
+  
+  {
+    "id": "239",
+    "name": "Chocolate Croissant",
+    "description": "",
+    "price": 2.69,
+    "category": "Baked Goods, Croissants",
+    "image": "chocolate-croissant"
   },
   
 ]

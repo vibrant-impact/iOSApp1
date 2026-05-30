@@ -33,8 +33,8 @@ struct AddOrderView: View {
         ("Hot Drinks", "cup.and.saucer.fill"),
         ("Cold Drinks", "snowflake"),
         ("Baked Goods", "birthday.cake.fill"),
-        ("Lunch and Dinner", "fork.knife"),
-        ("Merchandise", "bag.fill"),
+        ("Breakfast", "spoon.serving"),
+        ("Lunch & Dinner", "fork.knife"),
         ("Tims at Home", "house.fill")
     ]
     
@@ -44,10 +44,14 @@ struct AddOrderView: View {
             return ["Brewed Coffee", "Espresso Drinks", "Tea", "Hot Chocolate"]
         case "Cold Drinks":
             return ["Iced Coffee", "Iced Capp", "Cold Brew", "Iced Lattes", "Fruit Quenchers", "Frozen Lemonade", "Fountain Pop", "Bottled Drinks"]
-        case "Lunch and Dinner":
-            return ["Flatbread Pizzas", "Wraps", "Sandwiches", "Bowls", "Potato Wedges"]
         case "Baked Goods":
-            return ["Donuts", "Timbits", "Bagels", "Muffins", "Cookies"]
+            return ["Donuts", "Timbits", "Bagels", "Muffins", "Cookies", "Croissants"]
+        case "Breakfast":
+            return ["Breakfast Sandwiches", "Breakdfast Wraps", "Hashbrown", "Omelette Bites"]
+        case "Lunch & Dinner":
+            return ["Flatbread Pizzas", "Wraps", "Sandwiches", "Bowls", "Soup & Chili", "Potato Wedges"]
+        case "Tims at Home":
+            return ["Tims at Home"]
         default:
             return ["All"]
         }
