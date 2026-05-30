@@ -233,15 +233,20 @@ struct AddOrderView: View {
                                             
                                 // "All" Pill Layout
                                 let showAllActive = selectedSubcategory == nil
+                                    
                                 Text("All")
                                     .font(.system(size: 12, weight: .medium, design: .rounded))
-                                    .foregroundColor(globalSearchQuery.isEmpty ? .timsDarkBrown : .timsDarkBrown)
+                                    .foregroundColor(showAllActive ? .timsDarkBrown : .timsDarkBrown)
                                     .padding(.horizontal, 14)
                                     .padding(.vertical, 6)
-                                    .background(globalSearchQuery.isEmpty ? Color.orange : Color.timsFieldTan.opacity(0.6))
+                                    .background(showAllActive ? Color.orange : Color.timsFieldTan.opacity(0.6))
                                     .cornerRadius(16)
                                     .onTapGesture {
-                                        globalSearchQuery = ""
+                                        SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
+                                        withAnimation(.spring(response: 0.25, dampingFraction: 0.8)) {
+                                            // Clears the subcategory filter so the grid displays all items in the main category!
+                                            selectedSubcategory = nil
+                                        }
                                     }
                                             
                                 ForEach(structuralSubMenusList, id: \.self) { subName in
