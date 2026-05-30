@@ -39,7 +39,7 @@ struct AddOrderView: View {
     var structuralSubMenusList: [String] {
         switch selectedMainMenuTab {
         case "Hot Drinks":
-            return ["All", "Brewed Coffee", "Espresso Drinks", "Tea", "Hot Chocoloate"]
+            return ["All", "Brewed Coffee", "Espresso Drinks", "Tea", "Hot Chocolate"]
         case "Cold Drinks":
             return ["All", "Iced Coffee", "Iced Capp", "Cold Brew", "Iced Lattes", "Fruit Quenchers", "Frozen Lemonade", "Fountain Pop", "Bottled Drinks"]
         case "Lunch and Dinner":
@@ -93,9 +93,10 @@ struct AddOrderView: View {
                                 .font(.system(size: 11, weight: .black, design: .rounded))
                                 .foregroundColor(.timsRed)
                             
+                            
                             TextField("Enter Name (e.g., Alex, Stephanie)", text: $personName)
                                 .font(.system(.body, design: .rounded))
-                                .foregroundColor(.timsDarkBrown)
+                                .foregroundColor(Color.timsDarkBrown)
                                 .padding()
                                 .background(Color.timsFieldTan)
                                 .cornerRadius(12)
@@ -106,10 +107,10 @@ struct AddOrderView: View {
                         HStack {
                             Image(systemName: "magnifyingglass")
                                 .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(.timsRed)
-                            TextField("Search names or categories (e.g., 'Churro')...", text: $globalSearchQuery)
+                                .foregroundColor(Color.timsDarkBrown)
+                            TextField("Search names or categories (e.g., 'Chocolate')...", text: $globalSearchQuery)
                                 .font(.system(.body, design: .rounded))
-                                .foregroundColor(.timsDarkBrown)
+                                .foregroundColor(Color.timsDarkBrown)
                                 .autocorrectionDisabled()
                         }
                         .padding(14)
@@ -140,11 +141,11 @@ struct AddOrderView: View {
                                         }
                                         .frame(maxWidth: .infinity)
                                         .padding(.vertical, 12)
-                                        .background(selectedMainMenuTab == categoryName ? Color.timsRed : Color.timsFieldTan)
-                                        .foregroundColor(selectedMainMenuTab == categoryName ? .white : .timsDarkBrown)
+                                        .background(selectedMainMenuTab == categoryName ? Color.orange : Color.timsFieldTan)
+                                        .foregroundColor(selectedMainMenuTab == categoryName ? .timsDarkBrown : .timsDarkBrown)
                                         .cornerRadius(12)
                                         .contentShape(Rectangle())
-                                        .shadow(color: selectedMainMenuTab == categoryName ? Color.timsRed.opacity(0.3) : Color.clear, radius: 6, x: 0, y: 3)
+                                        .shadow(color: selectedMainMenuTab == categoryName ? Color.orange.opacity(0.3) : Color.clear, radius: 6, x: 0, y: 3)
                                     }
                                     .buttonStyle(.plain)
                                 }
@@ -167,7 +168,7 @@ struct AddOrderView: View {
                                                 .padding(.horizontal, 16)
                                                 .padding(.vertical, 8)
                                                 .background(selectedSubMenuTab == subName ? Color.timsDarkBrown : Color.timsFieldTan)
-                                                .foregroundColor(selectedSubMenuTab == subName ? Color.timsTan : .secondary)
+                                                .foregroundColor(selectedSubMenuTab == subName ? Color.timsTan : .brown)
                                                 .cornerRadius(30)
                                                 .contentShape(Rectangle())
                                         }
@@ -231,9 +232,9 @@ struct AddOrderView: View {
                         VStack(spacing: 14) {
                             HStack(alignment: .top) {
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text("ADD TO INDIVIDUAL BASKET")
+                                    Text("ADD TO YOUR BASKET")
                                         .font(.system(size: 10, weight: .black, design: .rounded))
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(.orange)
                                     Text(selection.name)
                                         .font(.system(size: 16, weight: .bold, design: .rounded))
                                         .foregroundColor(.timsDarkBrown)
@@ -247,7 +248,7 @@ struct AddOrderView: View {
                                 }) {
                                     Image(systemName: "xmark.circle.fill")
                                         .font(.title3)
-                                        .foregroundColor(.gray.opacity(0.5))
+                                        .foregroundColor(.brown.opacity(0.5))
                                 }
                                 .buttonStyle(.plain)
                             }
@@ -255,7 +256,7 @@ struct AddOrderView: View {
                             HStack {
                                 Text("$\(String(format: "%.2f", selection.price)) each")
                                     .font(.system(size: 14, weight: .bold, design: .rounded))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(.orange)
                                 Spacer()
                                 
                                 HStack(spacing: 16) {
@@ -267,7 +268,7 @@ struct AddOrderView: View {
                                     }) {
                                         Image(systemName: "minus.circle.fill")
                                             .font(.title2)
-                                            .foregroundColor(itemQuantity > 1 ? .timsRed : .gray.opacity(0.3))
+                                            .foregroundColor(itemQuantity > 1 ? .timsRed : .brown.opacity(0.5))
                                     }
                                     Text("\(itemQuantity)")
                                         .font(.system(size: 18, weight: .black, design: .rounded))
@@ -295,7 +296,7 @@ struct AddOrderView: View {
                             
                             HStack {
                                 Toggle(isOn: $saveAsFavorite) {
-                                    Label("Save Profile", systemImage: "star.fill")
+                                    Label("Save Favorite", systemImage: "star.fill")
                                         .font(.system(size: 13, weight: .bold, design: .rounded))
                                         .foregroundColor(.orange)
                                 }
@@ -316,12 +317,12 @@ struct AddOrderView: View {
                                 }) {
                                     Text("Add to Basket")
                                         .font(.system(size: 15, weight: .black, design: .rounded))
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.timsDarkBrown)
                                         .padding(.horizontal, 24)
                                         .padding(.vertical, 14)
-                                        .background(Color.timsRed)
+                                        .background(Color.orange)
                                         .cornerRadius(14)
-                                        .shadow(color: Color.timsRed.opacity(0.4), radius: 8, x: 0, y: 4)
+                                        .shadow(color: Color.orange.opacity(0.4), radius: 8, x: 0, y: 4)
                                 }
                                 .buttonStyle(.plain)
                             }
@@ -347,7 +348,7 @@ struct AddOrderView: View {
                             Spacer()
                             Text("$\(String(format: "%.2f", pendingItems.reduce(0) { $0 + $1.itemTotal }))")
                                 .font(.system(size: 14, weight: .black, design: .rounded))
-                                .foregroundColor(.green)
+                                .foregroundColor(.timsRed)
                         }
                         
                         Button(action: {
@@ -372,9 +373,9 @@ struct AddOrderView: View {
                                 .foregroundColor(.timsDarkBrown)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 14)
-                                .background(Color.timsGold)
+                                .background(Color.orange)
                                 .cornerRadius(12)
-                                .shadow(color: Color.timsGold.opacity(0.4), radius: 6, x: 0, y: 3)
+                                .shadow(color: Color.orange.opacity(0.4), radius: 6, x: 0, y: 3)
                         }
                         .buttonStyle(.plain)
                     }
@@ -387,10 +388,16 @@ struct AddOrderView: View {
                     .zIndex(3)
                 }
             }
-            .edgesIgnoringSafeArea(.bottom) // Allows the overlay's tan background plate to bleed beautifully past the glass line
-            .navigationTitle(editingOrder == nil ? "Build Order" : "Modify Order")
+            .edgesIgnoringSafeArea(.bottom)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                // Custom large, orange typography
+                ToolbarItem(placement: .principal) {
+                    Text(editingOrder == nil ? "Build Order" : "Modify Order")
+                        .font(.system(size: 36, weight: .black, design: .rounded)) // Made larger and bolder
+                        .foregroundColor(.orange) // Swapped to your new custom orange accent
+                }
+                            
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }
                         .font(.system(.body, design: .rounded))

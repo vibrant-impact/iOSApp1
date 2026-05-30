@@ -81,15 +81,6 @@
   },
   
   {
-    "id": "41",
-    "name": "Biscoff Latte",
-    "description": "",
-    "price": 4.49,
-    "category": "Hot Drinks, Espresso Drinks",
-    "image": "biscoff-latte"
-  },
-  
-  {
     "id": "42",
     "name": "Protein Latte",
     "description": "",
@@ -199,11 +190,11 @@
   
   {
     "id": "55",
-    "name": "Hot Chocoloate",
+    "name": "Hot Chocolate",
     "description": "",
     "price": 2.89,
-    "category": "Hot Drinks, Hot Chocoloate",
-    "image": "hot-chocoloate"
+    "category": "Hot Drinks, Hot Chocolate",
+    "image": "hot-chocolate"
   },
   
   {
@@ -211,8 +202,8 @@
     "name": "White Hot Chocoloate",
     "description": "",
     "price": 2.89,
-    "category": "Hot Drinks, Hot Chocoloate",
-    "image": "white-hot-chocoloate"
+    "category": "Hot Drinks, Hot Chocolate",
+    "image": "white-hot-chocolate"
   },
   
   {
@@ -342,24 +333,6 @@
   },
   
   {
-    "id": "72",
-    "name": "Chocolate Pistachio Protein Iced Latte",
-    "description": "",
-    "price": 5.19,
-    "category": "Cold Drinks, Iced Lattes",
-    "image": "chocolate-pistachio-protein-iced-latte"
-  },
-  
-  {
-    "id": "73",
-    "name": "Brown Sugar Protein Iced Latte",
-    "description": "",
-    "price": 5.19,
-    "category": "Cold Drinks, Iced Lattes",
-    "image": "brown-sugar-protein-iced-latte"
-  },
-  
-  {
     "id": "74",
     "name": "Original Iced Latte",
     "description": "",
@@ -393,15 +366,6 @@
     "price": 3.99,
     "category": "Cold Drinks, Iced Lattes",
     "image": "iced-chai-latte"
-  },
-  
-  {
-    "id": "78",
-    "name": "Brown Sugar Iced Latte",
-    "description": "",
-    "price": 4.19,
-    "category": "Cold Drinks, Iced Lattes",
-    "image": "brown-sugar-iced-latte"
   },
   
   {
@@ -532,11 +496,11 @@
   
   {
     "id": "92",
-    "name": "Raspberry Mojito Lemondade Quencher",
+    "name": "Raspberry Mojito Lemonade Quencher",
     "description": "",
     "price": 2.99,
     "category": "Cold Drinks, Fruit Quenchers",
-    "image": "raspberry-mojito-lemondade-quencher"
+    "image": "raspberry-mojito-lemonade-quencher"
   },
   
   {

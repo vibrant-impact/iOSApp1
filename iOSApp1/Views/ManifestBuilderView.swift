@@ -66,11 +66,11 @@ struct ManifestBuilderView: View {
                                     VStack(spacing: 8) {
                                         Image(systemName: "plus.circle.fill")
                                             .font(.title2)
-                                            .foregroundColor(.timsRed)
+                                            .foregroundColor(.brown)
                                         Text("No orders added yet.\nTap 'Add Order' below to begin.")
                                             .font(.system(.subheadline, design: .rounded))
                                             .fontWeight(.bold)
-                                            .foregroundColor(.primary)
+                                            .foregroundColor(.brown)
                                             .multilineTextAlignment(.center)
                                     }
                                     Spacer()
@@ -81,6 +81,8 @@ struct ManifestBuilderView: View {
                                 ForEach(appStore.activeOrders) { order in
                                     Button(action: {
                                         if !isManifestLocked {
+                                            SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                            
                                             selectedOrderToEdit = order
                                             showingAddOrderForm = true
                                         }
@@ -89,20 +91,20 @@ struct ManifestBuilderView: View {
                                             VStack(alignment: .leading, spacing: 6) {
                                                 Text(order.name)
                                                     .font(.system(.headline, design: .rounded))
-                                                    .foregroundColor(.primary)
+                                                    .foregroundColor(.timsDarkBrown)
                                                 
                                                 ForEach(order.items) { item in
                                                     // FIXED: Combines quantity, name, and conditional notes into a single line using string interpolation
                                                     Text("☕️ \(item.quantity)x \(item.itemName)\(item.notes.isEmpty ? "" : " (\(item.notes))")")
                                                         .font(.system(.subheadline, design: .rounded))
-                                                        .foregroundColor(.secondary)
+                                                        .foregroundColor(.brown)
                                                 }
                                             }
                                             Spacer()
                                             Text("$\(String(format: "%.2f", order.checkoutTotal))")
                                                 .font(.system(.subheadline, design: .rounded))
                                                 .fontWeight(.black)
-                                                .foregroundColor(.primary)
+                                                .foregroundColor(.timsDarkBrown)
                                         }
                                     }
                                 }
@@ -112,18 +114,19 @@ struct ManifestBuilderView: View {
                         }
                         
                         if !appStore.activeOrders.isEmpty {
-                            Section(header: Text("💰 Manifest Cost Summary")
+                            Section(header: Text("💰 Combined Order Total")
                                 .font(.system(size: 11, weight: .black, design: .rounded))
                                 .foregroundColor(.white.opacity(0.9))) {
                                 HStack {
                                     Text("Estimated Total:")
                                         .font(.system(.body, design: .rounded))
                                         .fontWeight(.bold)
+                                        .foregroundColor(.timsDarkBrown)
                                     Spacer()
                                     Text("$\(String(format: "%.2f", runningGrandTotal))")
                                         .font(.system(.body, design: .rounded))
                                         .fontWeight(.black)
-                                        .foregroundColor(.green)
+                                        .foregroundColor(.timsRed)
                                 }
                             }
                             .listRowBackground(Color.timsTan.opacity(0.92))
@@ -133,14 +136,25 @@ struct ManifestBuilderView: View {
                             Section(header: Text("📋 Select the Designated Runner")
                                 .font(.system(size: 11, weight: .black, design: .rounded))
                                 .foregroundColor(.white.opacity(0.9))) {
-                                Picker("Who is driving?", selection: $appStore.currentRunner) {
-                                    Text("Choose Runner...").tag("")
-                                    ForEach(appStore.activeOrderNames, id: \.self) { name in
-                                        Text(name).tag(name)
+                                    
+                                HStack {
+                                    Text("Who is driving?")
+                                        .foregroundColor(.timsDarkBrown)
+                                        .font(.system(.body, design: .rounded))
+                                    
+                                    Spacer()
+                                    
+                                    Picker("", selection: $appStore.currentRunner) {
+                                        Text("Choose Runner...")
+                                            .tag("")
+                                        ForEach(appStore.activeOrderNames, id: \.self) { name in
+                                            Text(name).tag(name)
+                                        }
                                     }
+                                    .pickerStyle(.menu)
+                                    .font(.system(.body, design: .rounded))
+                                    .tint(.timsRed)
                                 }
-                                .font(.system(.body, design: .rounded))
-                                .pickerStyle(.menu)
                             }
                             .listRowBackground(Color.timsTan.opacity(0.92))
                         }
@@ -155,12 +169,14 @@ struct ManifestBuilderView: View {
                         if !isManifestLocked {
                             HStack(spacing: 16) {
                                 Button(action: {
+                                    SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                    
                                     selectedOrderToEdit = nil
                                     showingAddOrderForm = true
                                 }) {
                                     Label("Add Order", systemImage: "plus.circle.fill")
                                         .font(.system(size: 16, weight: .black, design: .rounded))
-                                        .foregroundColor(.timsRed)
+                                        .foregroundColor(.orange)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
                                         .background(Color.timsTan)
@@ -175,25 +191,30 @@ struct ManifestBuilderView: View {
                                 }) {
                                     Text("Ready to Run!")
                                         .font(.system(size: 16, weight: .black, design: .rounded))
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.timsDarkBrown)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
-                                        .background(appStore.activeOrders.isEmpty ? Color.white.opacity(0.2) : Color.green)
+                                        .background(appStore.activeOrders.isEmpty ? Color.white.opacity(0.2) : Color.timsGold)
                                         .cornerRadius(14)
-                                        .shadow(color: appStore.activeOrders.isEmpty ? Color.clear : Color.green.opacity(0.4), radius: 8, x: 0, y: 4)
+                                        .shadow(color: appStore.activeOrders.isEmpty ? Color.clear : Color.timsGold.opacity(0.4), radius: 8, x: 0, y: 4)
                                 }
                                 .disabled(appStore.activeOrders.isEmpty)
                             }
                         } else {
                             HStack(spacing: 16) {
-                                Button(action: { isManifestLocked = false }) {
-                                    Text("Unlock & Edit")
-                                        .font(.system(size: 16, weight: .black, design: .rounded))
-                                        .foregroundColor(.white)
-                                        .padding(.vertical, 14)
-                                        .frame(maxWidth: .infinity)
-                                        .background(Color.white.opacity(0.25))
-                                        .cornerRadius(14)
+                                Button(action: {
+                                    // Plays tactile click sound effect when unlocking the manifest run ledger
+                                    SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                    isManifestLocked = false
+                            }) {
+                                    
+                                Text("Unlock & Edit")
+                                    .font(.system(size: 16, weight: .black, design: .rounded))
+                                    .foregroundColor(.white)
+                                    .padding(.vertical, 14)
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.white.opacity(0.25))
+                                    .cornerRadius(14)
                                 }
                                 
                                 Button(action: {
@@ -203,12 +224,12 @@ struct ManifestBuilderView: View {
                                 }) {
                                     Text("🚀 Start Clock")
                                         .font(.system(size: 16, weight: .black, design: .rounded))
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.timsDarkBrown)
                                         .padding(.vertical, 14)
                                         .frame(maxWidth: .infinity)
-                                        .background(appStore.currentRunner.isEmpty ? Color.white.opacity(0.2) : Color.green)
+                                        .background(appStore.currentRunner.isEmpty ? Color.white.opacity(0.2) : Color.timsGold)
                                         .cornerRadius(14)
-                                        .shadow(color: appStore.currentRunner.isEmpty ? Color.clear : Color.green.opacity(0.4), radius: 8, x: 0, y: 4)
+                                        .shadow(color: appStore.currentRunner.isEmpty ? Color.clear : Color.timsGold.opacity(0.4), radius: 8, x: 0, y: 4)
                                 }
                                 .disabled(appStore.currentRunner.isEmpty)
                             }

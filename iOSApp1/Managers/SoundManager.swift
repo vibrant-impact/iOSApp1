@@ -9,34 +9,61 @@ import Foundation
 import AVFoundation
 
 class SoundManager {
-    // Singleton instance to access this manager anywhere in the app effortlessly
     static let shared = SoundManager()
     
-    // Internal player instance tracking the active audio stream container
+    // Primary audio track channel for standard button interaction clicks/pops
     private var audioPlayer: AVAudioPlayer?
     
-    /// Plays an audio file from the local app bundle
-    /// - Parameters:
-    ///   - fileName: The exact string text name of your audio file (e.g., "clickEffect")
-    ///   - fileType: The extension format string of the target file (e.g., "mp3", "wav")
+    // FIXED: Dedicated secondary playback instance strictly tracking background loops
+    // to prevent ambient tracks from cutting off snappy button click effects!
+    private var ambientLoopPlayer: AVAudioPlayer?
+    
+    /// Plays an audio file once from the local app bundle (for snappy clicks/pops)
     func playSound(named fileName: String, withExtension fileType: String = "mp3") {
-        // 1. Locate the file within the main resource bundle directory framework
         guard let url = Bundle.main.url(forResource: fileName, withExtension: fileType) else {
-            print("⚠️ Sound Error: Could not find \(fileName).\(fileType) in the app bundle resources.")
+            print("⚠️ Sound Error: Could not find \(fileName).\(fileType) in bundle.")
             return
         }
         
         do {
-            // 2. Initialize the system player with our file path pointer target
             audioPlayer = try AVAudioPlayer(contentsOf: url)
-            
-            // 3. Pre-prepare the hardware buffers to guarantee instant execution latency when tapped
             audioPlayer?.prepareToPlay()
-            
-            // 4. Spin up the play trigger
             audioPlayer?.play()
         } catch {
-            print("⚠️ Sound Error: Failed to execute audio playback instantiation: \(error.localizedDescription)")
+            print("⚠️ Sound Error: Playback failed: \(error.localizedDescription)")
+        }
+    }
+    
+    /// FIXED: Starts an infinite looping background track on a completely separate playback stream channel
+    /// - Parameters:
+    ///   - fileName: The file name string text (e.g., "engine")
+    ///   - volume: A float setting between 0.0 (silent) to 1.0 (full blast) to keep backgrounds subtle
+    func startBackgroundLoop(named fileName: String, withExtension fileType: String = "mp3", volume: Float = 0.3) {
+        guard let url = Bundle.main.url(forResource: fileName, withExtension: fileType) else {
+            print("⚠️ Sound Loop Error: Unable to locate \(fileName).\(fileType)")
+            return
+        }
+        
+        do {
+            ambientLoopPlayer = try AVAudioPlayer(contentsOf: url)
+            
+            // FIXED: Setting numberOfLoops to -1 tells iOS to loop this track infinitely!
+            ambientLoopPlayer?.numberOfLoops = -1
+            ambientLoopPlayer?.volume = volume // Keeps the engine purr soft and non-distracting
+            ambientLoopPlayer?.prepareToPlay()
+            ambientLoopPlayer?.play()
+            print("🔊 Ambient Loop Started: Infinite playback initialized for \(fileName).mp4")
+        } catch {
+            print("⚠️ Sound Loop Error: Failed to start loop: \(error.localizedDescription)")
+        }
+    }
+    
+    /// FIXED: Safely silences and unloads the background loop when navigating away from the dashboard phase
+    func stopBackgroundLoop() {
+        if ambientLoopPlayer?.isPlaying == true {
+            ambientLoopPlayer?.stop()
+            ambientLoopPlayer = nil
+            print("🤫 Ambient Loop Silenced: Unloaded background stream.")
         }
     }
 }

@@ -14,7 +14,7 @@ struct ProductCardView: View {
     var body: some View {
         Button(action: {
             // FIXED: Triggers tactile cup sound effect when this specific menu card gets pressed
-            SoundManager.shared.playSound(named: "cup-on-table", withExtension: "mp3")
+            SoundManager.shared.playSound(named: "swoosh", withExtension: "mp3")
             
             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                 onSelected()
@@ -34,10 +34,10 @@ struct ProductCardView: View {
                             VStack(spacing: 4) {
                                 Image(systemName: "cup.and.saucer.fill")
                                     .font(.title)
-                                    .foregroundColor(.timsDarkBrown.opacity(0.2))
+                                    .foregroundColor(Color.brown.opacity(0.6))
                                 Text("Coming Soon")
                                     .font(.system(size: 9, weight: .bold, design: .rounded))
-                                    .foregroundColor(.timsDarkBrown.opacity(0.4))
+                                    .foregroundColor(Color.brown.opacity(0.6))
                             }
                         }
                 }
@@ -52,13 +52,13 @@ struct ProductCardView: View {
                 HStack {
                     Text("$\(String(format: "%.2f", product.price))")
                         .font(.system(size: 14, weight: .black, design: .rounded))
-                        .foregroundColor(.green)
+                        .foregroundColor(.orange)
                     
                     Spacer()
                     
                     Image(systemName: "plus.circle.fill")
                         .font(.title3)
-                        .foregroundColor(.timsRed)
+                        .foregroundColor(.orange)
                 }
             }
             .padding(10)

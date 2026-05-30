@@ -32,31 +32,33 @@ struct TimerView: View {
     }
     
     var body: some View {
-        
         ZStack {
-            // Apply your deep brown texture background across the full screen viewport canvas
+            // Background View Layer
             Image("brownSwirlBackground")
                 .resizable()
                 .ignoresSafeArea()
             
             VStack(spacing: 30) {
-                Text("☕ Run in Progress!")
-                    .font(.largeTitle)
-                    .bold()
-                    .foregroundColor(.white) // Switch text to white for legibility
+                Text("🚘")
+                    .font(.system(size: 78))
+                
+                Text("Run in Progress!")
+                    .font(.system(size: 48, weight: .bold, design: .rounded))
+                    .foregroundColor(.timsGold)
                 
                 Text("Runner: \(appStore.currentRunner)")
                     .font(.title2)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.timsTan)
                 
+                // Clock Timer Display Layout
                 VStack {
                     if secondsElapsed <= targetTimeLimit {
                         Text(formattedTime)
                             .font(.system(size: 72, weight: .black, design: .rounded))
-                            .foregroundColor(.green)
+                            .foregroundColor(.orange)
                         Text("Time left for a free drink credit!")
                             .font(.subheadline)
-                            .foregroundColor(.gray) // Use a lighter gray style
+                            .foregroundColor(.timsTan)
                     } else {
                         let overage = secondsElapsed - targetTimeLimit
                         Text("+\(overage / 60):\(String(format: "%02d", overage % 60))")
@@ -69,48 +71,90 @@ struct TimerView: View {
                 }
                 .padding()
                 
-                Button(action: {
-                    earnedCreditStatus = secondsElapsed <= targetTimeLimit
-                    let totalItems = appStore.activeOrders.count
-                    let summary = CompletedRunSummary(
-                        dateCompleted: Date(),
-                        runnerName: appStore.currentRunner,
-                        totalItemsOrdered: totalItems,
-                        timeTakenSeconds: secondsElapsed,
-                        earnedCredit: earnedCreditStatus
-                    )
-                    appStore.runHistory.append(summary)
-                    showSummaryAlert = true
-                }) {
-                    HStack {
-                        Image(systemName: "cup.and.saucer.fill")
-                        Text("I'm Back! Complete Run")
+                // Complete Run Trigger Button
+                if !showSummaryAlert {
+                    Button(action: {
+                        // FIXED: Saves the final metric state status before freezing layout frames
+                        earnedCreditStatus = secondsRemaining > 0
+                        
+                        if earnedCreditStatus {
+                            SoundManager.shared.playSound(named: "success", withExtension: "mp3")
+                        } else {
+                            SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
+                        }
+                        
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
+                            showSummaryAlert = true // Triggers pop up modal presentation card safely
+                        }
+                    }) {
+                        Label("I'm Back! Complete Run", systemImage: "cup.and.saucer.fill")
+                            .font(.system(size: 16, weight: .black, design: .rounded))
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.orange)
+                            .cornerRadius(14)
                     }
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.timsRed)
-                    .cornerRadius(15)
-                }
-                .padding(.horizontal)
-            }
-            .onReceive(activeTimer) { _ in
-                if !isRunCompleted {
-                    secondsElapsed += 1
+                    .buttonStyle(.plain)
+                    .padding(.horizontal, 32)
                 }
             }
-            .alert(isPresented: $showSummaryAlert) {
-                Alert(
-                    title: Text(earnedCreditStatus ? "🎉 Quick Run Reward!" : "Welcome Back!"),
-                    message: Text(earnedCreditStatus ? "\(appStore.currentRunner) completed the run in under 15 minutes and earned 1 Free Drink Credit!" : "Run completed in \(secondsElapsed / 60)m \(secondsElapsed % 60)s."),
-                    dismissButton: .default(Text("Awesome"), action: {
-                        appStore.resetActiveRun()
-                        isRunActive = false
-                    })
-                )
+            .blur(radius: showSummaryAlert ? 5 : 0) // Smooth backdrop blur when pop up shows
+            
+            // ==========================================
+            // FIXED: Animated Pop Up Card Overlay Layer
+            // ==========================================
+            if showSummaryAlert {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    
+                VStack(spacing: 16) {
+                    Text(earnedCreditStatus ? "🎉 Quick Run Reward!" : "☕ Run Completed!")
+                        .font(.system(size: 18, weight: .black, design: .rounded))
+                        .foregroundColor(.timsDarkBrown)
+                    
+                    Text(earnedCreditStatus ?
+                         "\(appStore.currentRunner.isEmpty ? "Guest" : appStore.currentRunner) completed the run in under 15 minutes and earned 1 Free Drink Credit!" :
+                         "Good effort! The manifest order run is complete. Time to hand out the coffees!")
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 8)
+                    
+                    Button(action: {
+                        SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                        
+                        withAnimation {
+                            showSummaryAlert = false
+                            isRunActive = false // FIXED: Turns off navigation run sequence flag to snap cleanly back to welcome splash!
+                        }
+                    }) {
+                        Text(earnedCreditStatus ? "Claim Reward! 🌟" : "Sweet! 🍩")
+                            .font(.system(size: 15, weight: .black, design: .rounded))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(earnedCreditStatus ? Color.orange : Color.timsDarkBrown)
+                            .cornerRadius(10)
+                            .shadow(color: (earnedCreditStatus ? Color.orange : Color.timsDarkBrown).opacity(0.3), radius: 4, x: 0, y: 2)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(24)
+                .background(Color.timsTan)
+                .cornerRadius(20)
+                .shadow(color: Color.black.opacity(0.3), radius: 20, x: 0, y: 10)
+                .padding(.horizontal, 36)
+                .transition(.scale.combined(with: .opacity))
             }
-            .padding()
+        }
+        // ==========================================
+        // FIXED: Listens to Live System Clock Ticks
+        // ==========================================
+        .onReceive(activeTimer) { _ in
+            if !showSummaryAlert { // Stops accumulating seconds once they hit 'I'm Back!'
+                secondsElapsed += 1
+            }
         }
     }
 }
