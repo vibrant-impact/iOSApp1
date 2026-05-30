@@ -189,9 +189,11 @@ struct AddOrderView: View {
                                     Button(action: {
                                         SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
                                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                                            selectedMainMenuTab = categoryName
-                                            selectedSubMenuTab = "All"
-                                            temporarySelectedItem = nil
+                                            if globalSearchQuery.lowercased() == categoryName.lowercased() {
+                                                globalSearchQuery = "" // Tapping it again clears the filter
+                                            } else {
+                                                globalSearchQuery = categoryName // Sets the filter to this category
+                                            }
                                         }
                                     }) {
                                         HStack(spacing: 6) {
@@ -221,8 +223,11 @@ struct AddOrderView: View {
                                         Button(action: {
                                             SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
                                             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                                                selectedSubMenuTab = subName
-                                                temporarySelectedItem = nil
+                                                if globalSearchQuery.lowercased() == subName.lowercased() {
+                                                    globalSearchQuery = ""
+                                                } else {
+                                                    globalSearchQuery = subName // Otherwise, filter by this subcategory
+                                                }
                                             }
                                         }) {
                                             Text(subName)
