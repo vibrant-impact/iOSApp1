@@ -26,8 +26,8 @@ struct AddOrderView: View {
     @State private var showingNameWarningAlert = false
     
     // MARK: - Menu Tab State Anchors
-    @State private var selectedMainMenuTab = "Hot Drinks"
-    @State private var selectedSubMenuTab = "All"
+    @State private var selectedCategory: String? = nil
+    @State private var selectedSubcategory: String? = nil
     
     let mainMenuCategories = [
         ("Hot Drinks", "cup.and.saucer.fill"),
@@ -39,34 +39,42 @@ struct AddOrderView: View {
     ]
     
     var structuralSubMenusList: [String] {
-        switch selectedMainMenuTab {
+        switch selectedCategory {
         case "Hot Drinks":
             return ["Brewed Coffee", "Espresso Drinks", "Tea", "Hot Chocolate"]
         case "Cold Drinks":
-            return ["All", "Iced Coffee", "Iced Capp", "Cold Brew", "Iced Lattes", "Fruit Quenchers", "Frozen Lemonade", "Fountain Pop", "Bottled Drinks"]
+            return ["Iced Coffee", "Iced Capp", "Cold Brew", "Iced Lattes", "Fruit Quenchers", "Frozen Lemonade", "Fountain Pop", "Bottled Drinks"]
         case "Lunch and Dinner":
-            return ["All", "Flatbread Pizzas", "Wraps", "Sandwiches", "Bowls", "Potato Wedges"]
+            return ["Flatbread Pizzas", "Wraps", "Sandwiches", "Bowls", "Potato Wedges"]
         case "Baked Goods":
-            return ["All", "Donuts", "Timbits", "Bagels", "Muffins", "Cookies"]
+            return ["Donuts", "Timbits", "Bagels", "Muffins", "Cookies"]
         default:
             return ["All"]
         }
     }
     
     var filteredProducts: [JSONProduct] {
-        let query = globalSearchQuery.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        
-        // If search bar is completely empty, serve up the full product catalog list
-        guard !query.isEmpty else { return appStore.allProducts }
+        let textQuery = globalSearchQuery.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         
         return appStore.allProducts.filter { product in
-            let nameMatches = product.name.lowercased().contains(query)
-                
-            // Sweeps the product's category tags array to find any keyword matches
-            let categoryMatches = product.category.lowercased().contains(query)
-                
-            // FIXED: Removed the stray closing brace so this returns inside the filter closure perfectly!
-            return nameMatches || categoryMatches
+            // 1. Text Search Filter (scans names and categories)
+            if !textQuery.isEmpty {
+                let nameMatches = product.name.lowercased().contains(textQuery)
+                let categoryMatches = product.category.lowercased().contains(textQuery)
+                guard nameMatches || categoryMatches else { return false }
+            }
+            
+            // 2. Main Category Filter (matches based on button selection)
+            if let mainCat = selectedCategory {
+                guard product.category.lowercased().contains(mainCat.lowercased()) else { return false }
+            }
+            
+            // 3. Subcategory Filter (matches based on sub-pill selection)
+            if let subCat = selectedSubcategory {
+                guard product.category.lowercased().contains(subCat.lowercased()) else { return false }
+            }
+            
+            return true
         }
     }
 
@@ -186,16 +194,17 @@ struct AddOrderView: View {
                             
                             LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], spacing: 8) {
                                 ForEach(mainMenuCategories, id: \.0) { categoryName, symbolIcon in
-                                    let isActive = globalSearchQuery.lowercased() == categoryName.lowercased() ||
-                                        (!globalSearchQuery.isEmpty && categoryName.lowercased() == "hot drinks" && globalSearchQuery.lowercased() == "brewed coffee")
+                                    let isMainActive = selectedCategory?.lowercased() == categoryName.lowercased()
                                                        
                                     Button(action: {
                                         SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
                                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                                            if categoryName.lowercased() == "hot drinks" {
-                                                globalSearchQuery = "Brewed Coffee"
+                                            if isMainActive {
+                                                selectedCategory = nil
+                                                selectedSubcategory = nil // Clear child filters
                                             } else {
-                                                globalSearchQuery = categoryName
+                                                selectedCategory = categoryName
+                                                selectedSubcategory = nil // Reset sub-tier state on switch
                                             }
                                         }
                                     }) {
@@ -208,8 +217,8 @@ struct AddOrderView: View {
                                         }
                                         .frame(maxWidth: .infinity)
                                         .padding(.vertical, 12)
-                                        .background(isActive ? Color.orange : Color.timsFieldTan)
-                                        .foregroundColor(isActive ? .timsDarkBrown : .timsDarkBrown)
+                                        .background(isMainActive ? Color.orange : Color.timsFieldTan)
+                                        .foregroundColor(isMainActive ? .timsDarkBrown : .timsDarkBrown)
                                         .cornerRadius(12)
                                         .contentShape(Rectangle())
                                     }
@@ -222,7 +231,8 @@ struct AddOrderView: View {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 8) {
                                             
-                                // "All" Pill highlights orange if the search string is empty or matches a broad parent category
+                                // "All" Pill Layout
+                                let showAllActive = selectedSubcategory == nil
                                 Text("All")
                                     .font(.system(size: 12, weight: .medium, design: .rounded))
                                     .foregroundColor(globalSearchQuery.isEmpty ? .timsDarkBrown : .timsDarkBrown)
@@ -236,15 +246,15 @@ struct AddOrderView: View {
                                             
                                 ForEach(structuralSubMenusList, id: \.self) { subName in
                                     // Normalizes string structures so partial strings don't fail active flag state checks
-                                    let isSubActive = globalSearchQuery.lowercased() == subName.lowercased()
+                                    let isSubActive = selectedSubcategory?.lowercased() == subName.lowercased()
                                                 
                                     Button(action: {
                                         SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
                                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                             if isSubActive {
-                                                globalSearchQuery = ""
+                                                selectedSubcategory = nil
                                             } else {
-                                                globalSearchQuery = subName
+                                                selectedSubcategory = subName
                                             }
                                         }
                                     }) {
