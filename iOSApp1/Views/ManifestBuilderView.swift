@@ -30,8 +30,17 @@ struct ManifestBuilderView: View {
                 VStack(spacing: 0) {
                     VStack(alignment: .leading, spacing: 12) {
                         HStack {
-                            Button(action: { runSequenceStarted = false }) {
-                                 HStack(spacing: 4) {
+                            Button(action: {
+                                SoundManager.shared.playSound(named: "click", withExtension: "mp3")
+                                
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    // Clear out any dirty or partially filled order manifests instantly on cancellation
+                                    appStore.resetActiveRun()
+                                    
+                                    runSequenceStarted = false // Drop back down to the main WelcomeView welcome card layer stack
+                                }
+                            }) {
+                                HStack(spacing: 4) {
                                      Image(systemName: "chevron.left")
                                      Text("Cancel Run")
                                  }

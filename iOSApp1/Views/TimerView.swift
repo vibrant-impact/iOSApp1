@@ -89,7 +89,7 @@ struct TimerView: View {
                     }) {
                         Label("I'm Back! Complete Run", systemImage: "cup.and.saucer.fill")
                             .font(.system(size: 16, weight: .black, design: .rounded))
-                            .foregroundColor(.white)
+                            .foregroundColor(.timsDarkBrown)
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(Color.orange)

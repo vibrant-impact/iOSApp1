@@ -37,7 +37,7 @@ struct WelcomeView: View {
                 // FIXED: Quietly shuts down the ambient engine loop when changing screens!
                 SoundManager.shared.stopBackgroundLoop()
                             
-                SoundManager.shared.playSound(named: "new", withExtension: "mp3")
+                SoundManager.shared.playSound(named: "click", withExtension: "mp3")
                 runSequenceStarted = true
             }) {
                 Text("Start New Run Order")

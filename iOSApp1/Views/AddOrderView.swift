@@ -23,6 +23,7 @@ struct AddOrderView: View {
     @State private var temporarySelectedItem: JSONProduct?
     @State private var pendingItems: [OrderItem] = []
     @State private var useDrinkCredit = false
+    @State private var showingNameWarningAlert = false
     
     // MARK: - Menu Tab State Anchors
     @State private var selectedMainMenuTab = "Hot Drinks"
@@ -143,7 +144,7 @@ struct AddOrderView: View {
                                     HStack {
                                         Image(systemName: "star.fill")
                                             .foregroundColor(.orange)
-                                        Text("Auto-Load \(personName)'s Favorite Routine ⭐️")
+                                        Text("Auto-Load \(personName)'s Favorite Order ⭐️")
                                             .font(.system(size: 13, weight: .bold, design: .rounded))
                                             .foregroundColor(.timsDarkBrown)
                                         Spacer()
@@ -418,44 +419,56 @@ struct AddOrderView: View {
                         }
                         
                         Button(action: {
-                            SoundManager.shared.playSound(named: "success", withExtension: "mp3")
-                            
-                            // Automatically locates the user's profile and subtracts a credit token if applied
-                            if useDrinkCredit, let index = appStore.userProfiles.firstIndex(where: { $0.name.lowercased() == personName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }) {
-                                if appStore.userProfiles[index].drinkCreditsBalance > 0 {
-                                    appStore.userProfiles[index].drinkCreditsBalance -= 1
-                                }
-                            }
-                            
-                            let finalGroupOrder = TeamOrder(
-                                name: personName.isEmpty ? "Guest" : personName,
-                                items: pendingItems,
-                                isSavedAsFavorite: saveAsFavorite
-                            )
-                            
-                            // Writes the profile information to local disk persistence states
-                            if saveAsFavorite {
-                                appStore.saveFavoriteBasket(for: personName, items: pendingItems)
-                            }
-                            
-                            if let original = editingOrder,
-                               let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
-                                appStore.activeOrders[index] = finalGroupOrder
+                            // Checks if the user actually typed a name. If blank, show the warning instead of submitting!
+                            let cleanedName = personName.trimmingCharacters(in: .whitespacesAndNewlines)
+                            if cleanedName.isEmpty {
+                                SoundManager.shared.playSound(named: "buzzer", withExtension: "mp3")
+                                    showingNameWarningAlert = true
                             } else {
-                                appStore.saveOrderToActiveRun(finalGroupOrder)
+                                SoundManager.shared.playSound(named: "success", withExtension: "mp3")
+                                
+                                // Automatically locates the user's profile and subtracts a credit token if applied
+                                if useDrinkCredit, let index = appStore.userProfiles.firstIndex(where: { $0.name.lowercased() == personName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }) {
+                                    if appStore.userProfiles[index].drinkCreditsBalance > 0 {
+                                        appStore.userProfiles[index].drinkCreditsBalance -= 1
+                                    }
+                                }
+                                
+                                let finalGroupOrder = TeamOrder(
+                                    name: personName.isEmpty ? "Guest" : personName,
+                                    items: pendingItems,
+                                    isSavedAsFavorite: saveAsFavorite
+                                )
+                                
+                                // Writes the profile information to local disk persistence states
+                                if saveAsFavorite {
+                                    appStore.saveFavoriteBasket(for: personName, items: pendingItems)
+                                }
+                                
+                                if let original = editingOrder,
+                                   let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
+                                    appStore.activeOrders[index] = finalGroupOrder
+                                } else {
+                                    appStore.saveOrderToActiveRun(finalGroupOrder)
+                                }
+                                dismiss()
                             }
-                            dismiss()
                         }) {
                             Label("Complete Individual Order", systemImage: "checkmark.circle.fill")
                                 .font(.system(size: 15, weight: .black, design: .rounded))
                                 .foregroundColor(.timsDarkBrown)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 14)
-                                .background(Color.orange)
+                                .background(personName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Color.timsGold.opacity(0.5) : Color.timsGold)
                                 .cornerRadius(12)
                                 .shadow(color: Color.orange.opacity(0.4), radius: 6, x: 0, y: 3)
                         }
                         .buttonStyle(.plain)
+                        .alert("Name Required", isPresented: $showingNameWarningAlert) {
+                            Button("OK", role: .cancel) { }
+                        } message: {
+                            Text("Please enter a name for who is placing this order before completing it.")
+                        }
                         // Prevents creating accidental blank accounts
                         .disabled(personName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && pendingItems.isEmpty)
                         .opacity(personName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.5 : 1.0)
