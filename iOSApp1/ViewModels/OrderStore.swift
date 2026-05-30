@@ -22,9 +22,16 @@ class OrderStore: ObservableObject {
         activeOrders.map { $0.name }
     }
     
+    @Published var userProfiles: [UserProfile] = [] {
+        didSet {
+            saveProfilesToHardware()
+        }
+    }
+    
     // MARK: - Initializer Block
     init() {
         loadJsonInventory()
+        loadProfilesFromHardware()
     }
     
     // MARK: - JSON Parser Logic
@@ -63,4 +70,63 @@ class OrderStore: ObservableObject {
         activeOrders.removeAll()
         currentRunner = ""
     }
+    
+    /// Sweeps the profile array list to find an existing account or spawns a clean one on the fly
+    func findOrCreateProfile(for name: String) -> UserProfile {
+        let cleanedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let existing = userProfiles.first(where: { $0.name.lowercased() == cleanedName.lowercased() }) {
+            return existing
+        } else {
+            let newProfile = UserProfile(name: cleanedName)
+            userProfiles.append(newProfile)
+            return newProfile
+        }
+    }
+
+    /// Updates or appends a targeted favorite basket configuration to a specific profile account
+    func saveFavoriteBasket(for name: String, items: [OrderItem]) {
+        let cleanedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !cleanedName.isEmpty else { return }
+        
+        if let index = userProfiles.firstIndex(where: { $0.name.lowercased() == cleanedName.lowercased() }) {
+            userProfiles[index].savedFavoriteItems = items
+        } else {
+            var newProfile = UserProfile(name: cleanedName)
+            newProfile.savedFavoriteItems = items
+            userProfiles.append(newProfile)
+        }
+    }
+
+    /// Increments the drink token reward ledger for the current driver profile instance
+    func awardDrinkCredit(to runnerName: String, elapsedSeconds: Int, targetSeconds: Int, creditEarned: Bool) {
+        let cleanedName = runnerName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !cleanedName.isEmpty, let index = userProfiles.firstIndex(where: { $0.name.lowercased() == cleanedName.lowercased() }) else { return }
+        
+        // Create the analytical history log record
+        let newRunRecord = PastRunRecord(
+            totalSecondsElapsed: elapsedSeconds,
+            targetLimitSeconds: targetSeconds,
+            earnedACredit: creditEarned
+        )
+        
+        userProfiles[index].runPerformanceHistory.append(newRunRecord)
+        if creditEarned {
+            userProfiles[index].drinkCreditsBalance += 1
+        }
+    }
+
+    // MARK: - Hard Disk Data Persistence Mechanics
+    func saveProfilesToHardware() {
+        if let encodedData = try? JSONEncoder().encode(userProfiles) {
+            UserDefaults.standard.set(encodedData, forKey: "TimsRunnerUserProfilesKey")
+        }
+    }
+
+    func loadProfilesFromHardware() {
+        if let savedData = UserDefaults.standard.data(forKey: "TimsRunnerUserProfilesKey"),
+           let decodedProfiles = try? JSONDecoder().decode([UserProfile].self, from: savedData) {
+            self.userProfiles = decodedProfiles
+        }
+    }
+    
 }

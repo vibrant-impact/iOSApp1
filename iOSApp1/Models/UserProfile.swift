@@ -10,7 +10,7 @@ import Foundation
 // MARK: - Completed Run Analytics Record Blueprint
 struct PastRunRecord: Identifiable, Codable {
     var id = UUID()
-    var completionDate: Date
+    var completionDate = Date()
     var totalSecondsElapsed: Int
     var targetLimitSeconds: Int
     var earnedACredit: Bool
@@ -26,12 +26,12 @@ struct UserProfile: Identifiable, Codable {
     var name: String
     
     // Core Balances
-    var drinkCreditsBalance: Int
+    var drinkCreditsBalance: Int = 0
     
     // Saved Templates (Option A: Saved Basket Configurations)
-    var savedFavoriteOrders: [OrderItem]
+    var savedFavoriteItems: [OrderItem] = []
     
     // Analytics & History Logs
-    var pastOrdersHistory: [[OrderItem]] // Arrays of past items ordered
-    var runPerformanceHistory: [PastRunRecord] // Tracks their historical driving speed metrics
+    var pastOrdersHistory: [[OrderItem]] = [] // Arrays of past items ordered
+    var runPerformanceHistory: [PastRunRecord] = [] // Tracks their historical driving speed metrics
 }

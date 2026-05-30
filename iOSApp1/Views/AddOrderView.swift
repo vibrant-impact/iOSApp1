@@ -22,6 +22,7 @@ struct AddOrderView: View {
     @State private var saveAsFavorite = false
     @State private var temporarySelectedItem: JSONProduct?
     @State private var pendingItems: [OrderItem] = []
+    @State private var useDrinkCredit = false
     
     // MARK: - Menu Tab State Anchors
     @State private var selectedMainMenuTab = "Hot Drinks"
@@ -63,6 +64,35 @@ struct AddOrderView: View {
         }
     }
     
+    /// Finds the real-time credit balance of the typed profile instance name
+    var userProfileCreditBalance: Int {
+        let targetName = personName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !targetName.isEmpty else { return 0 }
+        return appStore.userProfiles.first(where: { $0.name.lowercased() == targetName.lowercased() })?.drinkCreditsBalance ?? 0
+    }
+    
+    /// Computes the final basket cost total, zeroing out the highest-priced item if the redemption toggle is active
+    var computedBasketTotal: Double {
+        let rawTotal = pendingItems.reduce(0) { $0 + $1.itemTotal }
+        guard useDrinkCredit, !pendingItems.isEmpty else { return rawTotal }
+        
+        // Finds the maximum single unit price item inside the basket list array
+        if let highestPricedItem = pendingItems.max(by: { $0.unitPrice < $1.unitPrice }) {
+            return rawTotal - highestPricedItem.unitPrice
+        }
+        return rawTotal
+    }
+    
+    var profileFavoriteMatchItems: [OrderItem]? {
+        let targetName = personName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !targetName.isEmpty else { return nil }
+        if let match = appStore.userProfiles.first(where: { $0.name.lowercased() == targetName.lowercased() }),
+           !match.savedFavoriteItems.isEmpty {
+            return match.savedFavoriteItems
+        }
+        return nil
+    }
+    
     let cardGridLayoutColumns = [
         GridItem(.flexible(), spacing: 14),
         GridItem(.flexible(), spacing: 14)
@@ -101,6 +131,31 @@ struct AddOrderView: View {
                                 .background(Color.timsFieldTan)
                                 .cornerRadius(12)
                                 .disabled(editingOrder != nil)
+                            
+                            if let favoriteRoutine = profileFavoriteMatchItems, pendingItems.isEmpty {
+                                Button(action: {
+                                    SoundManager.shared.playSound(named: "ching", withExtension: "mp3")
+                                    withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                                        pendingItems = favoriteRoutine
+                                        saveAsFavorite = true
+                                    }
+                                }) {
+                                    HStack {
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(.orange)
+                                        Text("Auto-Load \(personName)'s Favorite Routine ⭐️")
+                                            .font(.system(size: 13, weight: .bold, design: .rounded))
+                                            .foregroundColor(.timsDarkBrown)
+                                        Spacer()
+                                    }
+                                    .padding()
+                                    .background(Color.orange.opacity(0.15))
+                                    .cornerRadius(10)
+                                    .transition(.move(edge: .top).combined(with: .opacity))
+                                }
+                                .buttonStyle(.plain)
+                                .padding(.top, 4)
+                            }
                         }
                         .padding(.top, 10)
                         
@@ -329,7 +384,7 @@ struct AddOrderView: View {
                 }
             }
             // ==========================================
-            // FIXED OVERLAY: Absolute Bottom Safe Area Pinning
+            // FIXED OVERLAY: Absolute Bottom Safe Area Pinning with Reward Redemption
             // ==========================================
             .overlay(alignment: .bottom) {
                 if !pendingItems.isEmpty && temporarySelectedItem == nil {
@@ -339,7 +394,7 @@ struct AddOrderView: View {
                                 .font(.system(size: 13, weight: .black, design: .rounded))
                                 .foregroundColor(.timsDarkBrown)
                             Spacer()
-                            Text("$\(String(format: "%.2f", pendingItems.reduce(0) { $0 + $1.itemTotal }))")
+                            Text("$\(String(format: "%.2f", computedBasketTotal))")
                                 .font(.system(size: 14, weight: .black, design: .rounded))
                                 .foregroundColor(.timsRed)
                         }
@@ -350,16 +405,38 @@ struct AddOrderView: View {
                                 .foregroundColor(.orange)
                         }
                         .toggleStyle(SwitchToggleStyle(tint: .orange))
-                        .padding(.vertical, 4)
+                        // If the account profile has any free drink tokens, expose a redemption control row slider
+                        if userProfileCreditBalance > 0 {
+                            Toggle(isOn: $useDrinkCredit) {
+                                Label("Apply Free Drink Credit (Available: \(userProfileCreditBalance)) 🌟", systemImage: "ticket.fill")
+                                    .font(.system(size: 13, weight: .bold, design: .rounded))
+                                    .foregroundColor(.green)
+                            }
+                            .toggleStyle(SwitchToggleStyle(tint: .green))
+                            .padding(.top, 2)
+                            .transition(.move(edge: .leading).combined(with: .opacity))
+                        }
                         
                         Button(action: {
                             SoundManager.shared.playSound(named: "success", withExtension: "mp3")
+                            
+                            // Automatically locates the user's profile and subtracts a credit token if applied
+                            if useDrinkCredit, let index = appStore.userProfiles.firstIndex(where: { $0.name.lowercased() == personName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }) {
+                                if appStore.userProfiles[index].drinkCreditsBalance > 0 {
+                                    appStore.userProfiles[index].drinkCreditsBalance -= 1
+                                }
+                            }
                             
                             let finalGroupOrder = TeamOrder(
                                 name: personName.isEmpty ? "Guest" : personName,
                                 items: pendingItems,
                                 isSavedAsFavorite: saveAsFavorite
                             )
+                            
+                            // Writes the profile information to local disk persistence states
+                            if saveAsFavorite {
+                                appStore.saveFavoriteBasket(for: personName, items: pendingItems)
+                            }
                             
                             if let original = editingOrder,
                                let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {

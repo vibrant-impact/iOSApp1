@@ -125,6 +125,17 @@ struct TimerView: View {
                         SoundManager.shared.playSound(named: "click", withExtension: "mp3")
                         
                         withAnimation(.easeInOut(duration: 0.25)) {
+                            
+                            // Automatically commits run history details and awards drink credits to the profile record!
+                            if !appStore.currentRunner.isEmpty && appStore.currentRunner.lowercased() != "guest" {
+                                appStore.awardDrinkCredit(
+                                    to: appStore.currentRunner,
+                                    elapsedSeconds: secondsElapsed,
+                                    targetSeconds: targetTimeLimit,
+                                    creditEarned: earnedCreditStatus
+                                )
+                            }
+                            
                             appStore.resetActiveRun()
                             
                             showSummaryAlert = false
