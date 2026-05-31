@@ -14,11 +14,11 @@ class SoundManager {
     // Primary audio track channel for standard button interaction clicks/pops
     private var audioPlayer: AVAudioPlayer?
     
-    // FIXED: Dedicated secondary playback instance strictly tracking background loops
-    // to prevent ambient tracks from cutting off snappy button click effects!
+    // Dedicated secondary playback instance strictly tracking background loops
+    // to prevent ambient tracks from cutting off snappy button click effects
     private var ambientLoopPlayer: AVAudioPlayer?
     
-    /// Plays an audio file once from the local app bundle (for snappy clicks/pops)
+    // Plays an audio file once from the local app bundle for snappy clicks/pops
     func playSound(named fileName: String, withExtension fileType: String = "mp3") {
         guard let url = Bundle.main.url(forResource: fileName, withExtension: fileType) else {
             print("⚠️ Sound Error: Could not find \(fileName).\(fileType) in bundle.")
@@ -34,10 +34,8 @@ class SoundManager {
         }
     }
     
-    /// FIXED: Starts an infinite looping background track on a completely separate playback stream channel
-    /// - Parameters:
-    ///   - fileName: The file name string text (e.g., "engine")
-    ///   - volume: A float setting between 0.0 (silent) to 1.0 (full blast) to keep backgrounds subtle
+    // Starts an infinite looping background track on a completely separate playback stream channel
+    // Volume parameter accepts a float between 0.0 silent to 1.0 full blast to keep backgrounds subtle
     func startBackgroundLoop(named fileName: String, withExtension fileType: String = "mp3", volume: Float = 0.3) {
         guard let url = Bundle.main.url(forResource: fileName, withExtension: fileType) else {
             print("⚠️ Sound Loop Error: Unable to locate \(fileName).\(fileType)")
@@ -47,7 +45,7 @@ class SoundManager {
         do {
             ambientLoopPlayer = try AVAudioPlayer(contentsOf: url)
             
-            // FIXED: Setting numberOfLoops to -1 tells iOS to loop this track infinitely!
+            // Setting numberOfLoops to -1 tells iOS to loop this track infinitely
             ambientLoopPlayer?.numberOfLoops = -1
             ambientLoopPlayer?.volume = volume // Keeps the engine purr soft and non-distracting
             ambientLoopPlayer?.prepareToPlay()
@@ -58,7 +56,7 @@ class SoundManager {
         }
     }
     
-    /// FIXED: Safely silences and unloads the background loop when navigating away from the dashboard phase
+    // Safely silences and unloads the background loop when navigating away from the dashboard phase
     func stopBackgroundLoop() {
         if ambientLoopPlayer?.isPlaying == true {
             ambientLoopPlayer?.stop()

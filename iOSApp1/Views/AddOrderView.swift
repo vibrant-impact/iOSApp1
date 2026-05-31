@@ -9,12 +9,12 @@ import SwiftUI
 import Combine
 
 struct AddOrderView: View {
-    // MARK: - View Environments
+    // View environments handling sheet removal behaviors
     @Environment(\.dismiss) var dismiss
     @ObservedObject var appStore: OrderStore
     var editingOrder: TeamOrder?
     
-    // MARK: - Input State Management Properties
+    // Input state management properties tracking user text entries and menu choices
     @State private var personName = ""
     @State private var globalSearchQuery = ""
     @State private var itemNotes = ""
@@ -26,7 +26,7 @@ struct AddOrderView: View {
     @State private var showingNameWarningAlert = false
     @State private var isShowingBasketSummary = false
     
-    // MARK: - Menu Tab State Anchors
+    // Menu tab state anchors filtering the main product catalog collections
     @State private var selectedCategory: String? = nil
     @State private var selectedSubcategory: String? = nil
     
@@ -83,7 +83,7 @@ struct AddOrderView: View {
         return appStore.userProfiles.first(where: { $0.name.lowercased() == targetName.lowercased() })?.drinkCreditsBalance ?? 0
     }
     
-    /// Computes the final basket cost total, applying a max $6.00 credit to the most expensive beverage if active
+    // Computes the final basket cost total, applying a max $6.00 credit to the most expensive beverage if active
     var computedBasketTotal: Double {
         let rawTotal = pendingItems.reduce(0) { $0 + $1.itemTotal }
         guard useDrinkCredit, !pendingItems.isEmpty else { return rawTotal }
@@ -110,7 +110,7 @@ struct AddOrderView: View {
         let targetName = personName.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !targetName.isEmpty else { return nil }
         if let match = appStore.userProfiles.first(where: { $0.name.lowercased() == targetName.lowercased() }),
-           !match.savedFavoriteItems.isEmpty {
+          !match.savedFavoriteItems.isEmpty {
             return match.savedFavoriteItems
         }
         return nil
@@ -136,9 +136,7 @@ struct AddOrderView: View {
         NavigationStack {
             ZStack {
                 VStack(spacing: 0) {
-                    // ==========================================
-                    // 1. THE TOP AREA: Header Panel
-                    // ==========================================
+                    // Header Panel text entry fields
                     VStack(spacing: 14) {
                         VStack(alignment: .leading, spacing: 6) {
                             Text("WHO IS PLACING THIS ORDER?")
@@ -283,9 +281,7 @@ struct AddOrderView: View {
                     .background(Color.timsTan)
                     .zIndex(1)
                     
-                    // ==========================================
-                    // 2. THE MAIN CANVAS AREA: Dynamic Scroll Catalog Grid
-                    // ==========================================
+                    // Dynamic Scroll Catalog Grid area canvas layout
                     ZStack {
                         Image("brownSwirlBackground")
                             .resizable()
@@ -305,7 +301,6 @@ struct AddOrderView: View {
                             }
                             .padding(.horizontal, 16)
                             .padding(.vertical, 20)
-                            // FIXED: Dynamic scroll cushion aligns perfectly with drawer presentation states
                             .padding(.bottom, 90)
                         }
                     }
@@ -334,30 +329,28 @@ struct AddOrderView: View {
                                     isShowingBasketSummary = true
                                 }
                             }) {
-                                HStack(spacing: 8) {
-                                    Image(systemName: "basket.fill")
-                                    Text("View Basket (\(pendingItems.reduce(0) { $0 + $1.quantity }))")
-                                        .font(.system(size: 14, weight: .black, design: .rounded))
-                                }
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 20)
-                                .padding(.vertical, 14)
-                                .background(Color.timsRed)
-                                .cornerRadius(30)
-                                .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
+                                    HStack(spacing: 8) {
+                                        Image(systemName: "basket.fill")
+                                        Text("View Basket (\(pendingItems.reduce(0) { $0 + $1.quantity }))")
+                                            .font(.system(size: 14, weight: .black, design: .rounded))
+                                    }
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 20)
+                                    .padding(.vertical, 14)
+                                    .background(Color.timsRed)
+                                    .cornerRadius(30)
+                                    .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
                             }
                             .buttonStyle(.plain)
                             .padding(.trailing, 20)
-                            .padding(.bottom, 20) // Snaps perfectly near the lower boundary
+                            .padding(.bottom, 20)
                         }
                     }
                     .zIndex(3)
                     .transition(.scale.combined(with: .opacity))
                 }
                 
-                // ==========================================
-                // 3. THE FLOATING FOOTER PANEL: Selection Checkout Drawer
-                // ==========================================
+                // Selection Checkout Drawer card container block
                 if let selection = temporarySelectedItem {
                     VStack {
                         Spacer()
@@ -393,36 +386,35 @@ struct AddOrderView: View {
                                 
                                 Spacer()
                                 
-                                    HStack(spacing: 16) {
-                                        Button(action: {
-                                            if itemQuantity > 1 {
-                                                itemQuantity -= 1
-                                                SoundManager.shared.playSound(named: "click", withExtension: "mp3")
-                                            }
-                                        }) {
-                                            Image(systemName: "minus.circle.fill")
-                                                .font(.title2)
-                                                .foregroundColor(itemQuantity > 1 ? .timsRed : .brown.opacity(0.5))
+                                HStack(spacing: 16) {
+                                    Button(action: {
+                                        if itemQuantity > 1 {
+                                            itemQuantity -= 1
+                                            SoundManager.shared.playSound(named: "click", withExtension: "mp3")
                                         }
-                                        
-                                        Text("\(itemQuantity)")
-                                            .font(.system(size: 18, weight: .black, design: .rounded))
-                                            .foregroundColor(.timsDarkBrown)
-                                            .frame(minWidth: 24)
-                                        
-                                        Button(action: {
-                                            if itemQuantity < 10 {
-                                                itemQuantity += 1
-                                                SoundManager.shared.playSound(named: "click", withExtension: "mp3")
-                                            }
-                                        }) {
-                                            Image(systemName: "plus.circle.fill")
-                                                .font(.title2)
-                                                .foregroundColor(.timsRed)
+                                    }) {
+                                        Image(systemName: "minus.circle.fill")
+                                            .font(.title2)
+                                            .foregroundColor(itemQuantity > 1 ? .timsRed : .brown.opacity(0.5))
+                                    }
+                                    
+                                    Text("\(itemQuantity)")
+                                        .font(.system(size: 18, weight: .black, design: .rounded))
+                                        .foregroundColor(.timsDarkBrown)
+                                        .frame(minWidth: 24)
+                                    
+                                    Button(action: {
+                                        if itemQuantity < 10 {
+                                            itemQuantity += 1
+                                            SoundManager.shared.playSound(named: "click", withExtension: "mp3")
                                         }
+                                    }) {
+                                        Image(systemName: "plus.circle.fill")
+                                            .font(.title2)
+                                            .foregroundColor(.timsRed)
                                     }
                                 }
-
+                            }
                             
                             TextField("Add customization notes (e.g., extra hot)...", text: $itemNotes)
                                 .font(.system(.subheadline, design: .rounded))
@@ -465,13 +457,10 @@ struct AddOrderView: View {
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
-            // ==========================================
-            // Absolute Bottom Safe Area Pinning (Overlay)
-            // ==========================================
+            // Absolute Bottom Safe Area Pinning overlay presentation blocks
             .overlay(alignment: .bottom) {
                 if isShowingBasketSummary && temporarySelectedItem == nil {
                     ZStack(alignment: .bottom) {
-                        
                         // Full Screen Backdrop Dimmer Layer
                         Color.black.opacity(0.4)
                             .ignoresSafeArea()
@@ -481,7 +470,7 @@ struct AddOrderView: View {
                                 }
                             }
                         
-                        // The Bottom-Pinned Detail Card View
+                        // The Bottom-Pinned Detail Card View sheet configuration layouts
                         VStack(alignment: .leading, spacing: 16) {
                             // Pull handle visual decorator
                             HStack {
@@ -493,7 +482,7 @@ struct AddOrderView: View {
                             }
                             .padding(.top, 4)
                             
-                            // Basket Totals Header
+                            // Basket Totals Header view components
                             HStack {
                                 Text("\(personName.isEmpty ? "Guest" : personName)'s Basket (\(pendingItems.reduce(0) { $0 + $1.quantity }) items)")
                                     .font(.system(size: 13, weight: .black, design: .rounded))
@@ -506,21 +495,19 @@ struct AddOrderView: View {
                             
                             Divider()
                             
-                            // NEW EMBEDDED ELEMENT: Scrollable item breakdown list
+                            // Scrollable list breakdown showcasing quantities, text customizations, and inline deletion triggers
                             ScrollView(.vertical, showsIndicators: true) {
                                 VStack(spacing: 12) {
                                     ForEach(pendingItems.indices, id: \.self) { index in
                                         let item = pendingItems[index]
                                         
                                         HStack(alignment: .center, spacing: 10) {
-                                            
-                                            // 1. REMOVE BUTTON (The X)
+                                            // Remove action buttons
                                             Button(action: {
                                                 SoundManager.shared.playSound(named: "pop", withExtension: "mp3")
                                                 withAnimation(.spring(response: 0.25, dampingFraction: 0.8)) {
                                                     pendingItems.remove(at: index)
                                                     
-                                                    // Auto-collapse the drawer if the basket becomes completely empty
                                                     if pendingItems.isEmpty {
                                                         isShowingBasketSummary = false
                                                     }
@@ -532,7 +519,6 @@ struct AddOrderView: View {
                                             }
                                             .buttonStyle(.plain)
                                             
-                                            // 2. ITEM DETAILS BLOCK
                                             VStack(alignment: .leading, spacing: 2) {
                                                 Text(item.itemName)
                                                     .font(.system(size: 14, weight: .bold, design: .rounded))
@@ -548,7 +534,7 @@ struct AddOrderView: View {
                                             
                                             Spacer()
                                             
-                                            // 3. STEPPER CONTROLS (Inline Quantity Adjustment)
+                                            // Inline quantity modifier controls
                                             HStack(spacing: 10) {
                                                 Button(action: {
                                                     if pendingItems[index].quantity > 1 {
@@ -588,7 +574,6 @@ struct AddOrderView: View {
                                             .background(Color.timsFieldTan.opacity(0.5))
                                             .cornerRadius(8)
                                             
-                                            // 4. COST DISPLAY
                                             Text("$\(String(format: "%.2f", item.itemTotal))")
                                                 .font(.system(size: 14, weight: .bold, design: .rounded))
                                                 .foregroundColor(.timsDarkBrown.opacity(0.8))
@@ -632,20 +617,17 @@ struct AddOrderView: View {
                                     SoundManager.shared.playSound(named: "success", withExtension: "mp3")
                                     
                                     var finalItemsForManifest = pendingItems
-                                    // If they are using a credit, modify the actual item price inside the manifest list array
                                     if useDrinkCredit {
                                         let beveragesIndices = finalItemsForManifest.indices.filter { idx in
                                             let name = finalItemsForManifest[idx].itemName.lowercased()
                                             return name.contains("coffee") || name.contains("capp") || name.contains("latte") || name.contains("tea") || name.contains("quencher") || name.contains("drink") ||
-                                                name.contains("brew") || name.contains("lemonade") || name.contains("chocolate")
+                                                   name.contains("brew") || name.contains("lemonade") || name.contains("chocolate")
                                         }
                                         
-                                        // Find the highest priced beverage index position
                                         if let highestIdx = beveragesIndices.max(by: { finalItemsForManifest[$0].unitPrice < finalItemsForManifest[$1].unitPrice }) {
                                             let originalUnitPrice = finalItemsForManifest[highestIdx].unitPrice
                                             let discount = min(originalUnitPrice, 6.00)
                                             
-                                            // Split the item so only 1 quantity gets the discount, if they ordered multiple of the same drink
                                             if finalItemsForManifest[highestIdx].quantity > 1 {
                                                 finalItemsForManifest[highestIdx].quantity -= 1
                                                 
@@ -657,31 +639,28 @@ struct AddOrderView: View {
                                                 )
                                                 finalItemsForManifest.append(discountedSingleItem)
                                             } else {
-                                                // If quantity is just 1, rename it and update the price directly
                                                 finalItemsForManifest[highestIdx].itemName += " (Credit Applied 🌟)"
                                                 finalItemsForManifest[highestIdx].unitPrice = originalUnitPrice - discount
                                             }
                                         }
                                     }
-
-                                    // 3. Deduct the user profile token balance from the global database store
+                                    
                                     if useDrinkCredit, let index = appStore.userProfiles.firstIndex(where: { $0.name.lowercased() == personName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }) {
                                         if appStore.userProfiles[index].drinkCreditsBalance > 0 {
                                             appStore.userProfiles[index].drinkCreditsBalance -= 1
                                         }
                                     }
-
-                                    // 4. Build the final order using our updated, discounted items list array!
+                                    
                                     let finalGroupOrder = TeamOrder(
                                         name: personName.isEmpty ? "Guest" : personName,
-                                        items: finalItemsForManifest, // FIXED: Uses the discounted item stream data array
+                                        items: finalItemsForManifest,
                                         isSavedAsFavorite: saveAsFavorite
                                     )
-
+                                    
                                     if saveAsFavorite {
-                                        appStore.saveFavoriteBasket(for: personName, items: pendingItems) // Keep original items clean for favorites
+                                        appStore.saveFavoriteBasket(for: personName, items: pendingItems)
                                     }
-
+                                    
                                     if let original = editingOrder,
                                        let index = appStore.activeOrders.firstIndex(where: { $0.id == original.id }) {
                                         appStore.activeOrders[index] = finalGroupOrder
@@ -689,7 +668,8 @@ struct AddOrderView: View {
                                         appStore.saveOrderToActiveRun(finalGroupOrder)
                                     }
                                     isShowingBasketSummary = false
-                                    dismiss()                                }
+                                    dismiss()
+                                }
                             }) {
                                 Label("Complete Individual Order", systemImage: "checkmark.circle.fill")
                                     .font(.system(size: 15, weight: .black, design: .rounded))

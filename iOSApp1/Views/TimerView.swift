@@ -74,7 +74,7 @@ struct TimerView: View {
                 // Complete Run Trigger Button
                 if !showSummaryAlert {
                     Button(action: {
-                        // FIXED: Saves the final metric state status before freezing layout frames
+                        // Saves the final metric state status before freezing layout frames
                         earnedCreditStatus = secondsRemaining > 0
                         
                         if earnedCreditStatus {
@@ -101,9 +101,7 @@ struct TimerView: View {
             }
             .blur(radius: showSummaryAlert ? 5 : 0) // Smooth backdrop blur when pop up shows
             
-            // ==========================================
-            // FIXED: Animated Pop Up Card Overlay Layer
-            // ==========================================
+            // Animated Pop Up Card Overlay Layer
             if showSummaryAlert {
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
@@ -138,8 +136,7 @@ struct TimerView: View {
                         SoundManager.shared.playSound(named: "click", withExtension: "mp3")
                         
                         withAnimation(.easeInOut(duration: 0.25)) {
-                            
-                            // Automatically commits run history details and awards drink credits to the profile record!
+                            // Automatically commits run history details and awards drink credits to the profile record
                             if !appStore.currentRunner.isEmpty && appStore.currentRunner.lowercased() != "guest" {
                                 appStore.awardDrinkCredit(
                                     to: appStore.currentRunner,
@@ -152,7 +149,7 @@ struct TimerView: View {
                             appStore.resetActiveRun()
                             
                             showSummaryAlert = false
-                            isRunActive = false // FIXED: Turns off navigation run sequence flag to snap cleanly back to welcome splash!
+                            isRunActive = false // Turns off navigation run sequence flag to snap cleanly back to welcome splash
                         }
                     }) {
                         Text(earnedCreditStatus ? "Claim Reward! 🌟" : "Sweet! 🍩")
@@ -174,9 +171,7 @@ struct TimerView: View {
                 .transition(.scale.combined(with: .opacity))
             }
         }
-        // ==========================================
-        // FIXED: Listens to Live System Clock Ticks
-        // ==========================================
+        // Listens to Live System Clock Ticks
         .onReceive(activeTimer) { _ in
             if !showSummaryAlert { // Stops accumulating seconds once they hit 'I'm Back!'
                 secondsElapsed += 1

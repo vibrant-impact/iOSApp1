@@ -16,6 +16,7 @@ struct ManifestBuilderView: View {
     @Binding var selectedOrderToEdit: TeamOrder?
     @Binding var showingAddOrderForm: Bool
     
+    // Reduces the current active orders array to compute a running sum total
     var runningGrandTotal: Double {
         appStore.activeOrders.reduce(0) { $0 + $1.checkoutTotal }
     }
@@ -37,21 +38,22 @@ struct ManifestBuilderView: View {
                                     // Clear out any dirty or partially filled order manifests instantly on cancellation
                                     appStore.resetActiveRun()
                                     
-                                    runSequenceStarted = false // Drop back down to the main WelcomeView welcome card layer stack
+                                    // Drop back down to the main WelcomeView welcome card layer stack
+                                    runSequenceStarted = false
                                 }
                             }) {
                                 HStack(spacing: 4) {
                                      Image(systemName: "chevron.left")
                                      Text("Cancel Run")
-                                 }
-                                 .font(.system(size: 14, weight: .bold, design: .rounded))
-                                 .foregroundColor(.white)
-                                 .padding(.horizontal, 12)
-                                 .padding(.vertical, 8)
-                                 .background(Color.white.opacity(0.15))
-                                 .cornerRadius(10)
-                             }
-                             Spacer()
+                                }
+                                .font(.system(size: 14, weight: .bold, design: .rounded))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(Color.white.opacity(0.15))
+                                .cornerRadius(10)
+                            }
+                            Spacer()
                         }
                         
                         Text("Add Orders")
@@ -106,7 +108,7 @@ struct ManifestBuilderView: View {
                                                     .foregroundColor(.timsDarkBrown)
                                                 
                                                 ForEach(order.items) { item in
-                                                    // FIXED: Combines quantity, name, and conditional notes into a single line using string interpolation
+                                                    // Combines quantity, name, and conditional notes into a single layout row
                                                     Text("☕️ \(item.quantity)x \(item.itemName)\(item.notes.isEmpty ? "" : " (\(item.notes))")")
                                                         .font(.system(.subheadline, design: .rounded))
                                                         .foregroundColor(.brown)
@@ -174,9 +176,7 @@ struct ManifestBuilderView: View {
                     .scrollContentBackground(.hidden)
                     .listStyle(.insetGrouped)
                     
-                    // ==========================================
-                    // ACTION CONTROL TRAY WITH REGISTERED AUDIO CALLS
-                    // ==========================================
+                    // Interaction control drawer layout tracking audio triggers
                     VStack(spacing: 12) {
                         if !isManifestLocked {
                             HStack(spacing: 16) {
@@ -197,7 +197,7 @@ struct ManifestBuilderView: View {
                                 }
                                 
                                 Button(action: {
-                                    // AUDIO HOOK F: Play classic cash register checkout chime
+                                    // Play classic cash register checkout chime
                                     SoundManager.shared.playSound(named: "ching", withExtension: "mp3")
                                     isManifestLocked = true
                                 }) {
@@ -230,7 +230,7 @@ struct ManifestBuilderView: View {
                                 }
                                 
                                 Button(action: {
-                                    // AUDIO HOOK G: Play mechanical engine start click sound right as the run clock sets off!
+                                    // Play mechanical engine start click sound right as the run clock sets off
                                     SoundManager.shared.playSound(named: "car-start", withExtension: "mp3")
                                     runTimerActive = true
                                 }) {

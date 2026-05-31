@@ -13,7 +13,7 @@ struct ProductCardView: View {
     
     var body: some View {
         Button(action: {
-            // FIXED: Triggers tactile cup sound effect when this specific menu card gets pressed
+            // Triggers tactile cup sound effect when this specific menu card gets pressed
             SoundManager.shared.playSound(named: "swoosh", withExtension: "mp3")
             
             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -42,6 +42,7 @@ struct ProductCardView: View {
                         }
                 }
                 
+                // Formatted display item labels mapping to local data attributes
                 Text(product.name)
                     .font(.system(size: 13, weight: .bold, design: .rounded))
                     .foregroundColor(.timsDarkBrown)

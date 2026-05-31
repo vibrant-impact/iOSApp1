@@ -10,7 +10,7 @@ import Combine
 
 class OrderStore: ObservableObject {
     
-    // MARK: - Master Product Inventories
+    // Master Product Inventories
     @Published var allProducts: [JSONProduct] = []
     @Published var activeOrders: [TeamOrder] = []
     @Published var runHistory: [CompletedRunSummary] = []
@@ -28,14 +28,14 @@ class OrderStore: ObservableObject {
         }
     }
     
-    // MARK: - Initializer Block
+    // Initializer Block
     init() {
         loadJsonInventory()
         loadProfilesFromHardware()
     }
     
-    // MARK: - JSON Parser Logic
-    /// Decodes the local productData.json file straight from the primary bundle directory ledger
+    // JSON Parser Logic
+    // Decodes the local productData.json file straight from the primary bundle directory ledger
     private func loadJsonInventory() {
         guard let url = Bundle.main.url(forResource: "productData", withExtension: "json") else {
             print("⚠️ OrderStore Error: Unable to locate productData.json in bundle framework")
@@ -54,7 +54,7 @@ class OrderStore: ObservableObject {
         }
     }
     
-    // MARK: - Functional Manifest Utilities
+    // Functional Manifest Utilities
     func saveOrderToActiveRun(_ order: TeamOrder) {
         activeOrders.append(order)
         if order.isSavedAsFavorite {
@@ -71,7 +71,7 @@ class OrderStore: ObservableObject {
         currentRunner = ""
     }
     
-    /// Sweeps the profile array list to find an existing account or spawns a clean one on the fly
+    // Sweeps the profile array list to find an existing account or spawns a clean one on the fly
     func findOrCreateProfile(for name: String) -> UserProfile {
         let cleanedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         if let existing = userProfiles.first(where: { $0.name.lowercased() == cleanedName.lowercased() }) {
@@ -83,7 +83,7 @@ class OrderStore: ObservableObject {
         }
     }
 
-    /// Updates or appends a targeted favorite basket configuration to a specific profile account
+    // Updates or appends a targeted favorite basket configuration to a specific profile account
     func saveFavoriteBasket(for name: String, items: [OrderItem]) {
         let cleanedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !cleanedName.isEmpty else { return }
@@ -97,7 +97,7 @@ class OrderStore: ObservableObject {
         }
     }
 
-    /// Increments the drink token reward ledger for the current driver profile instance
+    // Increments the drink token reward ledger for the current driver profile instance
     func awardDrinkCredit(to runnerName: String, elapsedSeconds: Int, targetSeconds: Int, creditEarned: Bool) {
         let cleanedName = runnerName.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !cleanedName.isEmpty, let index = userProfiles.firstIndex(where: { $0.name.lowercased() == cleanedName.lowercased() }) else { return }
@@ -115,7 +115,7 @@ class OrderStore: ObservableObject {
         }
     }
 
-    // MARK: - Hard Disk Data Persistence Mechanics
+    // Hard Disk Data Persistence Mechanics
     func saveProfilesToHardware() {
         if let encodedData = try? JSONEncoder().encode(userProfiles) {
             UserDefaults.standard.set(encodedData, forKey: "TimsRunnerUserProfilesKey")

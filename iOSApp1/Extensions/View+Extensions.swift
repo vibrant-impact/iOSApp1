@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-// MARK: - Global SwiftUI Layout Utilities
+// Global SwiftUI Layout Utilities
 extension View {
-    /// Contextually swaps a primary view layer for a placeholder framework icon when a condition is met
+    // Contextually swaps a primary view layer for a placeholder framework icon when a condition is met
     @ViewBuilder
     func placeholder<Content: View>(
         when shouldShow: Bool,
@@ -27,15 +27,15 @@ extension View {
     }
 }
 
-// MARK: - Specialized Corner Layout Modifiers
+// Specialized Corner Layout Modifiers
 extension View {
-    /// Applies a specific rounding radius to targeted, selective corners of a layout container frame
+    // Applies a specific rounding radius to targeted, selective corners of a layout container frame
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape(RoundedCornerLayout(radius: radius, corners: corners))
     }
 }
 
-/// A custom structural Shape blueprint that targets explicit layout corners for corner radius cuts
+// A custom structural Shape blueprint that targets explicit layout corners for corner radius cuts
 struct RoundedCornerLayout: Shape {
     var radius: CGFloat = .infinity
     var corners: UIRectCorner = .allCorners

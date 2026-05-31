@@ -7,7 +7,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "raspberry-mojito-frozen-quencher"
   },
-  
   {
     "id": "19",
     "name": "Raspberry Mojito Lemonade Quencher",
@@ -16,7 +15,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "raspberry-mojito-lemonade-quencher"
   },
-  
   {
     "id": "36",
     "name": "Brewed Coffee",
@@ -25,7 +23,6 @@
     "category": "Hot Drinks, Brewed Coffee",
     "image": "brewed-coffee"
   },
-  
   {
     "id": "37",
     "name": "Dark Roast Brewed Coffee",
@@ -34,7 +31,6 @@
     "category": "Hot Drinks, Brewed Coffee",
     "image": "dark-roast-brewed-coffee"
   },
-  
   {
     "id": "42",
     "name": "Protein Latte",
@@ -43,7 +39,6 @@
     "category": "Hot Drinks, Espresso Drinks",
     "image": "protein-latte"
   },
-  
   {
     "id": "43",
     "name": "Latte",
@@ -52,7 +47,6 @@
     "category": "Hot Drinks, Espresso Drinks",
     "image": "latte"
   },
-  
   {
     "id": "44",
     "name": "Mocha Latte",
@@ -61,7 +55,6 @@
     "category": "Hot Drinks, Espresso Drinks",
     "image": "mocha-latte"
   },
-  
   {
     "id": "45",
     "name": "Vanilla Latte",
@@ -70,7 +63,6 @@
     "category": "Hot Drinks, Espresso Drinks",
     "image": "vanilla-latte"
   },
-  
   {
     "id": "46",
     "name": "Cappuccino",
@@ -79,7 +71,6 @@
     "category": "Hot Drinks, Espresso Drinks",
     "image": "cappuccino"
   },
-  
   {
     "id": "47",
     "name": "Americano",
@@ -88,7 +79,6 @@
     "category": "Hot Drinks, Espresso Drinks",
     "image": "americano"
   },
-  
   {
     "id": "48",
     "name": "Espresso",
@@ -97,7 +87,6 @@
     "category": "Hot Drinks, Espresso Drinks",
     "image": "espresso"
   },
-  
   {
     "id": "49",
     "name": "Chai Latte",
@@ -106,7 +95,6 @@
     "category": "Hot Drinks, Tea",
     "image": "chai-latte"
   },
-  
   {
     "id": "50",
     "name": "Steeped Tea",
@@ -115,7 +103,6 @@
     "category": "Hot Drinks, Tea",
     "image": "steeped-tea"
   },
-  
   {
     "id": "51",
     "name": "Specialty Tea",
@@ -124,7 +111,6 @@
     "category": "Hot Drinks, Tea",
     "image": "specialty-tea"
   },
-  
   {
     "id": "52",
     "name": "Tropical Green Tea",
@@ -133,7 +119,6 @@
     "category": "Hot Drinks, Tea",
     "image": "tropical-green-tea"
   },
-  
   {
     "id": "53",
     "name": "London Fog",
@@ -142,7 +127,6 @@
     "category": "Hot Drinks, Tea",
     "image": "london-fog"
   },
-  
   {
     "id": "55",
     "name": "Hot Chocolate",
@@ -151,16 +135,14 @@
     "category": "Hot Drinks, Hot Chocolate",
     "image": "hot-chocolate"
   },
-  
   {
     "id": "56",
-    "name": "White Hot Chocoloate",
+    "name": "White Hot Chocolate",
     "description": "",
     "price": 2.89,
     "category": "Hot Drinks, Hot Chocolate",
     "image": "white-hot-chocolate"
   },
-  
   {
     "id": "57",
     "name": "Coffee Mocha",
@@ -169,7 +151,6 @@
     "category": "Hot Drinks",
     "image": "coffee-mocha"
   },
-  
   {
     "id": "58",
     "name": "French Vanilla",
@@ -178,7 +159,6 @@
     "category": "Hot Drinks",
     "image": "french-vanilla"
   },
-  
   {
     "id": "59",
     "name": "Take Twelve",
@@ -187,7 +167,6 @@
     "category": "Hot Drinks",
     "image": "take-twelve"
   },
-  
   {
     "id": "60",
     "name": "Original Iced Coffee",
@@ -196,7 +175,6 @@
     "category": "Cold Drinks, Iced Coffee",
     "image": "original-iced-coffee"
   },
-  
   {
     "id": "61",
     "name": "Black Iced Coffee",
@@ -205,16 +183,6 @@
     "category": "Cold Drinks, Iced Coffee",
     "image": "black-iced-coffee"
   },
-  
-  {
-    "id": "62",
-    "name": "Iced Capp",
-    "description": "",
-    "price": 2.79,
-    "category": "Cold Drinks, Iced Capp",
-    "image": "black-iced-coffee"
-  },
-  
   {
     "id": "63",
     "name": "Caramel Churro Cold Brew",
@@ -223,7 +191,6 @@
     "category": "Cold Drinks, Cold Brew",
     "image": "caramel-churro-cold-brew"
   },
-  
   {
     "id": "65",
     "name": "Original Cold Brew",
@@ -232,7 +199,6 @@
     "category": "Cold Drinks, Cold Brew",
     "image": "original-cold-brew"
   },
-  
   {
     "id": "66",
     "name": "Black Cold Brew",
@@ -241,7 +207,6 @@
     "category": "Cold Drinks, Cold Brew",
     "image": "black-cold-brew"
   },
-  
   {
     "id": "67",
     "name": "Toasted Marshmellow Cold Brew with Infused Cold Foam",
@@ -250,7 +215,6 @@
     "category": "Cold Drinks, Cold Brew",
     "image": "toasted-marshmellow-cold-brew-with-infused-cold-foam"
   },
-  
   {
     "id": "68",
     "name": "Roasted Hazelnut Cold Brew with Espresso Cold Foam",
@@ -259,7 +223,6 @@
     "category": "Cold Drinks, Cold Brew",
     "image": "roasted-hazelnut-cold-brew-with-espresso-cold-foam"
   },
-  
   {
     "id": "69",
     "name": "Vanilla Cream Cold Brew",
@@ -268,7 +231,6 @@
     "category": "Cold Drinks, Cold Brew",
     "image": "vanilla-cream-cold-brew"
   },
-  
   {
     "id": "70",
     "name": "Caramel Churro Iced Latte",
@@ -277,7 +239,6 @@
     "category": "Cold Drinks, Iced Lattes",
     "image": "caramel-churro-iced-latte"
   },
-  
   {
     "id": "71",
     "name": "Protein Iced Chai Latte",
@@ -286,7 +247,6 @@
     "category": "Cold Drinks, Iced Lattes",
     "image": "protein-iced-chai-latte"
   },
-  
   {
     "id": "74",
     "name": "Original Iced Latte",
@@ -295,7 +255,6 @@
     "category": "Cold Drinks, Iced Lattes",
     "image": "original-iced-latte"
   },
-  
   {
     "id": "75",
     "name": "Unsweetened Iced Latte",
@@ -304,7 +263,6 @@
     "category": "Cold Drinks, Iced Lattes",
     "image": "unsweetened-iced-latte"
   },
-  
   {
     "id": "76",
     "name": "Original Protein Iced Latte",
@@ -313,7 +271,6 @@
     "category": "Cold Drinks, Iced Lattes",
     "image": "original-protein-iced-latte"
   },
-  
   {
     "id": "77",
     "name": "Iced Chai Latte",
@@ -322,7 +279,6 @@
     "category": "Cold Drinks, Iced Lattes",
     "image": "iced-chai-latte"
   },
-  
   {
     "id": "79",
     "name": "Vanilla Iced Latte",
@@ -331,16 +287,14 @@
     "category": "Cold Drinks, Iced Lattes",
     "image": "vanilla-iced-latte"
   },
-  
   {
     "id": "80",
     "name": "Mocha Iced Latte",
     "description": "",
     "price": 4.19,
-    "category": "Cold Drinks, Iced Lattes",
+                "category": "Cold Drinks, Iced Lattes",
     "image": "mocha-iced-latte"
   },
-  
   {
     "id": "81",
     "name": "Blackberry Yuzu Protein Quencher",
@@ -349,7 +303,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "blackberry-yuzu-protein-quencher"
   },
-  
   {
     "id": "82",
     "name": "Peach Protein Quencher",
@@ -358,7 +311,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "peach-protein-quencher"
   },
-  
   {
     "id": "83",
     "name": "Strawberry Watermelon Protein Quencher",
@@ -367,7 +319,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "strawberry-watermelon-protein-quencher"
   },
-  
   {
     "id": "84",
     "name": "Raspberry Mojito Protein Quencher",
@@ -376,7 +327,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "raspberry-mojito-protein-quencher"
   },
-  
   {
     "id": "85",
     "name": "Orange Tangerine Protein Quencher",
@@ -385,7 +335,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "orange-tangerine-protein-quencher"
   },
-  
   {
     "id": "86",
     "name": "Raspberry Mojito Zero Sugar Sparkling Quencher",
@@ -394,7 +343,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "raspberry-mojito-zero-sugar-sparkling-quencher"
   },
-  
   {
     "id": "87",
     "name": "Raspberry Mojito Iced Tea Quencher",
@@ -403,7 +351,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "raspberry-mojito-iced-tea-quencher"
   },
-  
   {
     "id": "88",
     "name": "Pineapple Dragon Fruit Frozen Quencher",
@@ -412,7 +359,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "pineapple-dragon-fruit-frozen-quencher"
   },
-  
   {
     "id": "89",
     "name": "Orange Tangerine Frozen Quencher",
@@ -421,7 +367,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "orange-tangerine-frozen-quencher"
   },
-  
   {
     "id": "90",
     "name": "Blackberry Yuzu Frozen Quencher",
@@ -430,7 +375,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "blackberry-yuzu-frozen-quencher"
   },
-  
   {
     "id": "91",
     "name": "Peach Frozen Quencher",
@@ -439,16 +383,14 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "peach-frozen-quencher"
   },
-  
   {
-    "id": "91",
+    "id": "91b",
     "name": "Strawberry Watermelon Frozen Quencher",
     "description": "",
     "price": 3.99,
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "strawberry-watermelon-frozen-quencher"
   },
-  
   {
     "id": "92",
     "name": "Raspberry Mojito Lemonade Quencher",
@@ -457,7 +399,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "raspberry-mojito-lemonade-quencher"
   },
-  
   {
     "id": "93",
     "name": "Orange Tangerine Lemonade Quencher",
@@ -466,7 +407,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "orange-tangerine-lemonade-quencher"
   },
-  
   {
     "id": "94",
     "name": "Blackberry Yuzu Lemonade Quencher",
@@ -475,7 +415,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "blackberry-yuzu-lemonade-quencher"
   },
-  
   {
     "id": "96",
     "name": "Strawberry Watermelon Lemonade Quencher",
@@ -484,7 +423,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "strawberry-watermelon-lemonade-quencher"
   },
-  
   {
     "id": "97",
     "name": "Orange Tangerine Sparkling Quencher",
@@ -493,16 +431,14 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "orange-tangerine-sparkling-quencher"
   },
-  
   {
     "id": "98",
-    "name": "Blackberry Yuzu Sparkling Quencher",
+                "name": "Blackberry Yuzu Sparkling Quencher",
     "description": "",
     "price": 3.29,
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "blackberry-yuzu-sparkling-quencher"
   },
-  
   {
     "id": "101",
     "name": "Classic Lemonade Quencher",
@@ -511,7 +447,6 @@
     "category": "Cold Drinks, Fruit Quenchers",
     "image": "classic-lemonade-quencher"
   },
-  
   {
     "id": "104",
     "name": "Frozen Lemonade",
@@ -520,7 +455,6 @@
     "category": "Cold Drinks, Frozen Lemonade",
     "image": "frozen-lemonade"
   },
-  
   {
     "id": "105",
     "name": "Cherry Soda Swirl",
@@ -529,7 +463,6 @@
     "category": "Cold Drinks, Fountain Pop",
     "image": "cherry-soda-swirl"
   },
-  
   {
     "id": "106",
     "name": "Vanilla Soda Swirl",
@@ -538,7 +471,6 @@
     "category": "Cold Drinks, Fountain Pop",
     "image": "vanilla-soda-swirl"
   },
-  
   {
     "id": "107",
     "name": "Vanilla Light Soda Swirl",
@@ -547,7 +479,6 @@
     "category": "Cold Drinks, Fountain Pop",
     "image": "vanilla-light-soda-swirl"
   },
-  
   {
     "id": "112",
     "name": "Coca-Cola 500mL Bottle",
@@ -556,7 +487,6 @@
     "category": "Cold Drinks, Bottled Drinks",
     "image": "coca-cola-500ml-bottle"
   },
-  
   {
     "id": "113",
     "name": "Diet Coke 500mL Bottle",
@@ -565,7 +495,6 @@
     "category": "Cold Drinks, Bottled Drinks",
     "image": "diet-coke-500ml-bottle"
   },
-  
   {
     "id": "114",
     "name": "Sprite 500mL Bottle",
@@ -574,7 +503,6 @@
     "category": "Cold Drinks, Bottled Drinks",
     "image": "sprite-500ml-bottle"
   },
-  
   {
     "id": "115",
     "name": "Canada Dry Ginger Ale 500mL Bottle",
@@ -583,7 +511,6 @@
     "category": "Cold Drinks, Bottled Drinks",
     "image": "canada-dry-ginger-ale-500ml-bottle"
   },
-  
   {
     "id": "116",
     "name": "Fuze Iced Tea Bottle",
@@ -592,7 +519,6 @@
     "category": "Cold Drinks, Bottled Drinks",
     "image": "fuze-iced-tea-bottle"
   },
-  
   {
     "id": "117",
     "name": "Apple Juice",
@@ -601,7 +527,6 @@
     "category": "Cold Drinks, Bottled Drinks",
     "image": "apple-juice"
   },
-  
   {
     "id": "118",
     "name": "Orange Juice",
@@ -610,7 +535,6 @@
     "category": "Cold Drinks, Bottled Drinks",
     "image": "orange-juice"
   },
-  
   {
     "id": "119",
     "name": "Peach Drink",
@@ -619,7 +543,6 @@
     "category": "Cold Drinks, Bottled Drinks",
     "image": "peach-drink"
   },
-  
   {
     "id": "120",
     "name": "Spring Water",
@@ -628,7 +551,6 @@
     "category": "Cold Drinks, Bottled Drinks",
     "image": "spring-water"
   },
-  
   {
     "id": "121",
     "name": "Milk",
@@ -637,7 +559,6 @@
     "category": "Cold Drinks, Bottled Drinks",
     "image": "milk"
   },
-  
   {
     "id": "122",
     "name": "Blackberry Yuzu Infusr Energy Drink",
@@ -646,7 +567,6 @@
     "category": "Cold Drinks",
     "image": "blackberry-yuzu-infusr-energy-drink"
   },
-  
   {
     "id": "123",
     "name": "Mango Starfruit Infusr Energy Drink",
@@ -655,7 +575,6 @@
     "category": "Cold Drinks",
     "image": "mango-starfruit-infusr-energy-drink"
   },
-  
   {
     "id": "124",
     "name": "Chicken Parmesan Flatbread Pizza",
@@ -664,7 +583,6 @@
     "category": "Lunch & Dinner, Flatbread Pizzas",
     "image": "chicken-parmesan-flatbread-pizza"
   },
-  
   {
     "id": "125",
     "name": "Pepperoni Flatbread Pizza",
@@ -673,7 +591,6 @@
     "category": "Lunch & Dinner, Flatbread Pizzas",
     "image": "pepperoni-flatbread-pizza"
   },
-  
   {
     "id": "126",
     "name": "Simply Cheese Flatbread Pizza",
@@ -682,7 +599,6 @@
     "category": "Lunch & Dinner, Flatbread Pizzas",
     "image": "simply-cheese-flatbread-pizza"
   },
-  
   {
     "id": "127",
     "name": "Cilantro Lime Chicken Loaded Wrap with Cheese",
@@ -691,7 +607,6 @@
     "category": "Lunch & Dinner, Wraps",
     "image": "cilantro-lime-chicken-loaded-wrap-with-cheese"
   },
-  
   {
     "id": "128",
     "name": "Cilantro Lime Veggie Loaded Wrap with Cheese",
@@ -700,7 +615,6 @@
     "category": "Lunch & Dinner, Wraps",
     "image": "cilantro-lime-veggie-loaded-wrap-with-cheese"
   },
-  
   {
     "id": "129",
     "name": "Habanero Chicken Loaded Wrap with Cheese",
@@ -709,7 +623,6 @@
     "category": "Lunch & Dinner, Wraps",
     "image": "habanero-chicken-loaded-wrap-with-cheese"
   },
-  
   {
     "id": "130",
     "name": "Habanero Veggie Loaded Wrap with Cheese",
@@ -718,7 +631,6 @@
     "category": "Lunch & Dinner, Wraps",
     "image": "habanero-veggie-loaded-wrap-with-cheese"
   },
-  
   {
     "id": "131",
     "name": "Chicken Bacon Ranch Wrap",
@@ -727,7 +639,6 @@
     "category": "Lunch & Dinner, Wraps",
     "image": "chicken-bacon-ranch-wrap"
   },
-  
   {
     "id": "132",
     "name": "Classic Chicken Wrap",
@@ -736,7 +647,6 @@
     "category": "Lunch & Dinner, Wraps",
     "image": "classic-chicken-wrap"
   },
-  
   {
     "id": "133",
     "name": "Chipotle Craveable Wrap",
@@ -745,7 +655,6 @@
     "category": "Lunch & Dinner, Wraps",
     "image": "chipotle-craveable-wrap"
   },
-  
   {
     "id": "134",
     "name": "Ranch Craveable Wrap",
@@ -754,7 +663,6 @@
     "category": "Lunch & Dinner, Wraps",
     "image": "ranch-craveable-wrap"
   },
-  
   {
     "id": "135",
     "name": "Supreme Stack",
@@ -763,7 +671,6 @@
     "category": "Lunch & Dinner, Sandwiches",
     "image": "supreme-stack"
   },
-  
   {
     "id": "136",
     "name": "Steak & Cheddar Artisan Sandwich",
@@ -772,7 +679,6 @@
     "category": "Lunch & Dinner, Sandwiches",
     "image": "steak-cheddar-artisan-sandwich"
   },
-  
   {
     "id": "137",
     "name": "Steak Craveable",
@@ -781,7 +687,6 @@
     "category": "Lunch & Dinner, Sandwiches",
     "image": "steak-craveable"
   },
-  
   {
     "id": "138",
     "name": "Cilantro Lime Chicken Loaded Bowl with Cheese",
@@ -790,7 +695,6 @@
     "category": "Lunch & Dinner, Bowls",
     "image": "cilantro-lime-chicken-loaded-bowl-with-cheese"
   },
-  
   {
     "id": "139",
     "name": "Cilantro Lime Veggie Loaded Bowl with Cheese",
@@ -799,8 +703,6 @@
     "category": "Lunch & Dinner, Bowls",
     "image": "cilantro-lime-veggie-loaded-bowl-with-cheese"
   },
-
-  
   {
     "id": "140",
     "name": "Habanero Chicken Loaded Bowl with Cheese",
@@ -809,8 +711,6 @@
     "category": "Lunch & Dinner, Bowls",
     "image": "habanero-chicken-loaded-bowl-with-cheese"
   },
-
-  
   {
     "id": "141",
     "name": "Habanero Veggie Loaded Bowl with Cheese",
@@ -819,16 +719,14 @@
     "category": "Lunch & Dinner, Bowls",
     "image": "habanero-veggie-loaded-bowl-with-cheese"
   },
-  
   {
-    "id": "141",
+    "id": "141b",
     "name": "Potato Wedges",
     "description": "",
     "price": 8.99,
     "category": "Lunch & Dinner, Potato Wedges",
     "image": "potato-wedges"
   },
-  
   {
     "id": "142",
     "name": "6 Assorted Donuts",
@@ -837,7 +735,6 @@
     "category": "Baked Goods, Donuts",
     "image": "6-assorted-donuts"
   },
-  
   {
     "id": "143",
     "name": "12 Assorted Donuts",
@@ -846,7 +743,6 @@
     "category": "Baked Goods, Donuts",
     "image": "12-assorted-donuts"
   },
-  
   {
     "id": "144",
     "name": "Maple Glazed Donut",
@@ -855,7 +751,6 @@
     "category": "Baked Goods, Donuts",
     "image": "maple-glazed-donut"
   },
-  
   {
     "id": "145",
     "name": "Apple Fritter Donut",
@@ -864,7 +759,6 @@
     "category": "Baked Goods, Donuts",
     "image": "apple-fritter-donut"
   },
-  
   {
     "id": "146",
     "name": "Boston Cream Donut",
@@ -873,7 +767,6 @@
     "category": "Baked Goods, Donuts",
     "image": "boston-cream-donut"
   },
-  
   {
     "id": "147",
     "name": "Honey Cruller Donut",
@@ -882,7 +775,6 @@
     "category": "Baked Goods, Donuts",
     "image": "honey-cruller-donut"
   },
-  
   {
     "id": "148",
     "name": "Old Fashioned Plain Donut",
@@ -891,7 +783,6 @@
     "category": "Baked Goods, Donuts",
     "image": "old-fashioned-plain-donut"
   },
-  
   {
     "id": "149",
     "name": "Chocolate Dip Donut",
@@ -900,7 +791,6 @@
     "category": "Baked Goods, Donuts",
     "image": "chocolate-dip-donut"
   },
-  
   {
     "id": "150",
     "name": "Sour Cream Glazed Donut",
@@ -909,7 +799,6 @@
     "category": "Baked Goods, Donuts",
     "image": "sour-cream-glazed-donut"
   },
-  
   {
     "id": "151",
     "name": "Chocolate Glazed Donut",
@@ -918,7 +807,6 @@
     "category": "Baked Goods, Donuts",
     "image": "chocolate-glazed-donut"
   },
-  
   {
     "id": "152",
     "name": "Vanilla Dip Donut",
@@ -927,7 +815,6 @@
     "category": "Baked Goods, Donuts",
     "image": "vanilla-dip-donut"
   },
-  
   {
     "id": "153",
     "name": "Honey Dip Donut",
@@ -936,16 +823,14 @@
     "category": "Baked Goods, Donuts",
     "image": "honey-dip-donut"
   },
-  
   {
-    "id": "153",
+    "id": "153b",
     "name": "Double Chocolate Donut",
     "description": "",
     "price": 1.69,
     "category": "Baked Goods, Donuts",
     "image": "double-chocolate-donut"
   },
-  
   {
     "id": "155",
     "name": "Toasted Coconut Donut",
@@ -954,7 +839,6 @@
     "category": "Baked Goods, Donuts",
     "image": "toasted-coconut-donut"
   },
-  
   {
     "id": "156",
     "name": "Chocolate Cruller Donut",
@@ -963,7 +847,6 @@
     "category": "Baked Goods, Donuts",
     "image": "chocolate-cruller-donut"
   },
-
   {
     "id": "157",
     "name": "10 Assorted Timbits",
@@ -972,7 +855,6 @@
     "category": "Baked Goods, Timbits",
     "image": "10-assorted-timbits"
   },
-
   {
     "id": "158",
     "name": "20 Assorted Timbits",
@@ -981,7 +863,6 @@
     "category": "Baked Goods, Timbits",
     "image": "20-assorted-timbits"
   },
-  
   {
     "id": "159",
     "name": "50 Assorted Timbits",
@@ -990,7 +871,6 @@
     "category": "Baked Goods, Timbits",
     "image": "50-assorted-timbits"
   },
-  
   {
     "id": "160",
     "name": "Canadian Fireworks Timbit",
@@ -999,7 +879,6 @@
     "category": "Baked Goods, Timbits",
     "image": "canadian-fireworks-timbit"
   },
-  
   {
     "id": "161",
     "name": "Cappuccino Timbit",
@@ -1008,7 +887,6 @@
     "category": "Baked Goods, Timbits",
     "image": "cappuccino-timbit"
   },
-  
   {
     "id": "162",
     "name": "Chocolate Creme Brulee Filled Timbit",
@@ -1017,7 +895,6 @@
     "category": "Baked Goods, Timbits",
     "image": "chocolate-creme-brulee-filled-timbit"
   },
-  
   {
     "id": "163",
     "name": "Lime Cheesecake Filled Timbit",
@@ -1026,7 +903,6 @@
     "category": "Baked Goods, Timbits",
     "image": "lime-cheesecake-filled-timbit"
   },
-  
   {
     "id": "164",
     "name": "Honey Dip Timbit",
@@ -1035,7 +911,6 @@
     "category": "Baked Goods, Timbits",
     "image": "honey-dip-timbit"
   },
-  
   {
     "id": "165",
     "name": "Old Fashioned Plain Timbit",
@@ -1044,7 +919,6 @@
     "category": "Baked Goods, Timbits",
     "image": "old-fashioned-plain-timbit"
   },
-  
   {
     "id": "167",
     "name": "Strawberry Cheesecake Filled Muffin",
@@ -1053,7 +927,6 @@
     "category": "Baked Goods, New and Seasonal",
     "image": "strawberry-cheesecake-filled-muffin"
   },
-  
   {
     "id": "168",
     "name": "6 Assorted Cookies",
@@ -1062,7 +935,6 @@
     "category": "Baked Goods, Cookies",
     "image": "6-assorted-cookies"
   },
-  
   {
     "id": "169",
     "name": "12 Assorted Cookies",
@@ -1071,7 +943,6 @@
     "category": "Baked Goods, Cookies",
     "image": "12-assorted-cookies"
   },
-  
   {
     "id": "170",
     "name": "Oatmeal Raisin Cookie",
@@ -1080,7 +951,6 @@
     "category": "Baked Goods, Cookies",
     "image": "oatmeal-raisin-cookie"
   },
-  
   {
     "id": "171",
     "name": "Chocolate Chunk Cookie",
@@ -1089,7 +959,6 @@
     "category": "Baked Goods, Cookies",
     "image": "chocolate-chunk-cookie"
   },
-  
   {
     "id": "172",
     "name": "Lemon Blueberry Tart",
@@ -1098,7 +967,6 @@
     "category": "Baked Goods",
     "image": "lemon-blueberry-tart"
   },
-  
   {
     "id": "173",
     "name": "Pecan Butter Tart",
@@ -1107,7 +975,6 @@
     "category": "Baked Goods",
     "image": "pecan-butter-tart"
   },
-  
   {
     "id": "174",
     "name": "Double Chocolate Brownie",
@@ -1116,7 +983,6 @@
     "category": "Baked Goods",
     "image": "double-chocolate-brownie"
   },
-  
   {
     "id": "198",
     "name": "875g Original Blend Can",
@@ -1125,7 +991,6 @@
     "category": "Tims at Home",
     "image": "875g-original-blend-can"
   },
-  
   {
     "id": "199",
     "name": "450g Candy Cane Hot Chocolate Can",
@@ -1134,7 +999,6 @@
     "category": "Tims at Home",
     "image": "450g-candy-cane-hot-chocolate-can"
   },
-  
   {
     "id": "200",
     "name": "12ct K-Cups Original Blend Coffee",
@@ -1143,7 +1007,6 @@
     "category": "Tims at Home",
     "image": "12ct-k-cups-original-blend-coffee"
   },
-  
   {
     "id": "201",
     "name": "400g Original Blend Coffee Bag",
@@ -1152,7 +1015,6 @@
     "category": "Tims at Home",
     "image": "400g-original-blend-coffee-bag"
   },
-  
   {
     "id": "202",
     "name": "454g French Vanilla Cappuccino Can",
@@ -1161,7 +1023,6 @@
     "category": "Tims at Home",
     "image": "454g-french-vanilla-cappuccino-can"
   },
-  
   {
     "id": "203",
     "name": "Sausage Breakfast Sandwich",
@@ -1170,7 +1031,6 @@
     "category": "Breakfast, Breakfast Sandwiches",
     "image": "sausage-breakfast-sandwich"
   },
-  
   {
     "id": "204",
     "name": "Bacon Breakfast Sandwich",
@@ -1179,7 +1039,6 @@
     "category": "Breakfast, Breakfast Sandwiches",
     "image": "bacon-breakfast-sandwich"
   },
-  
   {
     "id": "205",
     "name": "Egg & Cheese Breakfast Sandwich",
@@ -1188,7 +1047,6 @@
     "category": "Breakfast, Breakfast Sandwiches",
     "image": "egg-cheese-breakfast-sandwich"
   },
-  
   {
     "id": "206",
     "name": "Double Stacked Breakfast Sandwich",
@@ -1197,7 +1055,6 @@
     "category": "Breakfast, Breakfast Sandwiches",
     "image": "double-stacked-breakfast-sandwich"
   },
-  
   {
     "id": "207",
     "name": "Simply Sausage Breakfast Sandwich",
@@ -1206,7 +1063,6 @@
     "category": "Breakfast, Breakfast Sandwiches",
     "image": "simply-sausage-breakfast-sandwich"
   },
-  
   {
     "id": "208",
     "name": "Farmer's Breakfast Sandwich",
@@ -1215,7 +1071,6 @@
     "category": "Breakfast, Breakfast Sandwiches",
     "image": "farmers-breakfast-sandwich"
   },
-  
   {
     "id": "209",
     "name": "Bagel BELT",
@@ -1224,7 +1079,6 @@
     "category": "Breakfast, Breakfast Sandwiches, Bagels",
     "image": "bagel-BELT"
   },
-  
   {
     "id": "210",
     "name": "Farmer's Breakfast Wrap",
@@ -1233,7 +1087,6 @@
     "category": "Breakfast, Breakfast Wraps",
     "image": "farmers-breakfast-wrap"
   },
-  
   {
     "id": "211",
     "name": "Hashbrown",
@@ -1242,7 +1095,6 @@
     "category": "Breakfast, Hashbrown",
     "image": "hashbrown"
   },
-  
   {
     "id": "212",
     "name": "Omelette Bites",
@@ -1251,7 +1103,6 @@
     "category": "Breakfast, Omelette Bites",
     "image": "omelette-bites"
   },
-  
   {
     "id": "213",
     "name": "Soup",
@@ -1260,7 +1111,6 @@
     "category": "Lunch & Dinner, Soup & Chili",
     "image": "soup"
   },
-  
   {
     "id": "214",
     "name": "Chili",
@@ -1269,7 +1119,6 @@
     "category": "Lunch & Dinner, Soup & Chili",
     "image": "chili"
   },
-  
   {
     "id": "215",
     "name": "Herb & Garlic Savoury Pastry",
@@ -1278,7 +1127,6 @@
     "category": "Baked Goods",
     "image": "herb-garlic-savoury-pastry"
   },
-  
   {
     "id": "216",
     "name": "Bacon Grilled Cheese Melt",
@@ -1287,7 +1135,6 @@
     "category": "Lunch & Dinner, Sandwiches",
     "image": "bacon-grilled-cheese-melt"
   },
-  
   {
     "id": "217",
     "name": "Grilled Cheese Melt",
@@ -1296,16 +1143,14 @@
     "category": "Lunch & Dinner, Sandwiches",
     "image": "grilled-cheese-melt"
   },
-  
   {
     "id": "218",
     "name": "Chipotle Veggie Wrap",
     "description": "",
     "price": 5.29,
-    "category": "Lunch and Dinner, Wraps",
+    "category": "Lunch & Dinner, Wraps",
     "image": "chipotle-veggie-wrap"
   },
-  
   {
     "id": "219",
     "name": "OREO Double Stuff Iced Capp",
@@ -1314,7 +1159,6 @@
     "category": "Cold Drinks, Iced Capp",
     "image": "oreo-double-stuff-iced-capp"
   },
-  
   {
     "id": "220",
     "name": "Caramel Churro Iced Capp",
@@ -1323,7 +1167,6 @@
     "category": "Cold Drinks, Iced Capp",
     "image": "caramel-churro-iced-capp"
   },
-  
   {
     "id": "221",
     "name": "Original Iced Capp",
@@ -1332,7 +1175,6 @@
     "category": "Cold Drinks, Iced Capp",
     "image": "original-iced-capp"
   },
-  
   {
     "id": "222",
     "name": "Mocha Iced Capp",
@@ -1341,7 +1183,6 @@
     "category": "Cold Drinks, Iced Capp",
     "image": "mocha-iced-capp"
   },
-  
   {
     "id": "223",
     "name": "Vanilla Iced Capp",
@@ -1350,7 +1191,6 @@
     "category": "Cold Drinks, Iced Capp",
     "image": "vanilla-iced-capp"
   },
-  
   {
     "id": "224",
     "name": "6 Assorted Bagels",
@@ -1359,7 +1199,6 @@
     "category": "Baked Goods, Bagels",
     "image": "6-assorted-bagels"
   },
-  
   {
     "id": "225",
     "name": "Plain Bagel",
@@ -1368,7 +1207,6 @@
     "category": "Baked Goods, Bagels",
     "image": "plain-bagel"
   },
-  
   {
     "id": "226",
     "name": "Everything Bagel",
@@ -1377,7 +1215,6 @@
     "category": "Baked Goods, Bagels",
     "image": "everything-bagel"
   },
-  
   {
     "id": "227",
     "name": "12 Grain Bagel",
@@ -1386,7 +1223,6 @@
     "category": "Baked Goods, Bagels",
     "image": "12-grain-bagel"
   },
-  
   {
     "id": "228",
     "name": "Four Cheese Bagel",
@@ -1395,7 +1231,6 @@
     "category": "Baked Goods, Bagels",
     "image": "four-cheese-bagel"
   },
-  
   {
     "id": "229",
     "name": "Cinnamon Raisin Bagel",
@@ -1404,7 +1239,6 @@
     "category": "Baked Goods, Bagels",
     "image": "cinnamon-raisin-bagel"
   },
-  
   {
     "id": "230",
     "name": "6 Assorted Muffins",
@@ -1413,7 +1247,6 @@
     "category": "Baked Goods, Muffins",
     "image": "6-assorted-muffins"
   },
-  
   {
     "id": "231",
     "name": "12 Assorted Muffins",
@@ -1422,7 +1255,6 @@
     "category": "Baked Goods, Muffins",
     "image": "12-assorted-muffins"
   },
-  
   {
     "id": "232",
     "name": "Chocolate Chip Muffin",
@@ -1431,7 +1263,6 @@
     "category": "Baked Goods, Muffins",
     "image": "chocolate-chip-muffin"
   },
-  
   {
     "id": "233",
     "name": "Fruit Explosion Muffin",
@@ -1440,7 +1271,6 @@
     "category": "Baked Goods, Muffins",
     "image": "fruit-explosion-muffin"
   },
-  
   {
     "id": "234",
     "name": "Raisin Bran Muffin",
@@ -1449,7 +1279,6 @@
     "category": "Baked Goods, Muffins",
     "image": "raisin-bran-muffin"
   },
-  
   {
     "id": "235",
     "name": "Wild Blueberry Muffin",
@@ -1458,7 +1287,6 @@
     "category": "Baked Goods, Muffins",
     "image": "wild-blueberry-muffin"
   },
-  
   {
     "id": "236",
     "name": "Whole Grain Pecan Banana Bread Muffin",
@@ -1467,7 +1295,6 @@
     "category": "Baked Goods, Muffins",
     "image": "whole-grain-pecan-banana-bread-muffin"
   },
-  
   {
     "id": "237",
     "name": "Cheese Croissant",
@@ -1476,7 +1303,6 @@
     "category": "Baked Goods, Croissants",
     "image": "cheese-croissant"
   },
-  
   {
     "id": "238",
     "name": "Plain Croissant",
@@ -1485,7 +1311,6 @@
     "category": "Baked Goods, Croissants",
     "image": "plain-croissant"
   },
-  
   {
     "id": "239",
     "name": "Chocolate Croissant",
@@ -1493,6 +1318,5 @@
     "price": 2.69,
     "category": "Baked Goods, Croissants",
     "image": "chocolate-croissant"
-  },
-  
+  }
 ]

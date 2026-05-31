@@ -65,6 +65,7 @@ struct LoopingVideoPlayerView: UIViewRepresentable {
         var notificationObserver: NSObjectProtocol?
         
         deinit {
+            // Clean up visual listeners when the layer view context drops out of memory safely
             if let observer = notificationObserver {
                 NotificationCenter.default.removeObserver(observer)
             }

@@ -19,7 +19,7 @@ struct JSONProduct: Identifiable, Codable, Hashable {
     let image: String
 }
 
-// MARK: - Individual Ordered Item Structure
+// Individual Ordered Item Structure
 struct OrderItem: Identifiable, Codable {
     var id = UUID()
     var itemName: String
@@ -38,7 +38,7 @@ struct TeamOrder: Identifiable, Codable {
     var id = UUID()
     var name: String
     
-    // FIXED: Changed from single properties to a dynamic list basket!
+    // Explicit dynamic array representing all chosen products inside the passenger's basket
     var items: [OrderItem]
     var isSavedAsFavorite: Bool
     

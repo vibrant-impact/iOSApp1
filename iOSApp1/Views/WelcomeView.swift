@@ -16,7 +16,7 @@ struct WelcomeView: View {
         VStack(spacing: 24) {
             Spacer()
             
-            // Infinite loop animation container:
+            // Infinite loop animation container
             LoopingVideoPlayerView(welcomeAnimation: "welcomeAnimation")
                 .frame(width: 400, height: 400)
                 .cornerRadius(20)
@@ -34,7 +34,7 @@ struct WelcomeView: View {
             Spacer()
             
             Button(action: {
-                // FIXED: Quietly shuts down the ambient engine loop when changing screens!
+                // Shuts down the ambient engine loop when changing screens
                 SoundManager.shared.stopBackgroundLoop()
                             
                 SoundManager.shared.playSound(named: "click", withExtension: "mp3")
@@ -54,14 +54,11 @@ struct WelcomeView: View {
             .padding(.bottom, 20)
         }
         .background(Color.timsTan) // Unified cozy background palette
-        // ==========================================
-        // FIXED MULTIMEDIA LIFECYCLE CONTROLS
-        // ==========================================
         .onAppear {
-            // 1. Honk the horn once right at boot-up setup!
+            // Honk the horn once right at boot-up setup
             SoundManager.shared.playSound(named: "car-horn", withExtension: "mp3")
                         
-            // 2. Queue up the ambient looping engine track at a subtle volume scale after 0.4 seconds
+            // Queue up the ambient looping engine track at a subtle volume scale after 0.4 seconds
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 SoundManager.shared.startBackgroundLoop(named: "engine", withExtension: "mp3", volume: 0.15)
             }

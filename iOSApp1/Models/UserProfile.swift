@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - Completed Run Analytics Record Blueprint
+// Completed Run Analytics Record Blueprint
 struct PastRunRecord: Identifiable, Codable {
     var id = UUID()
     var completionDate = Date()
@@ -20,7 +20,7 @@ struct PastRunRecord: Identifiable, Codable {
     }
 }
 
-// MARK: - Core User Profile System Blueprint
+// Core User Profile System Blueprint
 struct UserProfile: Identifiable, Codable {
     var id = UUID()
     var name: String

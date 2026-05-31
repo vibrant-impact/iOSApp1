@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 struct ContentView: View {
-    // MARK: - App State Providers
+    // Central data engine and state control parameters for managing the active coffee run sequence
     @StateObject private var appStore = OrderStore()
     @State private var runSequenceStarted = false
     @State private var showingAddOrderForm = false
@@ -20,20 +20,21 @@ struct ContentView: View {
     var body: some View {
         Group {
             if runTimerActive {
-                // PHASE 3: Active Countdown Timer Loop
+                // Active countdown challenge screen checking speed metrics against the timer loop
                 TimerView(appStore: appStore, isRunActive: $runTimerActive)
                     .onDisappear {
+                        // Reset structural flags when the timer screen unmounts from the view tree
                         isManifestLocked = false
                         runSequenceStarted = false
                     }
             } else if !runSequenceStarted {
-                // PHASE 1: Isolated Home Welcome Screen View Component
+                // Initial launch dashboard overlay displaying onboarding animations and user options
                 WelcomeView(
                     runSequenceStarted: $runSequenceStarted,
                     isManifestLocked: $isManifestLocked
                 )
             } else {
-                // PHASE 2: Isolated Dynamic Group Building Screen View Component
+                // Active group listing sheet canvas for managing baskets and modifying team records
                 ManifestBuilderView(
                     appStore: appStore,
                     runSequenceStarted: $runSequenceStarted,
@@ -46,6 +47,7 @@ struct ContentView: View {
         }
     }
 }
+
 #Preview {
     ContentView()
 }
